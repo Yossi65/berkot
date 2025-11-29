@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>מערכת הברכות החכמה</title>
+    <style>
+        :root { --primary: #4a90e2; --primary-dark: #357abd; --whatsapp: #25D366; --bg: #f0f2f5; --card: #ffffff; --text: #1c1e21; --border-radius: 16px; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 10px; display: flex; justify-content: center; min-height: 100vh; padding-bottom: 80px; }
+        .container { width: 100%; max-width: 600px; background: var(--card); padding: 20px; border-radius: var(--border-radius); box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 15px; position: relative; min-height: 600px; }
+        h1 { text-align: center; font-size: 1.5rem; margin: 10px 0; color: var(--primary-dark); }
+        
+        .back-btn { background: #e4e6eb; color: #333; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; cursor: pointer; align-self: flex-start; display: none; margin-bottom: 10px; }
+        .controls-area { display: flex; flex-direction: column; gap: 10px; background: #f7f9fc; padding: 15px; border-radius: 12px; }
+        .top-row { display: flex; justify-content: space-between; align-items: flex-end; width: 100%; gap: 5px; }
+        
+        .sender-toggle { display: flex; background: #e1e4e8; border-radius: 20px; padding: 3px; height: fit-content; }
+        .sender-btn { border: none; background: transparent; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+        .sender-btn.active { background: white; shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold; color: var(--primary-dark); }
+
+        .emoji-btn { background: white; border: 2px solid #ddd; border-radius: 20px; padding: 6px 12px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; transition: all 0.2s; color: #555; font-size: 0.9rem; height: fit-content; }
+        .emoji-btn.active { background: #ffeb3b; border-color: #fbc02d; color: #333; }
+        
+        .length-wrapper { display: flex; flex-direction: column; align-items: center; }
+        .length-label-title { font-size: 0.8rem; font-weight: bold; color: #666; margin-bottom: 3px; }
+        .length-selector { display: flex; background: #e1e4e8; border-radius: 20px; padding: 3px; }
+        .length-selector label { flex: 1; text-align: center; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+        .length-selector input { display: none; }
+        .length-selector input:checked + span { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); color: var(--primary); font-weight: bold; display: block; border-radius: 16px; padding: 4px 8px; }
+        .length-selector span { display: block; }
+        
+        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; transition: all 0.3s ease; }
+        @media (min-width: 600px) { .grid-container { grid-template-columns: repeat(5, 1fr); } }
+        
+        .category-btn { background: white; border: 1px solid #e0e0e0; padding: 15px 5px; border-radius: 12px; font-size: 1rem; cursor: pointer; font-weight: 500; color: #444; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s; }
+        .category-btn:hover { transform: translateY(-2px); border-color: var(--primary); }
+        .category-btn.active { background-color: var(--primary); color: white; border-color: var(--primary); }
+
+        .dynamic-section { background: #f8f9fa; padding: 15px; border-radius: 12px; display: none; border: 1px solid #eee; animation: fadeIn 0.3s ease; }
+        .sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .holidays-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        
+        .sub-btn { background: white; border: 1px solid #ccc; padding: 12px; border-radius: 10px; font-size: 0.95rem; cursor: pointer; transition: 0.2s; }
+        .sub-btn.active { background: var(--primary-dark); color: white; border-color: var(--primary-dark); font-weight: bold; }
+
+        .input-row { display: flex; gap: 10px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        
+        .generate-btn { background: linear-gradient(135deg, #4a90e2, #2c5282); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3); margin-top: 10px; }
+        .generate-btn:active { transform: scale(0.98); }
+        .generate-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
+        
+        .output-container { background: #fff9c4; padding: 20px; border-radius: 12px; min-height: 80px; border: 1px dashed #fbc02d; font-size: 1.1rem; line-height: 1.5; white-space: pre-wrap; margin-top: 15px; }
+        
+        .actions-bar { display: flex; gap: 10px; margin-top: 10px; }
+        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-copy { background: #e4e6eb; color: #1c1e21; }
+        .btn-whatsapp { background: var(--whatsapp); color: white; }
+        
+        /* Loading overlay */
+        #loadingOverlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.95); z-index: 100; display: flex; justify-content: center; align-items: center; flex-direction: column; border-radius: 16px; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #4a90e2; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { font-size: 1.1rem; color: #555; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <span class="loading-text">טוען אלפי ברכות מהענן...</span>
+        <span id="loadingStatus" style="font-size:0.9rem; color:#888; margin-top:5px;">מתחבר לשרת...</span>
+    </div>
+
+    <button class="back-btn" id="backBtn" onclick="goBack()">🔙 חזרה לתפריט הראשי</button>
+    <h1>מפעל הברכות 🚀</h1>
+
+    <div class="controls-area">
+        <div class="top-row">
+            <div class="sender-toggle">
+                <button class="sender-btn active" id="senderMale" onclick="setSenderGender('male')">גבר 👨</button>
+                <button class="sender-btn" id="senderFemale" onclick="setSenderGender('female')">אישה 👩</button>
+            </div>
+
+            <div class="length-wrapper">
+                <span class="length-label-title">ברכה</span>
+                <div class="length-selector">
+                    <label><input type="radio" name="length" value="short" onchange="setLength('short')"><span>קצרה</span></label>
+                    <label><input type="radio" name="length" value="long" onchange="setLength('long')" checked><span>ארוכה</span></label>
+                </div>
+            </div>
+
+            <button class="emoji-btn active" id="emojiBtn" onclick="toggleEmoji()">
+                <span id="emojiIcon">✅</span> אימוג'י
+            </button>
+        </div>
+    </div>
+
+    <div class="grid-container" id="mainGrid">
+        <button class="category-btn" style="background:#e0f7fa; border-color:#00bcd4;" onclick="selectCategory('morning_evening', this)">בוקר/ערב ☀️🌙</button>
+        <button class="category-btn" onclick="selectCategory('shabbat', this)">שבת / מוצ"ש 🕯️</button>
+        <button class="category-btn" onclick="selectCategory('holiday', this)">חג 🍷</button>
+        <button class="category-btn" style="background:#fff9c4; border-color:#fbc02d;" onclick="selectCategory('chabad', this)">חב"ד 👑</button>
+        <button class="category-btn" onclick="selectCategory('birthday', this)">יום הולדת 🎂</button>
+        <button class="category-btn" onclick="selectCategory('event', this)">אירוע 💍</button>
+        <button class="category-btn" onclick="selectCategory('birth', this)">לידה 👶</button>
+        <button class="category-btn" onclick="selectCategory('recovery', this)">רפואה 💊</button>
+        <button class="category-btn" onclick="selectCategory('thank_you', this)">תודה 🙏</button>
+        <button class="category-btn" onclick="selectCategory('success', this)">הצלחה 🏆</button>
+        <button class="category-btn" onclick="selectCategory('love', this)">אהבה ❤️</button>
+    </div>
+
+    <div id="morningEveningSection" class="dynamic-section">
+        <div id="timeOfDaySelector">
+            <h3>מה השעה?</h3>
+            <div class="sub-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <button class="sub-btn" onclick="selectTimeOfDay('morning', this)">בוקר טוב ☀️</button>
+                <button class="sub-btn" onclick="selectTimeOfDay('noon', this)">צהריים טובים 🌤️</button>
+                <button class="sub-btn" onclick="selectTimeOfDay('night', this)">לילה טוב 🌙</button>
+            </div>
+        </div>
+        <div id="timeTargetSelector" style="display:none; margin-top:15px;">
+            <h3>למי הברכה?</h3>
+            <div class="sub-grid">
+                <button class="sub-btn" onclick="selectTimeTarget('general', this)">כללי ✨</button>
+                <button class="sub-btn" onclick="selectTimeTarget('husband', this)">לבעלי 🤵</button>
+                <button class="sub-btn" onclick="selectTimeTarget('wife', this)">לאשתי 👰</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="shabbatSection" class="dynamic-section">
+        <div id="shabbatTimeSelector">
+            <h3>מה הזמן עכשיו?</h3>
+            <div class="sub-grid">
+                <button class="sub-btn" onclick="selectShabbatTime('shabbat')">🕯️ לקראת שבת</button>
+                <button class="sub-btn" onclick="selectShabbatTime('motzash')">🎸 מוצאי שבת</button>
+            </div>
+        </div>
+        <div id="shabbatTargetSelector" style="display:none;">
+            <h3 id="shabbatTargetTitle">למי הברכה?</h3>
+            <div class="sub-grid">
+                <button class="sub-btn" onclick="selectSub('general', this)">כללי ✨</button>
+                <button class="sub-btn" onclick="selectSub('family', this)">למשפחה 🏠</button>
+                <button class="sub-btn" onclick="selectSub('wife', this)">לאשתי 👰</button>
+                <button class="sub-btn" onclick="selectSub('husband', this)">לבעלי 🤵</button>
+                <button class="sub-btn" onclick="selectSub('parents', this)">להורים 👴👵</button>
+                <button class="sub-btn" onclick="selectSub('kids', this)">לילדים 🧸</button>
+                <button class="sub-btn" onclick="selectSub('brother', this)">לאח 👦</button>
+                <button class="sub-btn" onclick="selectSub('sister', this)">לאחות 👧</button>
+                <button class="sub-btn" onclick="selectSub('friend_male', this)">לחבר 🤜🤛</button>
+                <button class="sub-btn" onclick="selectSub('friend_female', this)">לחברה 👯‍♀️</button>
+                <button class="sub-btn" onclick="selectSub('group', this)">לקבוצה 👨‍👩‍👧‍👦</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="holidaySection" class="dynamic-section">
+        <div id="holidayNameSelector">
+            <h3>איזה חג חוגגים?</h3>
+            <div class="holidays-grid">
+                <button class="sub-btn" style="background:#e3f2fd; border-color:#2196f3; font-weight:bold;" onclick="selectHolidayName('rosh_chodesh', this)">ראש חודש 🌑</button>
+                <button class="sub-btn" onclick="selectHolidayName('rosh_hashanah', this)">ר"השנה 🍎</button>
+                <button class="sub-btn" onclick="selectHolidayName('yom_kippur', this)">כיפור ⚖️</button>
+                <button class="sub-btn" onclick="selectHolidayName('sukkot', this)">סוכות 🌿</button>
+                <button class="sub-btn" onclick="selectHolidayName('simchat_torah', this)">שמחת תורה 📜</button>
+                <button class="sub-btn" onclick="selectHolidayName('hanukkah', this)">חנוכה 🕎</button>
+                <button class="sub-btn" onclick="selectHolidayName('tu_bishvat', this)">ט"ו בשבט 🌳</button>
+                <button class="sub-btn" onclick="selectHolidayName('purim', this)">פורים 🎭</button>
+                <button class="sub-btn" onclick="selectHolidayName('passover', this)">פסח 🍷</button>
+                <button class="sub-btn" onclick="selectHolidayName('mimouna', this)">מימונה 🥞</button>
+                <button class="sub-btn" onclick="selectHolidayName('yom_haatzmaut', this)">העצמאות 🇮🇱</button>
+                <button class="sub-btn" onclick="selectHolidayName('lag_baomer', this)">ל"ג בעומר 🔥</button>
+                <button class="sub-btn" onclick="selectHolidayName('shavuot', this)">שבועות 🌾</button>
+                <button class="sub-btn" onclick="selectHolidayName('tu_beav', this)">ט"ו באב ❤️</button>
+                <button class="sub-btn" onclick="selectHolidayName('generic_holiday', this)">כללי 🎉</button>
+            </div>
+        </div>
+        
+        <div id="holidayTargetSelector" style="display:none; margin-top:15px;">
+            <h3>למי ברכת החג?</h3>
+            <div class="sub-grid">
+                <button class="sub-btn" onclick="selectHolidayTarget('general', this)">כללי ✨</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('family', this)">למשפחה 🏠</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('wife', this)">לאשתי 👰</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('husband', this)">לבעלי 🤵</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('parents', this)">להורים 👴👵</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('kids', this)">לילדים 🧸</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('brother', this)">לאח 👦</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('sister', this)">לאחות 👧</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('friend_male', this)">לחבר 🤜🤛</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('friend_female', this)">לחברה 👯‍♀️</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('group', this)">לקבוצה 👨‍👩‍👧‍👦</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="chabadSection" class="dynamic-section">
+        <h3>תאריך חסידי</h3>
+        <div class="holidays-grid">
+            <button class="sub-btn" onclick="selectSub('chabad_19_kislev', this)">י"ט כסלו 📖</button>
+            <button class="sub-btn" onclick="selectSub('chabad_10_shevat', this)">י' שבט 🕯️</button>
+            <button class="sub-btn" onclick="selectSub('chabad_11_nissan', this)">י"א ניסן 👑</button>
+            <button class="sub-btn" onclick="selectSub('chabad_3_tammuz', this)">ג' תמוז 🕯️</button>
+            <button class="sub-btn" onclick="selectSub('chabad_12_tammuz', this)">י"ב-י"ג תמוז 🔓</button>
+            <button class="sub-btn" onclick="selectSub('chabad_18_elul', this)">ח"י אלול ✨</button>
+            <button class="sub-btn" onclick="selectSub('chabad_5_tevet', this)">ה' טבת 📚</button>
+            <button class="sub-btn" onclick="selectSub('chabad_22_shevat', this)">כ"ב שבט 🕯️</button>
+            <button class="sub-btn" onclick="selectSub('chabad_24_tevet', this)">כ"ד טבת 📜</button>
+            <button class="sub-btn" onclick="selectSub('chabad_14_kislev', this)">י"ד כסלו 💍</button>
+            <button class="sub-btn" onclick="selectSub('chabad_2_iyar', this)">ב' אייר 🚀</button>
+            <button class="sub-btn" onclick="selectSub('chabad_6_tishrei', this)">ו' תשרי 🕯️</button>
+        </div>
+        
+        <h3 style="margin-top:15px;">למי הברכה?</h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSub('general', this)">כללי</button>
+            <button class="sub-btn" onclick="selectSub('family', this)">למשפחה</button>
+        </div>
+    </div>
+
+    <div id="eventSection" class="dynamic-section">
+        <h3>איזה אירוע חוגגים?</h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSub('wedding', this)">חתונה 💍</button>
+            <button class="sub-btn" onclick="selectSub('bar_mitzvah', this)">בר מצווה 🕍</button>
+            <button class="sub-btn" onclick="selectSub('bat_mitzvah', this)">בת מצווה 🌸</button>
+            <button class="sub-btn" onclick="selectSub('brit_milah', this)">ברית מילה 👶</button>
+            <button class="sub-btn" onclick="selectSub('brita', this)">בריתה 🎀</button>
+            <button class="sub-btn" onclick="selectSub('housewarming', this)">חנוכת בית 🔑</button>
+            <button class="sub-btn" onclick="selectSub('henna', this)">חינה 🤚</button>
+        </div>
+    </div>
+
+    <div id="birthSection" class="dynamic-section">
+        <h3>מזל טוב! מה נולד?</h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSub('birth_boy', this)">לידת בן 💙👶</button>
+            <button class="sub-btn" onclick="selectSub('birth_girl', this)">לידת בת 💖👶</button>
+        </div>
+    </div>
+
+    <div id="genderSection" class="dynamic-section">
+         <h3>למי הברכה?</h3>
+         <div class="sub-grid">
+             <button class="sub-btn" onclick="selectGenderGeneral('male', this)">גבר / בן 👨</button>
+             <button class="sub-btn" onclick="selectGenderGeneral('female', this)">אישה / בת 👩</button>
+         </div>
+    </div>
+
+    <div id="birthdaySection" class="dynamic-section">
+        <h3>למי יום ההולדת?</h3>
+        <div class="sub-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <button class="sub-btn" onclick="selectGender('man', this)">גבר 👨</button>
+            <button class="sub-btn" onclick="selectGender('woman', this)">אישה 👩</button>
+            <button class="sub-btn" onclick="selectGender('boy', this)">ילד 👦</button>
+            <button class="sub-btn" onclick="selectGender('girl', this)">ילדה 👧</button>
+        </div>
+        <div id="relationsContainer" style="display:none; margin-top:10px;">
+            <div class="sub-grid" id="relationsGrid" style="grid-template-columns: repeat(3, 1fr);"></div>
+        </div>
+    </div>
+    
+    <div id="inputSection" class="dynamic-section" style="display:none;">
+        <div class="input-row">
+            <input type="text" id="nameInput" placeholder="שם (אופציונלי)">
+            <input type="number" id="ageInput" placeholder="גיל (אופציונלי)">
+        </div>
+    </div>
+
+    <button class="generate-btn" id="genBtn" onclick="generateBlessing()" style="display:none;">🎁 צור ברכה</button>
+    
+    <div class="output-container" id="output">הברכה תופיע כאן...</div>
+
+    <div class="actions-bar">
+        <button class="action-btn btn-copy" onclick="copyText()">📄 העתק</button>
+        <button class="action-btn btn-whatsapp" onclick="sendWhatsapp()">שלח לווצאפ</button>
+    </div>
+</div>
+
+<script>
+    let generators = {};
+    let state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: 'long', gender: null, relation: null, useEmojis: true, senderGender: 'male' };
+
+    // רשימת הקישורים לקבצי הברכות בגיטהאב
+    const jsonFiles = [
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/(%D7%91%D7%95%D7%A7%D7%A8%2C%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D%2C%20%D7%A2%D7%A8%D7%91).json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%90%D7%99%D7%A8%D7%95%D7%A2.json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%94%D7%A6%D7%9C%D7%97%D7%94%20.json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%97%D7%91%D7%93.json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%97%D7%92.json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%99%D7%95%D7%9D%20%D7%94%D7%95%D7%9C%D7%93%D7%AA%20.json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%9C%D7%90%D7%94%D7%91%D7%94.json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%9C%D7%99%D7%93%D7%94.json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%A8%D7%A4%D7%95%D7%90%D7%94.json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%A9%D7%91%D7%AA%20%D7%95%D7%9E%D7%95%D7%A6%D7%90%D7%99%20%D7%A9%D7%91%D7%AA.json",
+        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%AA%D7%95%D7%93%D7%94.json"
+    ];
+
+    window.onload = function() {
+        // טעינת מגדר שולח שמור
+        const savedSender = localStorage.getItem('senderGender');
+        if (savedSender) {
+            state.senderGender = savedSender;
+        }
+        updateSenderUI();
+
+        // טעינת מצב האימוג'י
+        const savedEmojiState = localStorage.getItem('useEmojis');
+        if (savedEmojiState !== null) {
+            state.useEmojis = (savedEmojiState === 'true');
+        }
+        updateEmojiUI(); 
+
+        // טעינת אורך הברכה (קצרה/ארוכה)
+        const savedLength = localStorage.getItem('blessingLength');
+        if (savedLength) {
+            state.length = savedLength;
+            const radio = document.querySelector(`input[name="length"][value="${savedLength}"]`);
+            if(radio) radio.checked = true;
+        }
+        
+        loadAllBlessings();
+    };
+
+    // פונקציה לטעינת כל הברכות מהקישורים
+    async function loadAllBlessings() {
+        const loadingStatus = document.getElementById('loadingStatus');
+        
+        try {
+            const promises = jsonFiles.map(url => fetch(url).then(res => {
+                if(!res.ok) throw new Error(`נכשל בטעינת: ${url}`);
+                return res.json();
+            }));
+
+            const results = await Promise.all(promises);
+
+            results.forEach(data => {
+                generators = { ...generators, ...data };
+            });
+
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('genBtn').disabled = false;
+            document.getElementById('genBtn').style.display = 'none'; 
+
+        } catch (error) {
+            console.error(error);
+            loadingStatus.innerText = "⚠️ שגיאה בטעינת הנתונים. נסה לרענן.";
+            loadingStatus.style.color = "red";
+        }
+    }
+
+    function updateSenderUI() {
+        document.getElementById('senderMale').classList.remove('active');
+        document.getElementById('senderFemale').classList.remove('active');
+        if (state.senderGender === 'male') {
+            document.getElementById('senderMale').classList.add('active');
+        } else {
+            document.getElementById('senderFemale').classList.add('active');
+        }
+    }
+
+    function setSenderGender(g) {
+        state.senderGender = g;
+        localStorage.setItem('senderGender', g);
+        updateSenderUI();
+    }
+
+    function setLength(len) {
+        state.length = len;
+        localStorage.setItem('blessingLength', len);
+    }
+
+    const emojis = {
+        shabbat: ["🕯️", "🍷", "✨", "🥖", "🕍", "🍇", "🤍", "🕊️", "🏡", "💐"],
+        motzash: ["🎸", "🕯️", "🍷", "✨", "🌚", "🎶", "💫", "🍯", "🧿", "🌟"],
+        morning: ["☀️", "☕", "🌼", "🥐", "🧡", "✨", "יום נפלא"],
+        noon: ["🌤️", "🥗", "🥤", "😎", "💪", "המשך יום נעים"],
+        night: ["🌙", "⭐", "💤", "🛏️", "✨", "חלומות פז"],
+        
+        wedding: ["💍", "💒", "🥂", "🤵", "👰"],
+        bar_mitzvah: ["📖", "🍬", "🕍", "✡️", "💙"],
+        bat_mitzvah: ["📖", "🌸", "🕍", "✡️", "💖"],
+        brit_milah: ["👶", "🍼", "💙", "✡️"],
+        brita: ["👶", "🍼", "💖", "🌸"],
+        birth_boy: ["👶", "💙", "🍼", "🚙", "🧸"],
+        birth_girl: ["👶", "💖", "🎀", "🌸", "🦄"],
+        housewarming: ["🏠", "🔑", "🪴", "🧿"],
+        henna: ["🤚", "🍬", "🕌", "👘"],
+        birthday: ["🎂", "🥳", "🎁", "🎈", "🍰"],
+        general: ["✨", "🌸", "💫", "🌟", "🙌", "💎", "💐", "🦋", "🌈", "☀️"],
+        recovery: ["💊", "🩺", "💪", "❤️"],
+        love: ["❤️", "😍", "💋", "💘", "🌹"],
+        success: ["🏆", "💼", "🚀", "📈", "⭐", "💰"],
+        thank_you: ["🙏", "💐", "💖", "🌺"],
+        rosh_hashanah: ["🍎", "🍯", "🍏"],
+        hanukkah: ["🕎", "🍩", "🕯️"],
+        passover: ["🍷", "🥬"],
+        purim: ["🎭", "🍷"],
+        tu_bishvat: ["🌳", "🌱", "🍇", "🍊", "🌧️"],
+        simchat_torah: ["📜", "💃", "🕍", "🙌"],
+        yom_haatzmaut: ["🇮🇱", "🎆", "💙", "🍖"],
+        lag_baomer: ["🔥", "🥔", "🕯️", "🏹"],
+        tu_beav: ["❤️", "💑", "💍", "💌"],
+        rosh_chodesh: ["🌑", "📅", "✨", "🙏"],
+        mimouna: ["🥞", "🍯", "🍪", "🪕"],
+        chabad: ["👑", "🕯️", "🕍", "📜", "📖"]
+    };
+
+    function updateEmojiUI() {
+        const btn = document.getElementById('emojiBtn');
+        const icon = document.getElementById('emojiIcon');
+        if (state.useEmojis) {
+            btn.classList.add('active');
+            icon.innerText = "✅";
+        } else {
+            btn.classList.remove('active');
+            icon.innerText = "⚪";
+        }
+    }
+
+    function toggleEmoji() {
+        state.useEmojis = !state.useEmojis;
+        localStorage.setItem('useEmojis', state.useEmojis);
+        updateEmojiUI();
+    }
+
+    function goBack() {
+        let currentEmojiState = state.useEmojis;
+        let currentSender = state.senderGender;
+        let currentLength = state.length;
+        state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: currentLength, gender: null, relation: null, useEmojis: currentEmojiState, senderGender: currentSender };
+        
+        document.getElementById('nameInput').value = "";
+        document.getElementById('ageInput').value = "";
+        document.getElementById('output').innerText = 'הברכה תופיע כאן...';
+        document.getElementById('mainGrid').style.display = 'grid';
+        document.getElementById('backBtn').style.display = 'none';
+        document.getElementById('genBtn').style.display = 'none';
+        
+        document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById('holidayTargetSelector').style.display = 'none';
+        document.getElementById('timeTargetSelector').style.display = 'none';
+    }
+
+    function selectCategory(cat, btn) {
+        state.category = cat;
+        document.getElementById('mainGrid').style.display = 'none';
+        document.getElementById('backBtn').style.display = 'block';
+        document.getElementById('inputSection').style.display = 'block';
+        
+        if (cat === 'morning_evening') {
+            document.getElementById('morningEveningSection').style.display = 'block';
+            document.getElementById('timeTargetSelector').style.display = 'none';
+        }
+        else if (cat === 'shabbat') {
+            document.getElementById('shabbatSection').style.display = 'block';
+            document.getElementById('shabbatTimeSelector').style.display = 'block';
+            document.getElementById('shabbatTargetSelector').style.display = 'none';
+        }
+        else if (cat === 'holiday') {
+            document.getElementById('holidaySection').style.display = 'block';
+            document.getElementById('holidayNameSelector').style.display = 'block';
+            document.getElementById('holidayTargetSelector').style.display = 'none';
+        }
+        else if (cat === 'chabad') {
+            document.getElementById('chabadSection').style.display = 'block';
+        }
+        else if (cat === 'event') document.getElementById('eventSection').style.display = 'block';
+        else if (cat === 'birth') document.getElementById('birthSection').style.display = 'block';
+        else if (cat === 'birthday') document.getElementById('birthdaySection').style.display = 'block';
+        else {
+            if(['success', 'recovery', 'thank_you', 'love'].includes(cat)) {
+                document.getElementById('genderSection').style.display = 'block';
+            } else {
+                document.getElementById('genBtn').style.display = 'block';
+            }
+        }
+    }
+
+    function selectTimeOfDay(time, btn) {
+        state.timeOfDay = time;
+        const btns = document.querySelectorAll('#timeOfDaySelector .sub-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('timeTargetSelector').style.display = 'block';
+        document.getElementById('genBtn').style.display = 'none'; 
+    }
+
+    function selectTimeTarget(target, btn) {
+        state.subCategory = target;
+        const btns = document.querySelectorAll('#timeTargetSelector .sub-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('genBtn').style.display = 'block';
+    }
+
+    function selectShabbatTime(time) {
+        state.shabbatTime = time;
+        const btns = document.querySelectorAll('#shabbatTimeSelector .sub-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById('shabbatTargetSelector').style.display = 'block';
+        document.getElementById('genBtn').style.display = 'block';
+    }
+
+    function selectSub(type, btn) {
+        if (type.startsWith('chabad_')) {
+            state.chabadDate = type;
+            let parent = btn.parentElement;
+            parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (state.chabadTarget) document.getElementById('genBtn').style.display = 'block';
+            return;
+        }
+        
+        if (state.category === 'chabad' && !type.startsWith('chabad_')) {
+            state.chabadTarget = type;
+            let parent = btn.parentElement;
+            parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (state.chabadDate) document.getElementById('genBtn').style.display = 'block';
+            return;
+        }
+
+        state.subCategory = type;
+        let parent = btn.parentElement;
+        parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('genBtn').style.display = 'block';
+    }
+
+    function selectHolidayName(hName, btn) {
+        state.holidayName = hName;
+        const btns = document.querySelectorAll('#holidayNameSelector .sub-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('holidayTargetSelector').style.display = 'block';
+        document.getElementById('genBtn').style.display = 'block';
+    }
+
+    function selectHolidayTarget(target, btn) {
+        state.holidayTarget = target;
+        const btns = document.querySelectorAll('#holidayTargetSelector .sub-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    function selectGenderGeneral(g, btn) {
+        state.gender = g;
+        let parent = btn.parentElement;
+        parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('genBtn').style.display = 'block';
+    }
+
+    function selectGender(gender, btn) {
+        state.gender = gender;
+        let parent = btn.parentElement;
+        parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const relationsMap = {
+            man: ["אבא 👑", "אח 👊", "חבר 🍻", "בוס 💼", "בן זוג 💑", "בעלי 💍"],
+            woman: ["אמא 👑", "אחות 🌸", "חברה 👯‍♀️", "בוסית 💼", "בת זוג 💑", "אשתי 💍"],
+            boy: ["ילד ⚽", "בן 💙", "נכד 🧸", "חבר 🚲", "הילד שלי 👦"],
+            girl: ["ילדה 🎀", "בת 💖", "נכדה 🦄", "חברה 👭", "הילדה שלי 👧"]
+        };
+        
+        const grid = document.getElementById('relationsGrid');
+        grid.innerHTML = '';
+        (relationsMap[gender] || []).forEach(rel => {
+            const b = document.createElement('button');
+            b.className = 'sub-btn';
+            b.innerText = rel;
+            const pureRel = rel.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').trim();
+            b.onclick = (e) => {
+                state.relation = pureRel;
+                grid.querySelectorAll('.sub-btn').forEach(x => x.classList.remove('active'));
+                e.target.classList.add('active');
+            };
+            grid.appendChild(b);
+        });
+        document.getElementById('relationsContainer').style.display = 'block';
+        document.getElementById('genBtn').style.display = 'block';
+    }
+
+    function getDistinctRandom(arr, count) {
+        if (!arr || arr.length === 0) return [];
+        const shuffled = [...arr].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    }
+
+    function adjustTextForSender(text) {
+        if (state.senderGender === 'female') {
+            const replacements = [
+                { m: "מאחל", f: "מאחלת" },
+                { m: "אוהב", f: "אוהבת" },
+                { m: "מעריך", f: "מעריכה" },
+                { m: "שולח", f: "שולחת" },
+                { m: "בטוח", f: "בטוחה" },
+                { m: "חושב", f: "חושבת" },
+                { m: "מתגעגע", f: "מתגעגעת" },
+                { m: "מוקיר", f: "מוקירה" },
+                { m: "מאמין", f: "מאמינה" },
+                { m: "סומך", f: "סומכת" },
+                { m: "מחזיק", f: "מחזיקה" },
+                { m: "מודה", f: "מודה" }
+            ];
+
+            let newText = text;
+            replacements.forEach(pair => {
+                newText = newText.split(pair.m).join(pair.f);
+            });
+            return newText;
+        }
+        return text;
+    }
+
+    function generateBlessing() {
+        if(Object.keys(generators).length === 0) {
+            alert("המאגר עדיין ריק! ייתכן שהטעינה נכשלה.");
+            return;
+        }
+
+        document.getElementsByName('length').forEach(l => { if(l.checked) state.length = l.value });
+        const output = document.getElementById('output');
+        let key = "";
+
+        if (state.category === 'morning_evening') {
+             if (!state.timeOfDay || !state.subCategory) { output.innerText = "נא לבחור זמן ויעד..."; return; }
+             key = `${state.timeOfDay}_${state.subCategory}`;
+        }
+        else if (state.category === 'shabbat') {
+            if (!state.shabbatTime || !state.subCategory) { output.innerText = "נא לבחור זמן ויעד..."; return; }
+            key = `${state.shabbatTime}_${state.subCategory}`;
+        }
+        else if (state.category === 'holiday') {
+             if (!state.holidayName || !state.holidayTarget) { output.innerText = "נא לבחור חג ויעד..."; return; }
+             key = `${state.holidayName}_${state.holidayTarget}`;
+        }
+        else if (state.category === 'chabad') {
+             if (!state.chabadDate || !state.chabadTarget) { output.innerText = "נא לבחור תאריך ויעד..."; return; }
+             key = `${state.chabadDate}_${state.chabadTarget}`;
+        }
+        else if (state.category === 'event') {
+             if (!state.subCategory) { output.innerText = "נא לבחור..."; return; }
+             key = state.subCategory;
+        }
+        else if (state.category === 'birth') {
+             if (!state.subCategory) { output.innerText = "נא לבחור..."; return; }
+             key = state.subCategory;
+        }
+        else if (state.category === 'birthday') {
+             const bdKey = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female') ? 'birthday_female' : 'birthday_male';
+             key = bdKey;
+        } 
+        else if (['success', 'recovery', 'thank_you', 'love'].includes(state.category)) {
+             if (!state.gender) { output.innerText = "נא לבחור מין..."; return; }
+             key = `${state.category}_${state.gender}`;
+        }
+        else {
+            key = state.category;
+        }
+
+        let gen = generators[key];
+        
+        if (!gen) {
+            if (state.category === 'shabbat') gen = generators[`${state.shabbatTime}_general`];
+            else if (state.category === 'holiday') gen = generators[`${state.holidayName}_general`] || generators[`${state.holidayName}`];
+            else if (state.category === 'chabad') gen = generators[state.chabadDate];
+        }
+        
+        if (!gen) { 
+            output.innerText = `לא נמצאו ברכות לקטגוריה: ${key}. ייתכן שהמאגר חסר.`; 
+            return; 
+        }
+
+        let parts = [];
+        const name = document.getElementById('nameInput').value.trim();
+        
+        if (name) {
+            let suffix = "היקר/ה";
+            const isFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || 
+                              state.holidayTarget === 'wife' || state.holidayTarget === 'sister' || state.holidayTarget === 'friend_female' ||
+                              state.subCategory === 'wife' || state.subCategory === 'sister' || state.subCategory === 'friend_female');
+                              
+            const isMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' ||
+                            state.holidayTarget === 'husband' || state.holidayTarget === 'brother' || state.holidayTarget === 'friend_male' ||
+                            state.subCategory === 'husband' || state.subCategory === 'brother' || state.subCategory === 'friend_male');
+
+            if (isFemale) suffix = "היקרה";
+            else if (isMale) suffix = "היקר";
+            
+            parts.push(`${name} ${suffix},`);
+        }
+
+        parts.push(getDistinctRandom(gen.openers, 1)[0]);
+        const bodyCount = state.length === 'long' ? 2 : 1;
+        const bodies = getDistinctRandom(gen.bodies, bodyCount);
+        parts.push(...bodies);
+        parts.push(getDistinctRandom(gen.closings, 1)[0]);
+
+        let adjustedParts = parts.map(part => adjustTextForSender(part));
+
+        let emojiSet = 'general';
+        if (state.category === 'morning_evening') emojiSet = state.timeOfDay;
+        else if (state.category === 'shabbat') emojiSet = state.shabbatTime;
+        else if (state.category === 'holiday') emojiSet = state.holidayName;
+        else if (state.category === 'birth') emojiSet = state.subCategory;
+        else if (state.category === 'chabad') emojiSet = state.chabadDate;
+        else if (emojis[key]) emojiSet = key;
+        else if (emojis[state.category]) emojiSet = state.category;
+
+        if (state.category === 'chabad' && !emojis[emojiSet]) emojiSet = 'chabad';
+
+        output.innerText = formatTextWithEmojis(adjustedParts, emojiSet);
+    }
+
+    function formatTextWithEmojis(linesArray, setKey) {
+        const cleanLines = linesArray.filter(l => l && l.trim() !== "");
+        let availableEmojis = [...(emojis[setKey] || emojis['general'])]; 
+        
+        const formattedLines = cleanLines.map(line => {
+            let lineContent = line.trim();
+            if (state.useEmojis) {
+                if (availableEmojis.length === 0) availableEmojis = [...(emojis[setKey] || emojis['general'])];
+                const randomIndex = Math.floor(Math.random() * availableEmojis.length);
+                const emoji = availableEmojis[randomIndex];
+                availableEmojis.splice(randomIndex, 1); 
+                lineContent = `${lineContent} ${emoji}`;
+            }
+            return `*${lineContent}*`;
+        });
+        return formattedLines.join('\n');
+    }
+
+    function copyText() {
+        navigator.clipboard.writeText(document.getElementById('output').innerText);
+        const btn = document.querySelector('.btn-copy');
+        let old = btn.innerText; btn.innerText = "הועתק! 👍"; setTimeout(() => btn.innerText = old, 1500);
+    }
+
+    function sendWhatsapp() {
+        let text = document.getElementById('output').innerText;
+        if(!text || text.includes("...")) return alert("קודם צור ברכה!");
+        window.open(`whatsapp://send?text=${encodeURIComponent(text)}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
