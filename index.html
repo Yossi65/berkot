@@ -280,7 +280,7 @@
                 <button class="sub-btn" onclick="selectSub('sister', this)">לאחות 👧</button>
                 <button class="sub-btn" onclick="selectSub('friend_male', this)">לחבר 🤜🤛</button>
                 <button class="sub-btn" onclick="selectSub('friend_female', this)">לחברה 👯‍♀️</button>
-                </div>
+            </div>
         </div>
     </div>
 
@@ -412,7 +412,7 @@
 
 <script>
     let generators = {};
-    let state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: 'long', gender: null, relation: null, useEmojis: true, senderGender: 'male' };
+    let state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: 'long', gender: null, relationKey: null, useEmojis: true, senderGender: 'male' };
 
     // --- רשימות כינויי החיבה החדשות ---
     const wifeSuffixes = [
@@ -434,6 +434,7 @@
         "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%94%D7%A6%D7%9C%D7%97%D7%94%20.json",
         "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%97%D7%91%D7%93.json",
         "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%97%D7%92.json",
+        // שים לב! כאן חשוב שהקובץ המעודכן עם המפתחות החדשים (mom, dad וכו') ייטען!
         "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%99%D7%95%D7%9D%20%D7%94%D7%95%D7%9C%D7%93%D7%AA%20.json",
         "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%9C%D7%90%D7%94%D7%91%D7%94.json",
         "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%9C%D7%99%D7%93%D7%94.json",
@@ -460,10 +461,9 @@
         }
         
         loadAllBlessings();
-        loadNameHistory(); // טעינת היסטוריית שמות
+        loadNameHistory(); 
     };
 
-    // --- ניהול היסטוריית שמות ---
     function loadNameHistory() {
         let history = JSON.parse(localStorage.getItem('nameHistory') || '[]');
         const datalist = document.getElementById('nameHistory');
@@ -481,10 +481,9 @@
         if(!history.includes(name)) {
             history.push(name);
             localStorage.setItem('nameHistory', JSON.stringify(history));
-            loadNameHistory(); // עדכון מיידי
+            loadNameHistory(); 
         }
     }
-    // ----------------------------
 
     async function loadAllBlessings() {
         const loadingStatus = document.getElementById('loadingStatus');
@@ -602,7 +601,7 @@
         let currentEmojiState = state.useEmojis;
         let currentSender = state.senderGender;
         let currentLength = state.length;
-        state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: currentLength, gender: null, relation: null, useEmojis: currentEmojiState, senderGender: currentSender };
+        state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: currentLength, gender: null, relationKey: null, useEmojis: currentEmojiState, senderGender: currentSender };
         
         document.getElementById('nameInput').value = "";
         document.getElementById('ageInput').value = "";
@@ -736,22 +735,46 @@
         parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
+        // --- התיקון הגדול: מיפוי בין כפתור לבין המפתח ב-JSON ---
         const relationsMap = {
-            man: ["אבא 👑", "אח 👊", "חבר 🍻", "בן זוגי 💑", "בעלי 💍"],
-            woman: ["אמא 👑", "אחות 🌸", "חברה 👯‍♀️", "בת זוגתי 💑", "אשתי 💍"],
-            boy: ["ילד ⚽", "בן 💙", "נכד 🧸", "חבר 🚲", "הילד שלי 👦"],
-            girl: ["ילדה 🎀", "בת 💖", "נכדה 🦄", "חברה 👭", "הילדה שלי 👧"]
+            man: [
+                { label: "אבא 👑", key: "dad" },
+                { label: "אח 👊", key: "brother" },
+                { label: "חבר 🍻", key: "friend_male" },
+                { label: "בן זוגי 💑", key: "partner_male" },
+                { label: "בעלי 💍", key: "husband" } // אם קיים במאגר
+            ],
+            woman: [
+                { label: "אמא 👑", key: "mom" },
+                { label: "אחות 🌸", key: "sister" },
+                { label: "חברה 👯‍♀️", key: "friend_female" },
+                { label: "בת זוגתי 💑", key: "partner_female" },
+                { label: "אשתי 💍", key: "wife" } // אם קיים במאגר
+            ],
+            boy: [
+                { label: "ילד ⚽", key: "boy" }, // כללי
+                { label: "בן 💙", key: "son" }, // הבן שלי
+                { label: "נכד 🧸", key: "boy" }, // אפשר להוסיף ספציפי אם יש
+                { label: "חבר 🚲", key: "boy" }
+            ],
+            girl: [
+                { label: "ילדה 🎀", key: "girl" }, // כללי
+                { label: "בת 💖", key: "daughter" }, // הבת שלי
+                { label: "נכדה 🦄", key: "girl" },
+                { label: "חברה 👭", key: "girl" }
+            ]
         };
         
         const grid = document.getElementById('relationsGrid');
         grid.innerHTML = '';
-        (relationsMap[gender] || []).forEach(rel => {
+        (relationsMap[gender] || []).forEach(relItem => {
             const b = document.createElement('button');
             b.className = 'sub-btn';
-            b.innerText = rel;
-            const pureRel = rel.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').trim();
+            b.innerText = relItem.label;
             b.onclick = (e) => {
-                state.relation = pureRel;
+                // שומרים את המפתח האנגלי (למשל 'mom', 'wife') בסטייט!
+                state.relationKey = relItem.key;
+                
                 grid.querySelectorAll('.sub-btn').forEach(x => x.classList.remove('active'));
                 e.target.classList.add('active');
             };
@@ -828,8 +851,15 @@
              key = state.subCategory;
         }
         else if (state.category === 'birthday') {
-             const bdKey = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female') ? 'birthday_female' : 'birthday_male';
-             key = bdKey;
+             // --- תיקון לוגיקה לימי הולדת ---
+             if (state.relationKey) {
+                 // אם נבחרה קטגוריה ספציפית (אמא, אשתי וכו')
+                 key = `birthday_${state.relationKey}`;
+             } else {
+                 // ברירת מחדל כללית אם לא נבחר יחס ספציפי
+                 const bdKey = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female') ? 'birthday_female' : 'birthday_male';
+                 key = bdKey;
+             }
         } 
         else if (['success', 'recovery', 'thank_you', 'love'].includes(state.category)) {
              if (!state.gender) { alert("נא לבחור מין..."); return; }
@@ -841,10 +871,16 @@
 
         let gen = generators[key];
         
+        // נסיונות גיבוי למקרה שלא נמצא מפתח מדויק
         if (!gen) {
             if (state.category === 'shabbat') gen = generators[`${state.shabbatTime}_general`];
             else if (state.category === 'holiday') gen = generators[`${state.holidayName}_general`] || generators[`${state.holidayName}`];
             else if (state.category === 'chabad') gen = generators[state.chabadDate];
+            else if (state.category === 'birthday') {
+                // אם אין ברכה ספציפית (למשל לנכד), נלך לכללי
+                 const fallbackKey = (state.gender === 'woman' || state.gender === 'girl') ? 'birthday_female' : 'birthday_male';
+                 gen = generators[fallbackKey];
+            }
         }
         
         if (!gen) { 
@@ -859,20 +895,11 @@
         if (name) {
             let suffix = "היקר/ה";
             
-            // בדיקה האם זו ברכה לאישה (או קטגוריית אהבה לאישה)
-            const isWifeContext = (state.subCategory === 'wife' || state.holidayTarget === 'wife' || (state.category === 'love' && state.gender === 'female'));
-            
-            // בדיקה האם זו ברכה לבעל (או קטגוריית אהבה לגבר)
-            const isHusbandContext = (state.subCategory === 'husband' || state.holidayTarget === 'husband' || (state.category === 'love' && state.gender === 'male'));
+            const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife');
+            const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband');
 
-            // בדיקות מגדר כלליות
-            const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || 
-                              state.holidayTarget === 'sister' || state.holidayTarget === 'friend_female' ||
-                              state.subCategory === 'sister' || state.subCategory === 'friend_female');
-                              
-            const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' ||
-                            state.holidayTarget === 'brother' || state.holidayTarget === 'friend_male' ||
-                            state.subCategory === 'brother' || state.subCategory === 'friend_male');
+            const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female');
+            const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male');
 
             if (isWifeContext) {
                 suffix = wifeSuffixes[Math.floor(Math.random() * wifeSuffixes.length)];
