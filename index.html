@@ -121,7 +121,7 @@
         .generate-btn:active { transform: scale(0.98); }
         .generate-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
         
-        /* --- עיצוב אזור הפלט החדש (שורות נפרדות) --- */
+        /* --- עיצוב אזור הפלט (שורות נפרדות) --- */
         .output-container { 
             background: #fff9c4; 
             padding: 15px; 
@@ -135,7 +135,7 @@
 
         .line-item {
             display: flex;
-            align-items: center; /* מירכז אנכי */
+            align-items: center;
             margin-bottom: 8px;
             gap: 10px;
             animation: fadeIn 0.3s ease;
@@ -175,10 +175,7 @@
             opacity: 0.7;
         }
         
-        .delete-line-btn:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
+        .delete-line-btn:hover { opacity: 1; transform: scale(1.1); }
 
         /* ------------------------------------------- */
         
@@ -283,8 +280,7 @@
                 <button class="sub-btn" onclick="selectSub('sister', this)">לאחות 👧</button>
                 <button class="sub-btn" onclick="selectSub('friend_male', this)">לחבר 🤜🤛</button>
                 <button class="sub-btn" onclick="selectSub('friend_female', this)">לחברה 👯‍♀️</button>
-                <button class="sub-btn" onclick="selectSub('group', this)">לקבוצה 👨‍👩‍👧‍👦</button>
-            </div>
+                </div>
         </div>
     </div>
 
@@ -376,8 +372,8 @@
     <div id="genderSection" class="dynamic-section">
          <h3>למי הברכה?</h3>
          <div class="sub-grid">
-             <button class="sub-btn" onclick="selectGenderGeneral('male', this)">גבר / בן 👨</button>
-             <button class="sub-btn" onclick="selectGenderGeneral('female', this)">אישה / בת 👩</button>
+             <button class="sub-btn" onclick="selectGenderGeneral('male', this)">לבעלי / בן זוגי 🤵</button>
+             <button class="sub-btn" onclick="selectGenderGeneral('female', this)">לאשתי / בת זוגתי 👰</button>
          </div>
     </div>
 
@@ -396,7 +392,8 @@
     
     <div id="inputSection" class="dynamic-section" style="display:none;">
         <div class="input-row">
-            <input type="text" id="nameInput" placeholder="שם (אופציונלי)">
+            <input type="text" id="nameInput" placeholder="שם (אופציונלי)" list="nameHistory">
+            <datalist id="nameHistory"></datalist>
             <input type="number" id="ageInput" placeholder="גיל (אופציונלי)">
         </div>
     </div>
@@ -416,6 +413,20 @@
 <script>
     let generators = {};
     let state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: 'long', gender: null, relation: null, useEmojis: true, senderGender: 'male' };
+
+    // --- רשימות כינויי החיבה החדשות ---
+    const wifeSuffixes = [
+        "המושלמת", "היפה שלי", "אהבת חיי", "מלכתי", "האחת והיחידה", 
+        "החצי השני שלי", "הנסיכה שלי", "אוצר שלי", "המהממת", 
+        "אשת חיל שלי", "האור של הבית", "הלב שלי", "כל עולמי", "היקרה מכל"
+    ];
+
+    const husbandSuffixes = [
+        "המושלם", "הגבר שלי", "אהבת חיי", "מלך העולם", "האחד והיחיד",
+        "החצי השני שלי", "הנסיך שלי", "אלוף שלי", "הסלע שלי",
+        "האוצר שלי", "היקר באדם", "הלב שלי", "עטרת ראשי", "האבא הכי טוב בעולם"
+    ];
+    // -----------------------------------
 
     const jsonFiles = [
         "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/(%D7%91%D7%95%D7%A7%D7%A8%2C%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D%2C%20%D7%A2%D7%A8%D7%91).json",
@@ -449,7 +460,31 @@
         }
         
         loadAllBlessings();
+        loadNameHistory(); // טעינת היסטוריית שמות
     };
+
+    // --- ניהול היסטוריית שמות ---
+    function loadNameHistory() {
+        let history = JSON.parse(localStorage.getItem('nameHistory') || '[]');
+        const datalist = document.getElementById('nameHistory');
+        datalist.innerHTML = '';
+        history.forEach(n => {
+            const option = document.createElement('option');
+            option.value = n;
+            datalist.appendChild(option);
+        });
+    }
+
+    function saveNameHistory(name) {
+        if(!name) return;
+        let history = JSON.parse(localStorage.getItem('nameHistory') || '[]');
+        if(!history.includes(name)) {
+            history.push(name);
+            localStorage.setItem('nameHistory', JSON.stringify(history));
+            loadNameHistory(); // עדכון מיידי
+        }
+    }
+    // ----------------------------
 
     async function loadAllBlessings() {
         const loadingStatus = document.getElementById('loadingStatus');
@@ -702,8 +737,8 @@
         btn.classList.add('active');
 
         const relationsMap = {
-            man: ["אבא 👑", "אח 👊", "חבר 🍻", "בוס 💼", "בן זוג 💑", "בעלי 💍"],
-            woman: ["אמא 👑", "אחות 🌸", "חברה 👯‍♀️", "בוסית 💼", "בת זוג 💑", "אשתי 💍"],
+            man: ["אבא 👑", "אח 👊", "חבר 🍻", "בן זוגי 💑", "בעלי 💍"],
+            woman: ["אמא 👑", "אחות 🌸", "חברה 👯‍♀️", "בת זוגתי 💑", "אשתי 💍"],
             boy: ["ילד ⚽", "בן 💙", "נכד 🧸", "חבר 🚲", "הילד שלי 👦"],
             girl: ["ילדה 🎀", "בת 💖", "נכדה 🦄", "חברה 👭", "הילדה שלי 👧"]
         };
@@ -819,19 +854,34 @@
 
         let parts = [];
         const name = document.getElementById('nameInput').value.trim();
-        
+        saveNameHistory(name); // שמירת השם בהיסטוריה
+
         if (name) {
             let suffix = "היקר/ה";
-            const isFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || 
-                              state.holidayTarget === 'wife' || state.holidayTarget === 'sister' || state.holidayTarget === 'friend_female' ||
-                              state.subCategory === 'wife' || state.subCategory === 'sister' || state.subCategory === 'friend_female');
-                              
-            const isMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' ||
-                            state.holidayTarget === 'husband' || state.holidayTarget === 'brother' || state.holidayTarget === 'friend_male' ||
-                            state.subCategory === 'husband' || state.subCategory === 'brother' || state.subCategory === 'friend_male');
+            
+            // בדיקה האם זו ברכה לאישה (או קטגוריית אהבה לאישה)
+            const isWifeContext = (state.subCategory === 'wife' || state.holidayTarget === 'wife' || (state.category === 'love' && state.gender === 'female'));
+            
+            // בדיקה האם זו ברכה לבעל (או קטגוריית אהבה לגבר)
+            const isHusbandContext = (state.subCategory === 'husband' || state.holidayTarget === 'husband' || (state.category === 'love' && state.gender === 'male'));
 
-            if (isFemale) suffix = "היקרה";
-            else if (isMale) suffix = "היקר";
+            // בדיקות מגדר כלליות
+            const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || 
+                              state.holidayTarget === 'sister' || state.holidayTarget === 'friend_female' ||
+                              state.subCategory === 'sister' || state.subCategory === 'friend_female');
+                              
+            const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' ||
+                            state.holidayTarget === 'brother' || state.holidayTarget === 'friend_male' ||
+                            state.subCategory === 'brother' || state.subCategory === 'friend_male');
+
+            if (isWifeContext) {
+                suffix = wifeSuffixes[Math.floor(Math.random() * wifeSuffixes.length)];
+            } else if (isHusbandContext) {
+                suffix = husbandSuffixes[Math.floor(Math.random() * husbandSuffixes.length)];
+            } else {
+                if (isGenericFemale) suffix = "היקרה";
+                else if (isGenericMale) suffix = "היקר";
+            }
             
             parts.push(`${name} ${suffix},`);
         }
@@ -858,7 +908,6 @@
 
         if (state.category === 'chabad' && !emojis[emojiSet]) emojiSet = 'chabad';
 
-        // כאן הקסם קורה - במקום טקסט רגיל, שולחים לפונקציה החדשה
         renderLinesWithEmojis(adjustedParts, emojiSet);
     }
 
@@ -867,7 +916,7 @@
         let availableEmojis = [...(emojis[setKey] || emojis['general'])]; 
         
         const container = document.getElementById('output');
-        container.innerHTML = ''; // ניקוי
+        container.innerHTML = ''; 
 
         cleanLines.forEach(line => {
             let lineContent = line.trim();
@@ -879,7 +928,6 @@
                 lineContent = `${lineContent} ${emoji}`;
             }
             
-            // הוספת השורה למסך עם כפתור מחיקה
             const row = document.createElement('div');
             row.className = 'line-item';
             row.innerHTML = `
@@ -891,7 +939,6 @@
     }
 
     function getVisibleText() {
-        // פונקציה שאוספת רק את השורות שקיימות כרגע על המסך
         const rows = document.querySelectorAll('.line-text');
         return Array.from(rows).map(r => r.innerText.trim()).join('\n');
     }
