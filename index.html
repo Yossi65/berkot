@@ -10,9 +10,9 @@
             --primary: #4a90e2; 
             --primary-dark: #357abd; 
             --whatsapp: #25D366; 
-            --bg: #e3f2fd;        /* רקע חיצוני */
-            --card: #f0f8ff;      /* רקע הכרטיס עצמו */
-            --controls-bg: #e1f5fe; /* רקע אזור הכפתורים העליון */
+            --bg: #e3f2fd;        
+            --card: #f0f8ff;      
+            --controls-bg: #e1f5fe; 
             --text: #1c1e21; 
             --border-radius: 16px; 
         }
@@ -66,7 +66,6 @@
         }
         .back-btn:hover { background: #d0d2d6; }
 
-        /* אזור שליטה עליון - צבע משתנה */
         .controls-area { 
             display: flex; 
             flex-direction: column; 
@@ -77,14 +76,13 @@
             transition: background-color 0.4s ease;
         }
 
-        /* --- התיקון לכפתורים העליונים --- */
         .top-row { 
             display: flex; 
-            justify-content: center; /* ממקם הכל במרכז במקום לפזר לקצוות */
-            align-items: center;     /* מיושר לאמצע הגובה */
+            justify-content: center; 
+            align-items: center;     
             width: 100%; 
-            gap: 12px;               /* רווח קצת יותר גדול */
-            flex-wrap: wrap;         /* מאפשר שבירת שורה אם המסך צר מדי */
+            gap: 12px;               
+            flex-wrap: wrap;         
         }
         
         .sender-toggle { display: flex; background: rgba(255,255,255,0.5); border-radius: 20px; padding: 3px; height: fit-content; }
@@ -123,7 +121,66 @@
         .generate-btn:active { transform: scale(0.98); }
         .generate-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
         
-        .output-container { background: #fff9c4; padding: 20px; border-radius: 12px; min-height: 80px; border: 1px dashed #fbc02d; font-size: 1.1rem; line-height: 1.5; white-space: pre-wrap; margin-top: 15px; }
+        /* --- עיצוב אזור הפלט החדש (שורות נפרדות) --- */
+        .output-container { 
+            background: #fff9c4; 
+            padding: 15px; 
+            border-radius: 12px; 
+            min-height: 80px; 
+            border: 1px dashed #fbc02d; 
+            font-size: 1.1rem; 
+            line-height: 1.5; 
+            margin-top: 15px; 
+        }
+
+        .line-item {
+            display: flex;
+            align-items: center; /* מירכז אנכי */
+            margin-bottom: 8px;
+            gap: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .line-text {
+            flex: 1;
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            cursor: text;
+        }
+        
+        .line-text:focus {
+            background: white;
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .delete-line-btn {
+            background: #ef5350;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            opacity: 0.7;
+        }
+        
+        .delete-line-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* ------------------------------------------- */
         
         .actions-bar { display: flex; gap: 10px; margin-top: 10px; }
         .action-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -134,6 +191,8 @@
         .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loading-text { font-size: 1.1rem; color: #555; font-weight: bold; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -344,7 +403,9 @@
 
     <button class="generate-btn" id="genBtn" onclick="generateBlessing()" style="display:none;">🎁 צור ברכה</button>
     
-    <div class="output-container" id="output">הברכה תופיע כאן...</div>
+    <div class="output-container" id="output">
+        <div style="opacity:0.5; text-align:center; padding-top:10px;">הברכה תופיע כאן...</div>
+    </div>
 
     <div class="actions-bar">
         <button class="action-btn btn-copy" onclick="copyText()">📄 העתק</button>
@@ -372,7 +433,7 @@
 
     window.onload = function() {
         const savedSender = localStorage.getItem('senderGender') || 'male';
-        setSenderGender(savedSender); // זה גם יעדכן את הצבעים
+        setSenderGender(savedSender); 
 
         const savedEmojiState = localStorage.getItem('useEmojis');
         if (savedEmojiState !== null) {
@@ -422,7 +483,6 @@
         
         if (state.senderGender === 'male') {
             document.getElementById('senderMale').classList.add('active');
-            // עדכון ערכת נושא לגבר (כחול/תכלת)
             document.documentElement.style.setProperty('--primary', '#4a90e2');
             document.documentElement.style.setProperty('--primary-dark', '#357abd');
             document.documentElement.style.setProperty('--bg', '#b3e5fc'); 
@@ -430,7 +490,6 @@
             document.documentElement.style.setProperty('--controls-bg', '#e1f5fe');
         } else {
             document.getElementById('senderFemale').classList.add('active');
-            // עדכון ערכת נושא לאישה (ורוד)
             document.documentElement.style.setProperty('--primary', '#e91e63'); 
             document.documentElement.style.setProperty('--primary-dark', '#c2185b'); 
             document.documentElement.style.setProperty('--bg', '#f8bbd0'); 
@@ -512,7 +571,7 @@
         
         document.getElementById('nameInput').value = "";
         document.getElementById('ageInput').value = "";
-        document.getElementById('output').innerText = 'הברכה תופיע כאן...';
+        document.getElementById('output').innerHTML = '<div style="opacity:0.5; text-align:center; padding-top:10px;">הברכה תופיע כאן...</div>';
         document.getElementById('mainGrid').style.display = 'grid';
         
         document.getElementById('genBtn').style.display = 'none';
@@ -523,7 +582,6 @@
         document.getElementById('holidayTargetSelector').style.display = 'none';
         document.getElementById('timeTargetSelector').style.display = 'none';
         
-        // וידוא שהמצב הגרפי של השולח נשמר
         updateSenderUI();
     }
 
@@ -711,27 +769,27 @@
         let key = "";
 
         if (state.category === 'morning_evening') {
-             if (!state.timeOfDay || !state.subCategory) { output.innerText = "נא לבחור זמן ויעד..."; return; }
+             if (!state.timeOfDay || !state.subCategory) { alert("נא לבחור זמן ויעד..."); return; }
              key = `${state.timeOfDay}_${state.subCategory}`;
         }
         else if (state.category === 'shabbat') {
-            if (!state.shabbatTime || !state.subCategory) { output.innerText = "נא לבחור זמן ויעד..."; return; }
+            if (!state.shabbatTime || !state.subCategory) { alert("נא לבחור זמן ויעד..."); return; }
             key = `${state.shabbatTime}_${state.subCategory}`;
         }
         else if (state.category === 'holiday') {
-             if (!state.holidayName || !state.holidayTarget) { output.innerText = "נא לבחור חג ויעד..."; return; }
+             if (!state.holidayName || !state.holidayTarget) { alert("נא לבחור חג ויעד..."); return; }
              key = `${state.holidayName}_${state.holidayTarget}`;
         }
         else if (state.category === 'chabad') {
-             if (!state.chabadDate || !state.chabadTarget) { output.innerText = "נא לבחור תאריך ויעד..."; return; }
+             if (!state.chabadDate || !state.chabadTarget) { alert("נא לבחור תאריך ויעד..."); return; }
              key = `${state.chabadDate}_${state.chabadTarget}`;
         }
         else if (state.category === 'event') {
-             if (!state.subCategory) { output.innerText = "נא לבחור..."; return; }
+             if (!state.subCategory) { alert("נא לבחור..."); return; }
              key = state.subCategory;
         }
         else if (state.category === 'birth') {
-             if (!state.subCategory) { output.innerText = "נא לבחור..."; return; }
+             if (!state.subCategory) { alert("נא לבחור..."); return; }
              key = state.subCategory;
         }
         else if (state.category === 'birthday') {
@@ -739,7 +797,7 @@
              key = bdKey;
         } 
         else if (['success', 'recovery', 'thank_you', 'love'].includes(state.category)) {
-             if (!state.gender) { output.innerText = "נא לבחור מין..."; return; }
+             if (!state.gender) { alert("נא לבחור מין..."); return; }
              key = `${state.category}_${state.gender}`;
         }
         else {
@@ -755,7 +813,7 @@
         }
         
         if (!gen) { 
-            output.innerText = `לא נמצאו ברכות לקטגוריה: ${key}. ייתכן שהמאגר חסר.`; 
+            output.innerHTML = `<div style="color:red; text-align:center">לא נמצאו ברכות לקטגוריה: ${key}</div>`; 
             return; 
         }
 
@@ -782,7 +840,10 @@
         const bodyCount = state.length === 'long' ? 2 : 1;
         const bodies = getDistinctRandom(gen.bodies, bodyCount);
         parts.push(...bodies);
-        parts.push(getDistinctRandom(gen.closings, 1)[0]);
+
+        if (state.category !== 'morning_evening') {
+            parts.push(getDistinctRandom(gen.closings, 1)[0]);
+        }
 
         let adjustedParts = parts.map(part => adjustTextForSender(part));
 
@@ -797,14 +858,18 @@
 
         if (state.category === 'chabad' && !emojis[emojiSet]) emojiSet = 'chabad';
 
-        output.innerText = formatTextWithEmojis(adjustedParts, emojiSet);
+        // כאן הקסם קורה - במקום טקסט רגיל, שולחים לפונקציה החדשה
+        renderLinesWithEmojis(adjustedParts, emojiSet);
     }
 
-    function formatTextWithEmojis(linesArray, setKey) {
+    function renderLinesWithEmojis(linesArray, setKey) {
         const cleanLines = linesArray.filter(l => l && l.trim() !== "");
         let availableEmojis = [...(emojis[setKey] || emojis['general'])]; 
         
-        const formattedLines = cleanLines.map(line => {
+        const container = document.getElementById('output');
+        container.innerHTML = ''; // ניקוי
+
+        cleanLines.forEach(line => {
             let lineContent = line.trim();
             if (state.useEmojis) {
                 if (availableEmojis.length === 0) availableEmojis = [...(emojis[setKey] || emojis['general'])];
@@ -813,20 +878,36 @@
                 availableEmojis.splice(randomIndex, 1); 
                 lineContent = `${lineContent} ${emoji}`;
             }
-            return `*${lineContent}*`;
+            
+            // הוספת השורה למסך עם כפתור מחיקה
+            const row = document.createElement('div');
+            row.className = 'line-item';
+            row.innerHTML = `
+                <button class="delete-line-btn" onclick="this.parentElement.remove()" title="מחק שורה זו">✕</button>
+                <div class="line-text" contenteditable="true">*${lineContent}*</div>
+            `;
+            container.appendChild(row);
         });
-        return formattedLines.join('\n');
+    }
+
+    function getVisibleText() {
+        // פונקציה שאוספת רק את השורות שקיימות כרגע על המסך
+        const rows = document.querySelectorAll('.line-text');
+        return Array.from(rows).map(r => r.innerText.trim()).join('\n');
     }
 
     function copyText() {
-        navigator.clipboard.writeText(document.getElementById('output').innerText);
+        const textToCopy = getVisibleText();
+        if(!textToCopy) return;
+        
+        navigator.clipboard.writeText(textToCopy);
         const btn = document.querySelector('.btn-copy');
         let old = btn.innerText; btn.innerText = "הועתק! 👍"; setTimeout(() => btn.innerText = old, 1500);
     }
 
     function sendWhatsapp() {
-        let text = document.getElementById('output').innerText;
-        if(!text || text.includes("...")) return alert("קודם צור ברכה!");
+        let text = getVisibleText();
+        if(!text) return alert("קודם צור ברכה!");
         window.open(`whatsapp://send?text=${encodeURIComponent(text)}`, '_blank');
     }
 </script>
