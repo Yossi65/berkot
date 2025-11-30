@@ -5,17 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>מערכת הברכות החכמה</title>
     <style>
-        :root { --primary: #4a90e2; --primary-dark: #357abd; --whatsapp: #25D366; --bg: #f0f2f5; --card: #ffffff; --text: #1c1e21; --border-radius: 16px; }
+        /* הגדרת משתנים - ברירת מחדל */
+        :root { 
+            --primary: #4a90e2; 
+            --primary-dark: #357abd; 
+            --whatsapp: #25D366; 
+            --bg: #e3f2fd;        /* רקע חיצוני */
+            --card: #f0f8ff;      /* רקע הכרטיס עצמו */
+            --controls-bg: #e1f5fe; /* רקע אזור הכפתורים העליון */
+            --text: #1c1e21; 
+            --border-radius: 16px; 
+        }
+        
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 10px; display: flex; justify-content: center; min-height: 100vh; padding-bottom: 80px; }
-        .container { width: 100%; max-width: 600px; background: var(--card); padding: 20px; border-radius: var(--border-radius); box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 15px; position: relative; min-height: 600px; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 10px; 
+            display: flex; 
+            justify-content: center; 
+            min-height: 100vh; 
+            padding-bottom: 80px; 
+            transition: background-color 0.4s ease; 
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 600px; 
+            background: var(--card); 
+            padding: 20px; 
+            border-radius: var(--border-radius); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            position: relative; 
+            min-height: 600px; 
+            transition: background-color 0.4s ease;
+        }
+        
         h1 { text-align: center; font-size: 1.5rem; margin: 10px 0; color: var(--primary-dark); }
         
-        .back-btn { background: #e4e6eb; color: #333; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; cursor: pointer; align-self: flex-start; display: none; margin-bottom: 10px; }
-        .controls-area { display: flex; flex-direction: column; gap: 10px; background: #f7f9fc; padding: 15px; border-radius: 12px; }
-        .top-row { display: flex; justify-content: space-between; align-items: flex-end; width: 100%; gap: 5px; }
+        /* כפתור חזרה */
+        .back-btn { 
+            background: #e4e6eb; 
+            color: #333; 
+            border: none; 
+            padding: 10px 15px; 
+            border-radius: 12px; 
+            font-size: 0.95rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            width: 100%; 
+            display: block; 
+            margin-bottom: 5px; 
+            transition: 0.2s;
+        }
+        .back-btn:hover { background: #d0d2d6; }
+
+        /* אזור שליטה עליון - צבע משתנה */
+        .controls-area { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            background: var(--controls-bg); 
+            padding: 15px; 
+            border-radius: 12px; 
+            transition: background-color 0.4s ease;
+        }
+
+        /* --- התיקון לכפתורים העליונים --- */
+        .top-row { 
+            display: flex; 
+            justify-content: center; /* ממקם הכל במרכז במקום לפזר לקצוות */
+            align-items: center;     /* מיושר לאמצע הגובה */
+            width: 100%; 
+            gap: 12px;               /* רווח קצת יותר גדול */
+            flex-wrap: wrap;         /* מאפשר שבירת שורה אם המסך צר מדי */
+        }
         
-        .sender-toggle { display: flex; background: #e1e4e8; border-radius: 20px; padding: 3px; height: fit-content; }
+        .sender-toggle { display: flex; background: rgba(255,255,255,0.5); border-radius: 20px; padding: 3px; height: fit-content; }
         .sender-btn { border: none; background: transparent; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
         .sender-btn.active { background: white; shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold; color: var(--primary-dark); }
 
@@ -24,7 +96,7 @@
         
         .length-wrapper { display: flex; flex-direction: column; align-items: center; }
         .length-label-title { font-size: 0.8rem; font-weight: bold; color: #666; margin-bottom: 3px; }
-        .length-selector { display: flex; background: #e1e4e8; border-radius: 20px; padding: 3px; }
+        .length-selector { display: flex; background: rgba(255,255,255,0.5); border-radius: 20px; padding: 3px; }
         .length-selector label { flex: 1; text-align: center; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
         .length-selector input { display: none; }
         .length-selector input:checked + span { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); color: var(--primary); font-weight: bold; display: block; border-radius: 16px; padding: 4px 8px; }
@@ -47,7 +119,7 @@
         .input-row { display: flex; gap: 10px; }
         input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
         
-        .generate-btn { background: linear-gradient(135deg, #4a90e2, #2c5282); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3); margin-top: 10px; }
+        .generate-btn { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 10px; }
         .generate-btn:active { transform: scale(0.98); }
         .generate-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
         
@@ -58,9 +130,8 @@
         .btn-copy { background: #e4e6eb; color: #1c1e21; }
         .btn-whatsapp { background: var(--whatsapp); color: white; }
         
-        /* Loading overlay */
         #loadingOverlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.95); z-index: 100; display: flex; justify-content: center; align-items: center; flex-direction: column; border-radius: 16px; }
-        .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #4a90e2; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loading-text { font-size: 1.1rem; color: #555; font-weight: bold; }
     </style>
@@ -74,7 +145,6 @@
         <span id="loadingStatus" style="font-size:0.9rem; color:#888; margin-top:5px;">מתחבר לשרת...</span>
     </div>
 
-    <button class="back-btn" id="backBtn" onclick="goBack()">🔙 חזרה לתפריט הראשי</button>
     <h1>מפעל הברכות 🚀</h1>
 
     <div class="controls-area">
@@ -97,6 +167,8 @@
             </button>
         </div>
     </div>
+
+    <button class="back-btn" id="backBtn" onclick="goBack()">🔙 חזרה לתפריט הראשי</button>
 
     <div class="grid-container" id="mainGrid">
         <button class="category-btn" style="background:#e0f7fa; border-color:#00bcd4;" onclick="selectCategory('morning_evening', this)">בוקר/ערב ☀️🌙</button>
@@ -284,7 +356,6 @@
     let generators = {};
     let state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: 'long', gender: null, relation: null, useEmojis: true, senderGender: 'male' };
 
-    // רשימת הקישורים לקבצי הברכות בגיטהאב
     const jsonFiles = [
         "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/(%D7%91%D7%95%D7%A7%D7%A8%2C%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D%2C%20%D7%A2%D7%A8%D7%91).json",
         "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%90%D7%99%D7%A8%D7%95%D7%A2.json",
@@ -300,21 +371,15 @@
     ];
 
     window.onload = function() {
-        // טעינת מגדר שולח שמור
-        const savedSender = localStorage.getItem('senderGender');
-        if (savedSender) {
-            state.senderGender = savedSender;
-        }
-        updateSenderUI();
+        const savedSender = localStorage.getItem('senderGender') || 'male';
+        setSenderGender(savedSender); // זה גם יעדכן את הצבעים
 
-        // טעינת מצב האימוג'י
         const savedEmojiState = localStorage.getItem('useEmojis');
         if (savedEmojiState !== null) {
             state.useEmojis = (savedEmojiState === 'true');
         }
         updateEmojiUI(); 
 
-        // טעינת אורך הברכה (קצרה/ארוכה)
         const savedLength = localStorage.getItem('blessingLength');
         if (savedLength) {
             state.length = savedLength;
@@ -325,7 +390,6 @@
         loadAllBlessings();
     };
 
-    // פונקציה לטעינת כל הברכות מהקישורים
     async function loadAllBlessings() {
         const loadingStatus = document.getElementById('loadingStatus');
         
@@ -355,10 +419,23 @@
     function updateSenderUI() {
         document.getElementById('senderMale').classList.remove('active');
         document.getElementById('senderFemale').classList.remove('active');
+        
         if (state.senderGender === 'male') {
             document.getElementById('senderMale').classList.add('active');
+            // עדכון ערכת נושא לגבר (כחול/תכלת)
+            document.documentElement.style.setProperty('--primary', '#4a90e2');
+            document.documentElement.style.setProperty('--primary-dark', '#357abd');
+            document.documentElement.style.setProperty('--bg', '#b3e5fc'); 
+            document.documentElement.style.setProperty('--card', '#f0f8ff'); 
+            document.documentElement.style.setProperty('--controls-bg', '#e1f5fe');
         } else {
             document.getElementById('senderFemale').classList.add('active');
+            // עדכון ערכת נושא לאישה (ורוד)
+            document.documentElement.style.setProperty('--primary', '#e91e63'); 
+            document.documentElement.style.setProperty('--primary-dark', '#c2185b'); 
+            document.documentElement.style.setProperty('--bg', '#f8bbd0'); 
+            document.documentElement.style.setProperty('--card', '#fff0f5'); 
+            document.documentElement.style.setProperty('--controls-bg', '#fce4ec');
         }
     }
 
@@ -437,7 +514,7 @@
         document.getElementById('ageInput').value = "";
         document.getElementById('output').innerText = 'הברכה תופיע כאן...';
         document.getElementById('mainGrid').style.display = 'grid';
-        document.getElementById('backBtn').style.display = 'none';
+        
         document.getElementById('genBtn').style.display = 'none';
         
         document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
@@ -445,12 +522,14 @@
         
         document.getElementById('holidayTargetSelector').style.display = 'none';
         document.getElementById('timeTargetSelector').style.display = 'none';
+        
+        // וידוא שהמצב הגרפי של השולח נשמר
+        updateSenderUI();
     }
 
     function selectCategory(cat, btn) {
         state.category = cat;
         document.getElementById('mainGrid').style.display = 'none';
-        document.getElementById('backBtn').style.display = 'block';
         document.getElementById('inputSection').style.display = 'block';
         
         if (cat === 'morning_evening') {
