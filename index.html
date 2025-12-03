@@ -1,1166 +1,1400 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>מערכת הברכות החכמה</title>
-    <style>
-        /* הגדרת משתנים - ברירת מחדל */
-        :root { 
-            --primary: #4a90e2; 
-            --primary-dark: #357abd; 
-            --whatsapp: #25D366; 
-            --bg: #e3f2fd;        
-            --card: #f0f8ff;      
-            --controls-bg: #e1f5fe; 
-            --text: #1c1e21; 
-            --border-radius: 16px; 
-        }
-        
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            margin: 0; 
-            padding: 10px; 
-            display: flex; 
-            justify-content: center; 
-            min-height: 100vh; 
-            padding-bottom: 80px; 
-            transition: background-color 0.4s ease; 
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>מערכת הברכות החכמה 3.0</title>
+<style>
+/* הגדרת משתנים - ברירת מחדל */
+:root {
+--primary: #4a90e2;
+--primary-dark: #357abd;
+--whatsapp: #25D366;
+--bg: #e3f2fd;
+--card: #f0f8ff;
+--controls-bg: #e1f5fe;
+--text: #1c1e21;
+--border-radius: 16px;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+background-color: var(--bg);
+color: var(--text);
+margin: 0;
+padding: 10px;
+display: flex;
+justify-content: center;
+min-height: 100vh;
+padding-bottom: 80px;
+transition: background-color 0.4s ease;
+}
 
-        .container { 
-            width: 100%; 
-            max-width: 600px; 
-            background: var(--card); 
-            padding: 20px; 
-            border-radius: var(--border-radius); 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            position: relative; 
-            min-height: 600px; 
-            transition: background-color 0.4s ease;
-        }
-        
-        /* כותרת וכפתור הגדרות */
-        .header-row { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
-        h1 { font-size: 1.5rem; margin: 0; color: var(--primary-dark); flex-grow: 1; text-align: center; }
-        .settings-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 5px; color: #555; transition: transform 0.3s; }
-        .settings-btn:hover { transform: rotate(45deg); color: var(--primary); }
-        
-        /* כפתור חזרה */
-        .back-btn { 
-            background: #e4e6eb; 
-            color: #333; 
-            border: none; 
-            padding: 10px 15px; 
-            border-radius: 12px; 
-            font-size: 0.95rem; 
-            font-weight: bold; 
-            cursor: pointer; 
-            width: 100%; 
-            display: block; 
-            margin-bottom: 5px; 
-            transition: 0.2s;
-        }
-        .back-btn:hover { background: #d0d2d6; }
+.container {
+width: 100%;
+max-width: 600px;
+background: var(--card);
+padding: 20px;
+border-radius: var(--border-radius);
+box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+display: flex;
+flex-direction: column;
+gap: 15px;
+position: relative;
+min-height: 600px;
+transition: background-color 0.4s ease;
+}
+/* כותרת וכפתור הגדרות */
+.header-row { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
+h1 { font-size: 1.5rem; margin: 0; color: var(--primary-dark); flex-grow: 1; text-align: center; }
+.settings-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 5px; color: #555; transition: transform 0.3s; }
+.settings-btn:hover { transform: rotate(45deg); color: var(--primary); }
+/* כפתור חזרה */
+.back-btn {
+background: #e4e6eb;
+color: #333;
+border: none;
+padding: 10px 15px;
+border-radius: 12px;
+font-size: 0.95rem;
+font-weight: bold;
+cursor: pointer;
+width: 100%;
+display: block;
+margin-bottom: 5px;
+transition: 0.2s;
+}
+.back-btn:hover { background: #d0d2d6; }
 
-        .controls-area { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            background: var(--controls-bg); 
-            padding: 15px; 
-            border-radius: 12px; 
-            transition: background-color 0.4s ease;
-        }
+.controls-area {
+display: flex;
+flex-direction: column;
+gap: 10px;
+background: var(--controls-bg);
+padding: 15px;
+border-radius: 12px;
+transition: background-color 0.4s ease;
+}
 
-        .top-row { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;     
-            width: 100%; 
-            gap: 12px;               
-            flex-wrap: wrap;         
-        }
-        
-        .sender-toggle { display: flex; background: rgba(255,255,255,0.5); border-radius: 20px; padding: 3px; height: fit-content; }
-        .sender-btn { border: none; background: transparent; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-        .sender-btn.active { background: white; shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold; color: var(--primary-dark); }
+.top-row {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+gap: 12px;
+flex-wrap: wrap;
+}
+.sender-toggle { display: flex; background: rgba(255,255,255,0.5); border-radius: 20px; padding: 3px; height: fit-content; }
+.sender-btn { border: none; background: transparent; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+.sender-btn.active { background: white; shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold; color: var(--primary-dark); }
 
-        .emoji-btn { background: white; border: 2px solid #ddd; border-radius: 20px; padding: 6px 12px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; transition: all 0.2s; color: #555; font-size: 0.9rem; height: fit-content; }
-        .emoji-btn.active { background: #ffeb3b; border-color: #fbc02d; color: #333; }
-        
-        .length-wrapper { display: flex; flex-direction: column; align-items: center; }
-        .length-label-title { font-size: 0.8rem; font-weight: bold; color: #666; margin-bottom: 3px; }
-        .length-selector { display: flex; background: rgba(255,255,255,0.5); border-radius: 20px; padding: 3px; }
-        .length-selector label { flex: 1; text-align: center; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-        .length-selector input { display: none; }
-        .length-selector input:checked + span { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); color: var(--primary); font-weight: bold; display: block; border-radius: 16px; padding: 4px 8px; }
-        .length-selector span { display: block; }
-        
-        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; transition: all 0.3s ease; }
-        @media (min-width: 600px) { .grid-container { grid-template-columns: repeat(5, 1fr); } }
-        
-        .category-btn { background: white; border: 1px solid #e0e0e0; padding: 15px 5px; border-radius: 12px; font-size: 1rem; cursor: pointer; font-weight: 500; color: #444; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s; }
-        .category-btn:hover { transform: translateY(-2px); border-color: var(--primary); }
-        .category-btn.active { background-color: var(--primary); color: white; border-color: var(--primary); }
+.emoji-btn { background: white; border: 2px solid #ddd; border-radius: 20px; padding: 6px 12px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; transition: all 0.2s; color: #555; font-size: 0.9rem; height: fit-content; }
+.emoji-btn.active { background: #ffeb3b; border-color: #fbc02d; color: #333; }
+.length-wrapper { display: flex; flex-direction: column; align-items: center; }
+.length-label-title { font-size: 0.8rem; font-weight: bold; color: #666; margin-bottom: 3px; }
+.length-selector { display: flex; background: rgba(255,255,255,0.5); border-radius: 20px; padding: 3px; }
+.length-selector label { flex: 1; text-align: center; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+.length-selector input { display: none; }
+.length-selector input:checked + span { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); color: var(--primary); font-weight: bold; display: block; border-radius: 16px; padding: 4px 8px; }
+.length-selector span { display: block; }
+.grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; transition: all 0.3s ease; }
+@media (min-width: 600px) { .grid-container { grid-template-columns: repeat(5, 1fr); } }
+.category-btn { background: white; border: 1px solid #e0e0e0; padding: 15px 5px; border-radius: 12px; font-size: 1rem; cursor: pointer; font-weight: 500; color: #444; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s; }
+.category-btn:hover { transform: translateY(-2px); border-color: var(--primary); }
+.category-btn.active { background-color: var(--primary); color: white; border-color: var(--primary); }
 
-        .dynamic-section { background: #f8f9fa; padding: 15px; border-radius: 12px; display: none; border: 1px solid #eee; animation: fadeIn 0.3s ease; }
-        .sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .holidays-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
-        
-        .sub-btn { background: white; border: 1px solid #ccc; padding: 12px; border-radius: 10px; font-size: 0.95rem; cursor: pointer; transition: 0.2s; }
-        .sub-btn.active { background: var(--primary-dark); color: white; border-color: var(--primary-dark); font-weight: bold; }
+.dynamic-section { background: #f8f9fa; padding: 15px; border-radius: 12px; display: none; border: 1px solid #eee; animation: fadeIn 0.3s ease; }
+.sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+.holidays-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+.sub-btn { background: white; border: 1px solid #ccc; padding: 12px; border-radius: 10px; font-size: 0.95rem; cursor: pointer; transition: 0.2s; }
+.sub-btn.active { background: var(--primary-dark); color: white; border-color: var(--primary-dark); font-weight: bold; }
 
-        .input-row { display: flex; gap: 10px; }
-        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
-        
-        .generate-btn { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 10px; }
-        .generate-btn:active { transform: scale(0.98); }
-        .generate-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
-        
-        /* --- עיצוב אזור הפלט (שורות נפרדות) --- */
-        .output-container { 
-            background: #fff9c4; 
-            padding: 15px; 
-            border-radius: 12px; 
-            min-height: 80px; 
-            border: 1px dashed #fbc02d; 
-            font-size: 1.1rem; 
-            line-height: 1.5; 
-            margin-top: 15px; 
-        }
+/* כותרות בתוך הקטגוריות */
+.section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary-dark); margin-bottom: 10px; text-align: center; width: 100%; display:block;}
 
-        .line-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            gap: 10px;
-            animation: fadeIn 0.3s ease;
-        }
+.input-row { display: flex; gap: 10px; }
+input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+.generate-btn { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 10px; }
+.generate-btn:active { transform: scale(0.98); }
+.generate-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
+/* --- עיצוב אזור הפלט (שורות נפרדות) --- */
+.output-container {
+background: #fff9c4;
+padding: 15px;
+border-radius: 12px;
+min-height: 80px;
+border: 1px dashed #fbc02d;
+font-size: 1.1rem;
+line-height: 1.5;
+margin-top: 15px;
+}
 
-        .line-text {
-            flex: 1;
-            padding: 4px 8px;
-            border-radius: 8px;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-            cursor: text;
-        }
-        
-        .line-text:focus {
-            background: white;
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
+.line-item {
+display: flex;
+align-items: center;
+margin-bottom: 8px;
+gap: 10px;
+animation: fadeIn 0.3s ease;
+}
 
-        .delete-line-btn {
-            background: #ef5350;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            opacity: 0.7;
-        }
-        
-        .delete-line-btn:hover { opacity: 1; transform: scale(1.1); }
+.line-text {
+flex: 1;
+padding: 4px 8px;
+border-radius: 8px;
+border: 1px solid transparent;
+transition: all 0.2s;
+cursor: text;
+}
+.line-text:focus {
+background: white;
+border-color: var(--primary);
+outline: none;
+box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
 
-        /* ------------------------------------------- */
-        
-        .actions-bar { display: flex; gap: 10px; margin-top: 10px; }
-        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-copy { background: #e4e6eb; color: #1c1e21; }
-        .btn-whatsapp { background: var(--whatsapp); color: white; }
-        
-        #loadingOverlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.95); z-index: 100; display: flex; justify-content: center; align-items: center; flex-direction: column; border-radius: 16px; }
-        .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { font-size: 1.1rem; color: #555; font-weight: bold; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.delete-line-btn {
+background: #ef5350;
+color: white;
+border: none;
+border-radius: 50%;
+width: 24px;
+height: 24px;
+font-size: 12px;
+font-weight: bold;
+cursor: pointer;
+flex-shrink: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: 0.2s;
+opacity: 0.7;
+}
+.delete-line-btn:hover { opacity: 1; transform: scale(1.1); }
 
-        /* --- תוספות לאנשי קשר מלבניים --- */
-        .favorites-bar {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 עמודות */
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-        
-        .contact-rect {
-            padding: 8px 4px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 0.9rem;
-            color: white; /* טקסט לבן */
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s, opacity 0.2s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+/* ------------------------------------------- */
+.actions-bar { display: flex; gap: 10px; margin-top: 10px; }
+.action-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.btn-copy { background: #e4e6eb; color: #1c1e21; }
+.btn-whatsapp { background: var(--whatsapp); color: white; }
+#loadingOverlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.95); z-index: 100; display: flex; justify-content: center; align-items: center; flex-direction: column; border-radius: 16px; }
+.spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.loading-text { font-size: 1.1rem; color: #555; font-weight: bold; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .contact-rect:hover { transform: translateY(-2px); opacity: 0.9; }
-        .contact-rect.empty { background: #e0e0e0; color: #777; border: 1px dashed #aaa; box-shadow: none; text-shadow: none; }
+/* --- תוספות לאנשי קשר מלבניים --- */
+.favorites-bar {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+margin-top: 20px;
+padding-top: 20px;
+border-top: 1px solid #eee;
+}
+/* מיכל לאיש קשר + כיתוב */
+.contact-wrapper {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+}
 
-        /* --- מודאל הגדרות --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
-            z-index: 1000; display: none; justify-content: center; align-items: center;
-        }
-        
-        .modal-content {
-            background: white; width: 95%; max-width: 450px;
-            border-radius: 16px; padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            max-height: 85vh; overflow-y: auto;
-        }
+.contact-rect {
+width: 100%;
+padding: 8px 4px;
+border-radius: 10px;
+text-align: center;
+font-weight: bold;
+font-size: 0.9rem;
+color: white;
+cursor: pointer;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+transition: transform 0.2s, opacity 0.2s;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+min-height: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
 
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .modal-header h2 { margin: 0; font-size: 1.2rem; }
-        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+.contact-rect:hover { transform: translateY(-2px); opacity: 0.9; }
+.contact-rect.empty { background: #e0e0e0; color: #777; border: 1px dashed #aaa; box-shadow: none; text-shadow: none; }
 
-        .settings-row {
-            background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 12px;
-            display: flex; gap: 10px; align-items: center;
-        }
-        
-        .color-picker-wrapper {
-            width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
-            border: 2px solid #ddd; flex-shrink: 0; cursor: pointer;
-        }
-        .color-picker-wrapper input[type="color"] {
-            width: 150%; height: 150%; margin: -25%; cursor: pointer; border: none; padding: 0;
-        }
+.contact-label {
+font-size: 0.75rem;
+color: #666;
+text-align: center;
+}
 
-        .setting-inputs { flex: 1; display: flex; flex-direction: column; gap: 5px; }
-        .setting-inputs input[type="text"], .setting-inputs input[type="tel"] { padding: 8px; font-size: 0.9rem; border: 1px solid #ddd; border-radius: 6px; }
-        .save-settings-btn { width: 100%; background: var(--primary); color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; margin-top: 10px; }
-    </style>
+/* --- מודאל הגדרות --- */
+.modal-overlay {
+position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
+z-index: 1000; display: none; justify-content: center; align-items: center;
+}
+.modal-content {
+background: white; width: 95%; max-width: 450px;
+border-radius: 16px; padding: 20px;
+box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+max-height: 85vh; overflow-y: auto;
+}
+
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.modal-header h2 { margin: 0; font-size: 1.2rem; }
+.close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+
+.settings-row {
+background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 12px;
+display: flex; gap: 10px; align-items: center;
+}
+.color-picker-wrapper {
+width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+border: 2px solid #ddd; flex-shrink: 0; cursor: pointer;
+}
+.color-picker-wrapper input[type="color"] {
+width: 150%; height: 150%; margin: -25%; cursor: pointer; border: none; padding: 0;
+}
+
+.setting-inputs { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.setting-inputs input[type="text"], .setting-inputs input[type="tel"] { padding: 8px; font-size: 0.9rem; border: 1px solid #ddd; border-radius: 6px; }
+
+/* כפתור ייבוא אנשי קשר */
+.import-contact-btn {
+background: #e1f5fe;
+border: 1px solid #b3e5fc;
+border-radius: 8px;
+width: 40px;
+height: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+font-size: 1.2rem;
+transition: 0.2s;
+flex-shrink: 0;
+}
+.import-contact-btn:hover { background: #b3e5fc; }
+
+.save-settings-btn { width: 100%; background: var(--primary); color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; margin-top: 10px; }
+</style>
 </head>
 <body>
 
 <div class="container">
-    <div id="loadingOverlay">
-        <div class="spinner"></div>
-        <span class="loading-text">טוען אלפי ברכות מהענן...</span>
-        <span id="loadingStatus" style="font-size:0.9rem; color:#888; margin-top:5px;">מתחבר לשרת...</span>
-    </div>
+<div id="loadingOverlay">
+<div class="spinner"></div>
+<span class="loading-text">טוען אלפי ברכות מהענן...</span>
+<span id="loadingStatus" style="font-size:0.9rem; color:#888; margin-top:5px;">מתחבר לשרת...</span>
+</div>
 
-    <div class="header-row">
-        <div style="width:30px"></div>
-        <h1>מפעל הברכות 🚀</h1>
-        <button class="settings-btn" onclick="openSettings()" title="הגדרות אנשי קשר">⚙️</button>
-    </div>
+<div class="header-row">
+<div style="width:30px"></div>
+<h1>מפעל הברכות 🚀</h1>
+<button class="settings-btn" onclick="openSettings()" title="הגדרות אנשי קשר">⚙️</button>
+</div>
 
-    <div class="controls-area">
-        <div class="top-row">
-            <div class="sender-toggle">
-                <button class="sender-btn active" id="senderMale" onclick="setSenderGender('male')">גבר 👨</button>
-                <button class="sender-btn" id="senderFemale" onclick="setSenderGender('female')">אישה 👩</button>
-            </div>
+<div class="controls-area">
+<div class="top-row">
+<div class="sender-toggle">
+<button class="sender-btn active" id="senderMale" onclick="setSenderGender('male')">גבר 👨</button>
+<button class="sender-btn" id="senderFemale" onclick="setSenderGender('female')">אישה 👩</button>
+</div>
 
-            <div class="length-wrapper">
-                <span class="length-label-title">ברכה</span>
-                <div class="length-selector">
-                    <label><input type="radio" name="length" value="short" onchange="setLength('short')"><span>קצרה</span></label>
-                    <label><input type="radio" name="length" value="long" onchange="setLength('long')" checked><span>ארוכה</span></label>
-                </div>
-            </div>
+<div class="length-wrapper">
+<span class="length-label-title">ברכה</span>
+<div class="length-selector">
+<label><input type="radio" name="length" value="short" onchange="setLength('short')"><span>קצרה</span></label>
+<label><input type="radio" name="length" value="long" onchange="setLength('long')" checked><span>ארוכה</span></label>
+</div>
+</div>
 
-            <button class="emoji-btn active" id="emojiBtn" onclick="toggleEmoji()">
-                <span id="emojiIcon">✅</span> אימוג'י
-            </button>
-        </div>
-    </div>
+<button class="emoji-btn active" id="emojiBtn" onclick="toggleEmoji()">
+<span id="emojiIcon">✅</span> אימוג'י
+</button>
+</div>
+</div>
 
-    <button class="back-btn" id="backBtn" onclick="goBack()">🔙 חזרה לתפריט הראשי</button>
+<button class="back-btn" id="backBtn" onclick="goBack()">🔙 חזרה לתפריט הראשי</button>
 
-    <div class="grid-container" id="mainGrid">
-        <button class="category-btn" style="background:#e0f7fa; border-color:#00bcd4;" onclick="selectCategory('morning_evening', this)">בוקר/ערב ☀️🌙</button>
-        <button class="category-btn" onclick="selectCategory('shabbat', this)">שבת / מוצ"ש 🕯️</button>
-        <button class="category-btn" onclick="selectCategory('holiday', this)">חג 🍷</button>
-        <button class="category-btn" style="background:#fff9c4; border-color:#fbc02d;" onclick="selectCategory('chabad', this)">חב"ד 👑</button>
-        <button class="category-btn" onclick="selectCategory('birthday', this)">יום הולדת 🎂</button>
-        <button class="category-btn" onclick="selectCategory('event', this)">אירוע 💍</button>
-        <button class="category-btn" onclick="selectCategory('birth', this)">לידה 👶</button>
-        <button class="category-btn" onclick="selectCategory('recovery', this)">רפואה 💊</button>
-        <button class="category-btn" onclick="selectCategory('thank_you', this)">תודה 🙏</button>
-        <button class="category-btn" onclick="selectCategory('success', this)">הצלחה 🏆</button>
-        <button class="category-btn" onclick="selectCategory('love', this)">אהבה ❤️</button>
-    </div>
+<div class="grid-container" id="mainGrid">
+<button class="category-btn" style="background:#e0f7fa; border-color:#00bcd4;" onclick="selectCategory('morning_evening', this)">בוקר/ערב ☀️🌙</button>
+<button class="category-btn" onclick="selectCategory('shabbat', this)">שבת / מוצ"ש 🕯️</button>
+<button class="category-btn" onclick="selectCategory('holiday', this)">חג 🍷</button>
+<button class="category-btn" style="background:#fff9c4; border-color:#fbc02d;" onclick="selectCategory('chabad', this)">חב"ד 👑</button>
+<button class="category-btn" onclick="selectCategory('birthday', this)">יום הולדת 🎂</button>
+<button class="category-btn" onclick="selectCategory('event', this)">אירוע 💍</button>
+<button class="category-btn" onclick="selectCategory('birth', this)">לידה 👶</button>
+<button class="category-btn" onclick="selectCategory('recovery', this)">רפואה 💊</button>
+<button class="category-btn" onclick="selectCategory('thank_you', this)">תודה 🙏</button>
+<button class="category-btn" onclick="selectCategory('success', this)">הצלחה 🏆</button>
+<button class="category-btn" onclick="selectCategory('love', this)">אהבה ❤️</button>
+</div>
 
-    <div id="morningEveningSection" class="dynamic-section">
-        <div id="timeOfDaySelector">
-            <h3>מה השעה?</h3>
-            <div class="sub-grid" style="grid-template-columns: repeat(3, 1fr);">
-                <button class="sub-btn" onclick="selectTimeOfDay('morning', this)">בוקר טוב ☀️</button>
-                <button class="sub-btn" onclick="selectTimeOfDay('noon', this)">צהריים טובים 🌤️</button>
-                <button class="sub-btn" onclick="selectTimeOfDay('night', this)">לילה טוב 🌙</button>
-            </div>
-        </div>
-        <div id="timeTargetSelector" style="display:none; margin-top:15px;">
-            <h3>למי הברכה?</h3>
-            <div class="sub-grid">
-                <button class="sub-btn" onclick="selectTimeTarget('general', this)">כללי ✨</button>
-                <button class="sub-btn" onclick="selectTimeTarget('husband', this)">לבעלי 🤵</button>
-                <button class="sub-btn" onclick="selectTimeTarget('wife', this)">לאשתי 👰</button>
-            </div>
-        </div>
-    </div>
+<div id="morningEveningSection" class="dynamic-section">
+<div id="timeOfDaySelector">
+<h3>מה השעה?</h3>
+<div class="sub-grid" style="grid-template-columns: repeat(3, 1fr);">
+<button class="sub-btn" onclick="selectTimeOfDay('morning', this)">בוקר טוב ☀️</button>
+<button class="sub-btn" onclick="selectTimeOfDay('noon', this)">צהריים טובים 🌤️</button>
+<button class="sub-btn" onclick="selectTimeOfDay('night', this)">לילה טוב 🌙</button>
+</div>
+</div>
+<div id="timeTargetSelector" style="display:none; margin-top:15px;">
+<h3>למי הברכה?</h3>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectTimeTarget('general', this)">כללי ✨</button>
+<button class="sub-btn" onclick="selectTimeTarget('husband', this)">לבעלי 🤵</button>
+<button class="sub-btn" onclick="selectTimeTarget('wife', this)">לאשתי 👰</button>
+</div>
+</div>
+</div>
 
-    <div id="shabbatSection" class="dynamic-section">
-        <div id="shabbatTimeSelector">
-            <h3>מה הזמן עכשיו?</h3>
-            <div class="sub-grid">
-                <button class="sub-btn" onclick="selectShabbatTime('shabbat')">🕯️ לקראת שבת</button>
-                <button class="sub-btn" onclick="selectShabbatTime('motzash')">🎸 מוצאי שבת</button>
-            </div>
-        </div>
-        <div id="shabbatTargetSelector" style="display:none;">
-            <h3 id="shabbatTargetTitle">למי הברכה?</h3>
-            <div class="sub-grid">
-                <button class="sub-btn" onclick="selectSub('general', this)">כללי ✨</button>
-                <button class="sub-btn" onclick="selectSub('family', this)">למשפחה 🏠</button>
-                <button class="sub-btn" onclick="selectSub('wife', this)">לאשתי 👰</button>
-                <button class="sub-btn" onclick="selectSub('husband', this)">לבעלי 🤵</button>
-                <button class="sub-btn" onclick="selectSub('parents', this)">להורים 👴👵</button>
-                <button class="sub-btn" onclick="selectSub('kids', this)">לילדים 🧸</button>
-                <button class="sub-btn" onclick="selectSub('brother', this)">לאח 👦</button>
-                <button class="sub-btn" onclick="selectSub('sister', this)">לאחות 👧</button>
-                <button class="sub-btn" onclick="selectSub('friend_male', this)">לחבר 🤜🤛</button>
-                <button class="sub-btn" onclick="selectSub('friend_female', this)">לחברה 👯‍♀️</button>
-            </div>
-        </div>
-    </div>
+<div id="shabbatSection" class="dynamic-section">
+<div id="shabbatTimeSelector">
+<h3>מה הזמן עכשיו?</h3>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectShabbatTime('shabbat')">🕯️ לקראת שבת</button>
+<button class="sub-btn" onclick="selectShabbatTime('motzash')">🎸 מוצאי שבת</button>
+</div>
+</div>
+<div id="shabbatTargetSelector" style="display:none;">
+<h3 id="shabbatTargetTitle">למי הברכה?</h3>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectSub('general', this)">כללי ✨</button>
+<button class="sub-btn" onclick="selectSub('family', this)">למשפחה 🏠</button>
+<button class="sub-btn" onclick="selectSub('wife', this)">לאשתי 👰</button>
+<button class="sub-btn" onclick="selectSub('husband', this)">לבעלי 🤵</button>
+<button class="sub-btn" onclick="selectSub('parents', this)">להורים 👴👵</button>
+<button class="sub-btn" onclick="selectSub('kids', this)">לילדים 🧸</button>
+<button class="sub-btn" onclick="selectSub('brother', this)">לאח 👦</button>
+<button class="sub-btn" onclick="selectSub('sister', this)">לאחות 👧</button>
+<button class="sub-btn" onclick="selectSub('friend_male', this)">לחבר 🤜🤛</button>
+<button class="sub-btn" onclick="selectSub('friend_female', this)">לחברה 👯‍♀️</button>
+</div>
+</div>
+</div>
 
-    <div id="holidaySection" class="dynamic-section">
-        <div id="holidayNameSelector">
-            <h3>איזה חג חוגגים?</h3>
-            <div class="holidays-grid">
-                <button class="sub-btn" style="background:#e3f2fd; border-color:#2196f3; font-weight:bold;" onclick="selectHolidayName('rosh_chodesh', this)">ראש חודש 🌑</button>
-                <button class="sub-btn" onclick="selectHolidayName('rosh_hashanah', this)">ר"השנה 🍎</button>
-                <button class="sub-btn" onclick="selectHolidayName('yom_kippur', this)">כיפור ⚖️</button>
-                <button class="sub-btn" onclick="selectHolidayName('sukkot', this)">סוכות 🌿</button>
-                <button class="sub-btn" onclick="selectHolidayName('simchat_torah', this)">שמחת תורה 📜</button>
-                <button class="sub-btn" onclick="selectHolidayName('hanukkah', this)">חנוכה 🕎</button>
-                <button class="sub-btn" onclick="selectHolidayName('tu_bishvat', this)">ט"ו בשבט 🌳</button>
-                <button class="sub-btn" onclick="selectHolidayName('purim', this)">פורים 🎭</button>
-                <button class="sub-btn" onclick="selectHolidayName('passover', this)">פסח 🍷</button>
-                <button class="sub-btn" onclick="selectHolidayName('mimouna', this)">מימונה 🥞</button>
-                <button class="sub-btn" onclick="selectHolidayName('yom_haatzmaut', this)">העצמאות 🇮🇱</button>
-                <button class="sub-btn" onclick="selectHolidayName('lag_baomer', this)">ל"ג בעומר 🔥</button>
-                <button class="sub-btn" onclick="selectHolidayName('shavuot', this)">שבועות 🌾</button>
-                <button class="sub-btn" onclick="selectHolidayName('tu_beav', this)">ט"ו באב ❤️</button>
-                <button class="sub-btn" onclick="selectHolidayName('generic_holiday', this)">כללי 🎉</button>
-            </div>
-        </div>
-        
-        <div id="holidayTargetSelector" style="display:none; margin-top:15px;">
-            <h3>למי ברכת החג?</h3>
-            <div class="sub-grid">
-                <button class="sub-btn" onclick="selectHolidayTarget('general', this)">כללי ✨</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('family', this)">למשפחה 🏠</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('wife', this)">לאשתי 👰</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('husband', this)">לבעלי 🤵</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('parents', this)">להורים 👴👵</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('kids', this)">לילדים 🧸</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('brother', this)">לאח 👦</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('sister', this)">לאחות 👧</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('friend_male', this)">לחבר 🤜🤛</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('friend_female', this)">לחברה 👯‍♀️</button>
-                <button class="sub-btn" onclick="selectHolidayTarget('group', this)">לקבוצה 👨‍👩‍👧‍👦</button>
-            </div>
-        </div>
-    </div>
+<div id="holidaySection" class="dynamic-section">
+<div id="holidayNameSelector">
+<h3>איזה חג חוגגים?</h3>
+<div class="holidays-grid">
+<button class="sub-btn" style="background:#e3f2fd; border-color:#2196f3; font-weight:bold;" onclick="selectHolidayName('rosh_chodesh', this)">ראש חודש 🌑</button>
+<button class="sub-btn" onclick="selectHolidayName('rosh_hashanah', this)">ר"השנה 🍎</button>
+<button class="sub-btn" onclick="selectHolidayName('yom_kippur', this)">כיפור ⚖️</button>
+<button class="sub-btn" onclick="selectHolidayName('sukkot', this)">סוכות 🌿</button>
+<button class="sub-btn" onclick="selectHolidayName('simchat_torah', this)">שמחת תורה 📜</button>
+<button class="sub-btn" onclick="selectHolidayName('hanukkah', this)">חנוכה 🕎</button>
+<button class="sub-btn" onclick="selectHolidayName('tu_bishvat', this)">ט"ו בשבט 🌳</button>
+<button class="sub-btn" onclick="selectHolidayName('purim', this)">פורים 🎭</button>
+<button class="sub-btn" onclick="selectHolidayName('passover', this)">פסח 🍷</button>
+<button class="sub-btn" onclick="selectHolidayName('mimouna', this)">מימונה 🥞</button>
+<button class="sub-btn" onclick="selectHolidayName('yom_haatzmaut', this)">העצמאות 🇮🇱</button>
+<button class="sub-btn" onclick="selectHolidayName('lag_baomer', this)">ל"ג בעומר 🔥</button>
+<button class="sub-btn" onclick="selectHolidayName('shavuot', this)">שבועות 🌾</button>
+<button class="sub-btn" onclick="selectHolidayName('tu_beav', this)">ט"ו באב ❤️</button>
+<button class="sub-btn" onclick="selectHolidayName('generic_holiday', this)">כללי 🎉</button>
+</div>
+</div>
+<div id="holidayTargetSelector" style="display:none; margin-top:15px;">
+<h3>למי ברכת החג?</h3>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectHolidayTarget('general', this)">כללי ✨</button>
+<button class="sub-btn" onclick="selectHolidayTarget('family', this)">למשפחה 🏠</button>
+<button class="sub-btn" onclick="selectHolidayTarget('wife', this)">לאשתי 👰</button>
+<button class="sub-btn" onclick="selectHolidayTarget('husband', this)">לבעלי 🤵</button>
+<button class="sub-btn" onclick="selectHolidayTarget('parents', this)">להורים 👴👵</button>
+<button class="sub-btn" onclick="selectHolidayTarget('kids', this)">לילדים 🧸</button>
+<button class="sub-btn" onclick="selectHolidayTarget('brother', this)">לאח 👦</button>
+<button class="sub-btn" onclick="selectHolidayTarget('sister', this)">לאחות 👧</button>
+<button class="sub-btn" onclick="selectHolidayTarget('friend_male', this)">לחבר 🤜🤛</button>
+<button class="sub-btn" onclick="selectHolidayTarget('friend_female', this)">לחברה 👯‍♀️</button>
+</div>
+</div>
+</div>
 
-    <div id="chabadSection" class="dynamic-section">
-        <h3>תאריך חסידי</h3>
-        <div class="holidays-grid">
-            <button class="sub-btn" onclick="selectSub('chabad_19_kislev', this)">י"ט כסלו 📖</button>
-            <button class="sub-btn" onclick="selectSub('chabad_10_shevat', this)">י' שבט 🕯️</button>
-            <button class="sub-btn" onclick="selectSub('chabad_11_nissan', this)">י"א ניסן 👑</button>
-            <button class="sub-btn" onclick="selectSub('chabad_3_tammuz', this)">ג' תמוז 🕯️</button>
-            <button class="sub-btn" onclick="selectSub('chabad_12_tammuz', this)">י"ב-י"ג תמוז 🔓</button>
-            <button class="sub-btn" onclick="selectSub('chabad_18_elul', this)">ח"י אלול ✨</button>
-            <button class="sub-btn" onclick="selectSub('chabad_5_tevet', this)">ה' טבת 📚</button>
-            <button class="sub-btn" onclick="selectSub('chabad_22_shevat', this)">כ"ב שבט 🕯️</button>
-            <button class="sub-btn" onclick="selectSub('chabad_24_tevet', this)">כ"ד טבת 📜</button>
-            <button class="sub-btn" onclick="selectSub('chabad_14_kislev', this)">י"ד כסלו 💍</button>
-            <button class="sub-btn" onclick="selectSub('chabad_2_iyar', this)">ב' אייר 🚀</button>
-            <button class="sub-btn" onclick="selectSub('chabad_6_tishrei', this)">ו' תשרי 🕯️</button>
-        </div>
-        
-        <h3 style="margin-top:15px;">למי הברכה?</h3>
-        <div class="sub-grid">
-            <button class="sub-btn" onclick="selectSub('general', this)">כללי</button>
-            <button class="sub-btn" onclick="selectSub('family', this)">למשפחה</button>
-        </div>
-    </div>
+<div id="chabadSection" class="dynamic-section">
+<h3>תאריך חסידי</h3>
+<div class="holidays-grid">
+<button class="sub-btn" onclick="selectSub('chabad_19_kislev', this)">י"ט כסלו 📖</button>
+<button class="sub-btn" onclick="selectSub('chabad_10_shevat', this)">י' שבט 🕯️</button>
+<button class="sub-btn" onclick="selectSub('chabad_11_nissan', this)">י"א ניסן 👑</button>
+<button class="sub-btn" onclick="selectSub('chabad_3_tammuz', this)">ג' תמוז 🕯️</button>
+<button class="sub-btn" onclick="selectSub('chabad_12_tammuz', this)">י"ב-י"ג תמוז 🔓</button>
+<button class="sub-btn" onclick="selectSub('chabad_18_elul', this)">ח"י אלול ✨</button>
+<button class="sub-btn" onclick="selectSub('chabad_5_tevet', this)">ה' טבת 📚</button>
+<button class="sub-btn" onclick="selectSub('chabad_22_shevat', this)">כ"ב שבט 🕯️</button>
+<button class="sub-btn" onclick="selectSub('chabad_24_tevet', this)">כ"ד טבת 📜</button>
+<button class="sub-btn" onclick="selectSub('chabad_14_kislev', this)">י"ד כסלו 💍</button>
+<button class="sub-btn" onclick="selectSub('chabad_2_iyar', this)">ב' אייר 🚀</button>
+<button class="sub-btn" onclick="selectSub('chabad_6_tishrei', this)">ו' תשרי 🕯️</button>
+</div>
+<h3 style="margin-top:15px;">למי הברכה?</h3>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectSub('general', this)">כללי</button>
+<button class="sub-btn" onclick="selectSub('family', this)">למשפחה</button>
+</div>
+</div>
 
-    <div id="eventSection" class="dynamic-section">
-        <h3>איזה אירוע חוגגים?</h3>
-        <div class="sub-grid">
-            <button class="sub-btn" onclick="selectSub('wedding', this)">חתונה 💍</button>
-            <button class="sub-btn" onclick="selectSub('bar_mitzvah', this)">בר מצווה 🕍</button>
-            <button class="sub-btn" onclick="selectSub('bat_mitzvah', this)">בת מצווה 🌸</button>
-            <button class="sub-btn" onclick="selectSub('brit_milah', this)">ברית מילה 👶</button>
-            <button class="sub-btn" onclick="selectSub('brita', this)">בריתה 🎀</button>
-            <button class="sub-btn" onclick="selectSub('housewarming', this)">חנוכת בית 🔑</button>
-            <button class="sub-btn" onclick="selectSub('henna', this)">חינה 🤚</button>
-        </div>
-    </div>
+<div id="eventSection" class="dynamic-section">
+<h3>איזה אירוע חוגגים?</h3>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectSub('wedding', this)">חתונה 💍</button>
+<button class="sub-btn" onclick="selectSub('bar_mitzvah', this)">בר מצווה 🕍</button>
+<button class="sub-btn" onclick="selectSub('bat_mitzvah', this)">בת מצווה 🌸</button>
+<button class="sub-btn" onclick="selectSub('brit_milah', this)">ברית מילה 👶</button>
+<button class="sub-btn" onclick="selectSub('brita', this)">בריתה 🎀</button>
+<button class="sub-btn" onclick="selectSub('housewarming', this)">חנוכת בית 🔑</button>
+<button class="sub-btn" onclick="selectSub('henna', this)">חינה 🤚</button>
+</div>
+</div>
 
-    <div id="birthSection" class="dynamic-section">
-        <h3>מזל טוב! מה נולד?</h3>
-        <div class="sub-grid">
-            <button class="sub-btn" onclick="selectSub('birth_boy', this)">לידת בן 💙👶</button>
-            <button class="sub-btn" onclick="selectSub('birth_girl', this)">לידת בת 💖👶</button>
-        </div>
-    </div>
+<div id="birthSection" class="dynamic-section">
+<h3>מזל טוב! מה נולד?</h3>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectBirthType('birth_boy')">לידת בן 💙👶</button>
+<button class="sub-btn" onclick="selectBirthType('birth_girl')">לידת בת 💖👶</button>
+</div>
+<div id="birthSubTargetSection" style="display:none; margin-top:15px;">
+<h3 id="birthTargetTitle">למי נולד?</h3>
+<div class="sub-grid" id="birthTargetButtons">
+</div>
+</div>
+</div>
 
-    <div id="genderSection" class="dynamic-section">
-         <h3>למי הברכה?</h3>
-         <div class="sub-grid">
-             <button class="sub-btn" onclick="selectGenderGeneral('male', this)">לבעלי / בן זוגי 🤵</button>
-             <button class="sub-btn" onclick="selectGenderGeneral('female', this)">לאשתי / בת זוגתי 👰</button>
-         </div>
-    </div>
+<div id="recoveryTargetSection" class="dynamic-section">
+<h3>למי ההחלמה?</h3>
+<span class="section-title">גברים 👨</span>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectRecoveryTarget('male', this)">גבר (כללי)</button>
+<button class="sub-btn" onclick="selectRecoveryTarget('dad', this)">אבא 👑</button>
+<button class="sub-btn" onclick="selectRecoveryTarget('brother', this)">אח 🦁</button>
+<button class="sub-btn" onclick="selectRecoveryTarget('son', this)">בן/ילד 👦</button>
+<button class="sub-btn" onclick="selectRecoveryTarget('friend_male', this)">חבר 🤜🤛</button>
+</div>
+<span class="section-title">נשים 👩</span>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectRecoveryTarget('female', this)">אישה (כללית)</button>
+<button class="sub-btn" onclick="selectRecoveryTarget('mom', this)">אמא 💖</button>
+<button class="sub-btn" onclick="selectRecoveryTarget('sister', this)">אחות 🌸</button>
+<button class="sub-btn" onclick="selectRecoveryTarget('daughter', this)">בת/ילדה 👧</button>
+<button class="sub-btn" onclick="selectRecoveryTarget('friend_female', this)">חברה 👯‍♀️</button>
+</div>
+</div>
 
-    <div id="birthdaySection" class="dynamic-section">
-        <h3>למי יום ההולדת?</h3>
-        <div class="sub-grid" style="grid-template-columns: repeat(4, 1fr);">
-            <button class="sub-btn" onclick="selectGender('man', this)">גבר 👨</button>
-            <button class="sub-btn" onclick="selectGender('woman', this)">אישה 👩</button>
-            <button class="sub-btn" onclick="selectGender('boy', this)">ילד 👦</button>
-            <button class="sub-btn" onclick="selectGender('girl', this)">ילדה 👧</button>
-        </div>
-        <div id="relationsContainer" style="display:none; margin-top:10px;">
-            <div class="sub-grid" id="relationsGrid" style="grid-template-columns: repeat(3, 1fr);"></div>
-        </div>
-    </div>
-    
-    <div id="inputSection" class="dynamic-section" style="display:none;">
-        <div class="input-row">
-            <input type="text" id="nameInput" placeholder="שם (אופציונלי)" list="nameHistory">
-            <datalist id="nameHistory"></datalist>
-            <input type="number" id="ageInput" placeholder="גיל (אופציונלי)">
-        </div>
-    </div>
+<div id="thankYouTargetSection" class="dynamic-section">
+<h3>למי אומרים תודה?</h3>
+<div class="sub-grid" style="grid-template-columns: repeat(2, 1fr);">
+<button class="sub-btn" onclick="selectThankYouTarget('male_general', this)">גבר (כללי) 👨</button>
+<button class="sub-btn" onclick="selectThankYouTarget('father', this)">אבא 👑</button>
+<button class="sub-btn" onclick="selectThankYouTarget('brother', this)">אח 🦁</button>
+<button class="sub-btn" onclick="selectThankYouTarget('friend_male', this)">חבר 🍻</button>
 
-    <button class="generate-btn" id="genBtn" onclick="generateBlessing()" style="display:none;">🎁 צור ברכה</button>
-    
-    <div class="output-container" id="output">
-        <div style="opacity:0.5; text-align:center; padding-top:10px;">הברכה תופיע כאן...</div>
-    </div>
+<button class="sub-btn" onclick="selectThankYouTarget('female_general', this)">אישה (כללית) 👩</button>
+<button class="sub-btn" onclick="selectThankYouTarget('mother', this)">אמא 💖</button>
+<button class="sub-btn" onclick="selectThankYouTarget('sister', this)">אחות 🌸</button>
+<button class="sub-btn" onclick="selectThankYouTarget('friend_female', this)">חברה 👯‍♀️</button>
+</div>
+</div>
 
-    <div class="actions-bar">
-        <button class="action-btn btn-copy" onclick="copyText()">📄 העתק</button>
-        <button class="action-btn btn-whatsapp" onclick="sendWhatsapp()">שלח לווצאפ</button>
-    </div>
+<div id="genderSection" class="dynamic-section">
+<h3>למי הברכה?</h3>
+<div class="sub-grid">
+<button class="sub-btn" onclick="selectGenderGeneral('male', this)">לגבר 🤵</button>
+<button class="sub-btn" onclick="selectGenderGeneral('female', this)">לאישה 👰</button>
+</div>
+</div>
 
-    <div class="favorites-bar"></div>
+<div id="birthdaySection" class="dynamic-section">
+<h3>למי יום ההולדת?</h3>
+<div class="sub-grid" style="grid-template-columns: repeat(4, 1fr);">
+<button class="sub-btn" onclick="selectGender('man', this)">גבר 👨</button>
+<button class="sub-btn" onclick="selectGender('woman', this)">אישה 👩</button>
+<button class="sub-btn" onclick="selectGender('boy', this)">ילד 👦</button>
+<button class="sub-btn" onclick="selectGender('girl', this)">ילדה 👧</button>
+</div>
+<div id="relationsContainer" style="display:none; margin-top:10px;">
+<div class="sub-grid" id="relationsGrid" style="grid-template-columns: repeat(3, 1fr);"></div>
+</div>
+</div>
+
+<div id="inputSection" class="dynamic-section" style="display:none;">
+<div class="input-row">
+<input type="text" id="nameInput" placeholder="שם (אופציונלי)" list="nameHistory">
+<datalist id="nameHistory"></datalist>
+<input type="number" id="ageInput" placeholder="גיל (אופציונלי)">
+</div>
+</div>
+
+<button class="generate-btn" id="genBtn" onclick="generateBlessing()" style="display:none;">🎁 צור ברכה</button>
+<div class="output-container" id="output">
+<div style="opacity:0.5; text-align:center; padding-top:10px;">הברכה תופיע כאן...</div>
+</div>
+
+<div class="actions-bar">
+<button class="action-btn btn-copy" onclick="copyText()">📄 העתק</button>
+<button class="action-btn btn-whatsapp" onclick="sendWhatsapp()">שלח לווצאפ</button>
+</div>
+
+<div class="favorites-bar"></div>
 </div>
 
 <div class="modal-overlay" id="settingsModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>אנשי קשר מהירים</h2>
-            <button class="close-modal" onclick="closeSettings()">✕</button>
-        </div>
-        <div id="settingsRows"></div>
-        <button class="save-settings-btn" onclick="saveSettings()">שמור שינויים</button>
-    </div>
+<div class="modal-content">
+<div class="modal-header">
+<h2>אנשי קשר מהירים</h2>
+<button class="close-modal" onclick="closeSettings()">✕</button>
+</div>
+<div id="settingsRows"></div>
+<button class="save-settings-btn" onclick="saveSettings()">שמור שינויים</button>
+</div>
 </div>
 
 <script>
-    let generators = {};
-    let state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: 'long', gender: null, relationKey: null, useEmojis: true, senderGender: 'male' };
+let generators = {};
+// מצב המערכת
+let state = {
+category: null,
+subCategory: null,
+shabbatTime: null,
+holidayName: null,
+holidayTarget: null,
+chabadDate: null,
+chabadTarget: null,
+timeOfDay: null,
+length: 'long',
+gender: null, 
+recipientGender: null, 
+relationKey: null,
+birthType: null, // סוג הלידה (בן/בת)
+useEmojis: true,
+senderGender: 'male'
+};
 
-    // --- מערך אנשי הקשר (מתוקן - כל אובייקט בנפרד) ---
-    let contacts = [
-        { name: '', phone: '', color: '#4a90e2' },
-        { name: '', phone: '', color: '#4a90e2' },
-        { name: '', phone: '', color: '#4a90e2' },
-        { name: '', phone: '', color: '#4a90e2' },
-        { name: '', phone: '', color: '#4a90e2' },
-        { name: '', phone: '', color: '#4a90e2' }
-    ];
+let contacts = [
+{ name: '', phone: '', color: '#4a90e2' },
+{ name: '', phone: '', color: '#4a90e2' },
+{ name: '', phone: '', color: '#4a90e2' },
+{ name: '', phone: '', color: '#4a90e2' },
+{ name: '', phone: '', color: '#4a90e2' },
+{ name: '', phone: '', color: '#4a90e2' }
+];
 
-    const localBlessings = {
-        "birthday_partner_female": {
-            "openers": ["בת הזוג האהובה,", "יקירתי,", "אהבת חיי,", "הנסיכה שלי,"],
-            "bodies": ["אין מילים לתאר כמה את חשובה לי.", "מאחל לך שכל יום יהיה יפה וזוהר כמו החיוך שלך."],
-            "closings": ["אוהב אותך.", "שלך תמיד."]
-        }
-    };
-    
-    const wifeSuffixes = ["המושלמת", "היפה שלי", "אהבת חיי", "מלכתי"];
-    const husbandSuffixes = ["המושלם", "הגבר שלי", "אהבת חיי", "מלך העולם"];
+const localBlessings = {
+"birthday_partner_female": {
+"openers": ["בת הזוג האהובה,", "יקירתי,", "אהבת חיי,", "הנסיכה שלי,"],
+"bodies": ["אין מילים לתאר כמה את חשובה לי.", "מאחל לך שכל יום יהיה יפה וזוהר כמו החיוך שלך."],
+"closings": ["אוהב אותך.", "שלך תמיד."]
+}
+};
+const wifeSuffixes = ["המושלמת", "היפה שלי", "אהבת חיי", "מלכתי"];
+const husbandSuffixes = ["המושלם", "הגבר שלי", "אהבת חיי", "מלך העולם"];
 
-    const jsonFiles = [
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/(%D7%91%D7%95%D7%A7%D7%A8%2C%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D%2C%20%D7%A2%D7%A8%D7%91).json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%90%D7%99%D7%A8%D7%95%D7%A2.json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%94%D7%A6%D7%9C%D7%97%D7%94%20.json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%97%D7%91%D7%93.json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%97%D7%92.json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%99%D7%95%D7%9D%20%D7%94%D7%95%D7%9C%D7%93%D7%AA%20.json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%9C%D7%90%D7%94%D7%91%D7%94.json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%9C%D7%99%D7%93%D7%94.json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%A8%D7%A4%D7%95%D7%90%D7%94.json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%A9%D7%91%D7%AA%20%D7%95%D7%9E%D7%95%D7%A6%D7%90%D7%99%20%D7%A9%D7%91%D7%AA.json",
-        "https://raw.githubusercontent.com/Yossi65/berkot/dac4ecf4323f439cba0ddc369665e510983332b1/%D7%AA%D7%95%D7%93%D7%94.json"
-    ];
+// רשימת הקבצים לטעינה (הקישורים המעודכנים שלך - גרסת RAW)
+const jsonFiles = [
+"https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/(%D7%91%D7%95%D7%A7%D7%A8%2C%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D%2C%20%D7%A2%D7%A8%D7%91).json",
+"https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%90%D7%99%D7%A8%D7%95%D7%A2.json",
+"https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%94%D7%A6%D7%9C%D7%97%D7%94%20.json",
+"https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%97%D7%91%D7%93.json",
+"https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%97%D7%92.json",
+"https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%99%D7%95%D7%9D%20%D7%94%D7%95%D7%9C%D7%93%D7%AA%20.json",
+"https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%9C%D7%90%D7%94%D7%91%D7%94.json",
+"https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%9C%D7%99%D7%93%D7%94.json",
+"https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%A8%D7%A4%D7%95%D7%90%D7%94.json",
+"https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%A9%D7%91%D7%AA%20%D7%95%D7%9E%D7%95%D7%A6%D7%90%D7%99%20%D7%A9%D7%91%D7%AA.json",
+"https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%AA%D7%95%D7%93%D7%94.json"
+];
 
-    window.onload = function() {
-        const savedSender = localStorage.getItem('senderGender') || 'male';
-        setSenderGender(savedSender); 
+window.onload = function() {
+const savedSender = localStorage.getItem('senderGender') || 'male';
+setSenderGender(savedSender);
 
-        const savedEmojiState = localStorage.getItem('useEmojis');
-        if (savedEmojiState !== null) {
-            state.useEmojis = (savedEmojiState === 'true');
-        }
-        updateEmojiUI(); 
+const savedEmojiState = localStorage.getItem('useEmojis');
+if (savedEmojiState !== null) {
+state.useEmojis = (savedEmojiState === 'true');
+}
+updateEmojiUI();
 
-        const savedLength = localStorage.getItem('blessingLength');
-        if (savedLength) {
-            state.length = savedLength;
-            const radio = document.querySelector(`input[name="length"][value="${savedLength}"]`);
-            if(radio) radio.checked = true;
-        }
-        
-        loadAllBlessings();
-        loadNameHistory(); 
-        
-        // טעינת אנשי הקשר החדשים
-        loadContacts();
-        renderContactButtons();
-    };
+const savedLength = localStorage.getItem('blessingLength');
+if (savedLength) {
+state.length = savedLength;
+const radio = document.querySelector(`input[name="length"][value="${savedLength}"]`);
+if(radio) radio.checked = true;
+}
+loadAllBlessings();
+loadNameHistory();
+loadContacts();
+renderContactButtons();
+};
 
-    // --- לוגיקת אנשי קשר (מלבנים וצבעים) ---
-    function loadContacts() {
-        const saved = localStorage.getItem('myContacts_v5'); // מפתח חדש למניעת התנגשויות
-        if (saved) {
-            try {
-                let temp = JSON.parse(saved);
-                if(Array.isArray(temp)) {
-                    contacts = temp;
-                    // מוודאים שתמיד יש 6 תאים
-                    while(contacts.length < 6) contacts.push({name:'', phone:'', color:'#4a90e2'});
-                    if(contacts.length > 6) contacts = contacts.slice(0,6);
-                }
-            } catch(e) { console.error(e); }
-        }
-    }
+// --- ניהול אנשי קשר ---
+function loadContacts() {
+const saved = localStorage.getItem('myContacts_v5');
+if (saved) {
+try {
+let temp = JSON.parse(saved);
+if(Array.isArray(temp)) {
+contacts = temp;
+while(contacts.length < 6) contacts.push({name:'', phone:'', color:'#4a90e2'});
+if(contacts.length > 6) contacts = contacts.slice(0,6);
+}
+} catch(e) { console.error(e); }
+}
+}
 
-    function renderContactButtons() {
-        const container = document.querySelector('.favorites-bar');
-        container.innerHTML = '';
-        contacts.forEach((contact, index) => {
-            const btn = document.createElement('div');
-            
-            if (contact.phone) {
-                btn.className = 'contact-rect';
-                btn.style.backgroundColor = contact.color || '#4a90e2';
-                btn.innerText = contact.name || `איש קשר ${index+1}`;
-                btn.onclick = () => sendToContact(index);
-            } else {
-                btn.className = 'contact-rect empty';
-                btn.innerText = '+';
-                btn.onclick = () => openSettings();
-            }
-            
-            container.appendChild(btn);
-        });
-    }
+function renderContactButtons() {
+const container = document.querySelector('.favorites-bar');
+container.innerHTML = '';
+contacts.forEach((contact, index) => {
+const wrapper = document.createElement('div');
+wrapper.className = 'contact-wrapper';
 
-    function sendToContact(index) {
-        const contact = contacts[index];
-        if (!contact.phone) { openSettings(); return; }
-        let text = getVisibleText();
-        if(!text) { alert("קודם כל צור ברכה!"); return; }
-        let cleanPhone = contact.phone.replace(/\D/g, ''); 
-        if (cleanPhone.startsWith('0')) cleanPhone = '972' + cleanPhone.substring(1);
-        window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`, '_blank');
-    }
+const btn = document.createElement('div');
+if (contact.phone) {
+btn.className = 'contact-rect';
+btn.style.backgroundColor = contact.color || '#4a90e2';
+btn.innerText = contact.name || `איש קשר ${index+1}`;
+btn.onclick = () => sendToContact(index);
+} else {
+btn.className = 'contact-rect empty';
+btn.innerText = '+';
+btn.onclick = () => openSettings();
+}
 
-    // --- הגדרות ---
-    function openSettings() {
-        const container = document.getElementById('settingsRows');
-        container.innerHTML = '';
-        contacts.forEach((contact, index) => {
-            const row = document.createElement('div');
-            row.className = 'settings-row';
-            row.innerHTML = `
-                <div class="color-picker-wrapper" title="בחר צבע">
-                    <input type="color" id="color${index}" value="${contact.color || '#4a90e2'}">
-                </div>
-                <div class="setting-inputs">
-                    <input type="text" id="name${index}" placeholder="שם (למשל: אבא)" value="${contact.name}">
-                    <input type="tel" id="phone${index}" placeholder="טלפון (050...)" value="${contact.phone}">
-                </div>
-            `;
-            container.appendChild(row);
-        });
-        document.getElementById('settingsModal').style.display = 'flex';
-    }
+const label = document.createElement('span');
+label.className = 'contact-label';
+label.innerText = `איש קשר ${index + 1}`;
 
-    function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-    
-    function saveSettings() {
-        contacts.forEach((contact, index) => {
-            const nameEl = document.getElementById(`name${index}`);
-            const phoneEl = document.getElementById(`phone${index}`);
-            const colorEl = document.getElementById(`color${index}`);
-            
-            if(nameEl) contact.name = nameEl.value;
-            if(phoneEl) contact.phone = phoneEl.value;
-            if(colorEl) contact.color = colorEl.value;
-        });
-        localStorage.setItem('myContacts_v5', JSON.stringify(contacts));
-        renderContactButtons();
-        closeSettings();
-    }
+wrapper.appendChild(btn);
+wrapper.appendChild(label);
+container.appendChild(wrapper);
+});
+}
 
-    // --- שאר הפונקציות המקוריות ---
+function sendToContact(index) {
+const contact = contacts[index];
+if (!contact.phone) { openSettings(); return; }
+let text = getVisibleText();
+if(!text) { alert("קודם כל צור ברכה!"); return; }
+let cleanPhone = contact.phone.replace(/\D/g, '');
+if (cleanPhone.startsWith('0')) cleanPhone = '972' + cleanPhone.substring(1);
+window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`, '_blank');
+}
 
-    function loadNameHistory() {
-        let history = JSON.parse(localStorage.getItem('nameHistory') || '[]');
-        const datalist = document.getElementById('nameHistory');
-        datalist.innerHTML = '';
-        history.forEach(n => {
-            const option = document.createElement('option');
-            option.value = n;
-            datalist.appendChild(option);
-        });
-    }
+function openSettings() {
+const container = document.getElementById('settingsRows');
+container.innerHTML = '';
+contacts.forEach((contact, index) => {
+const row = document.createElement('div');
+row.className = 'settings-row';
+row.innerHTML = `
+<div class="color-picker-wrapper" title="בחר צבע">
+<input type="color" id="color${index}" value="${contact.color || '#4a90e2'}">
+</div>
+<button class="import-contact-btn" onclick="pickContact(${index})" title="ייבא מאנשי הקשר בטלפון">📒</button>
+<div class="setting-inputs">
+<input type="text" id="name${index}" placeholder="שם (למשל: אבא)" value="${contact.name}">
+<input type="tel" id="phone${index}" placeholder="טלפון (050...)" value="${contact.phone}">
+</div>
+`;
+container.appendChild(row);
+});
+document.getElementById('settingsModal').style.display = 'flex';
+}
 
-    function saveNameHistory(name) {
-        if(!name) return;
-        let history = JSON.parse(localStorage.getItem('nameHistory') || '[]');
-        if(!history.includes(name)) {
-            history.push(name);
-            localStorage.setItem('nameHistory', JSON.stringify(history));
-            loadNameHistory(); 
-        }
-    }
+async function pickContact(index) {
+const isSupported = ('contacts' in navigator && 'ContactsManager' in window);
+if (!isSupported) {
+alert("דפדפן זה אינו תומך בייבוא ישיר. נא להזין ידנית.");
+return;
+}
+try {
+const props = ['name', 'tel'];
+const opts = { multiple: false };
+const contactsSelected = await navigator.contacts.select(props, opts);
+if (contactsSelected && contactsSelected.length > 0) {
+const contact = contactsSelected[0];
+if (contact.name && contact.name.length > 0) document.getElementById(`name${index}`).value = contact.name[0];
+if (contact.tel && contact.tel.length > 0) document.getElementById(`phone${index}`).value = contact.tel[0];
+}
+} catch (ex) { console.log(ex); }
+}
 
-    async function loadAllBlessings() {
-        const loadingStatus = document.getElementById('loadingStatus');
-        
-        try {
-            const promises = jsonFiles.map(url => fetch(url).then(res => {
-                if(!res.ok) throw new Error(`נכשל בטעינת: ${url}`);
-                return res.json();
-            }));
+function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
+function saveSettings() {
+contacts.forEach((contact, index) => {
+const nameEl = document.getElementById(`name${index}`);
+const phoneEl = document.getElementById(`phone${index}`);
+const colorEl = document.getElementById(`color${index}`);
+if(nameEl) contact.name = nameEl.value;
+if(phoneEl) contact.phone = phoneEl.value;
+if(colorEl) contact.color = colorEl.value;
+});
+localStorage.setItem('myContacts_v5', JSON.stringify(contacts));
+renderContactButtons();
+closeSettings();
+}
 
-            const results = await Promise.all(promises);
+function loadNameHistory() {
+let history = JSON.parse(localStorage.getItem('nameHistory') || '[]');
+const datalist = document.getElementById('nameHistory');
+datalist.innerHTML = '';
+history.forEach(n => {
+const option = document.createElement('option');
+option.value = n;
+datalist.appendChild(option);
+});
+}
 
-            results.forEach(data => {
-                generators = { ...generators, ...data };
-            });
+function saveNameHistory(name) {
+if(!name) return;
+let history = JSON.parse(localStorage.getItem('nameHistory') || '[]');
+if(!history.includes(name)) {
+history.push(name);
+localStorage.setItem('nameHistory', JSON.stringify(history));
+loadNameHistory();
+}
+}
 
-            document.getElementById('loadingOverlay').style.display = 'none';
-            document.getElementById('genBtn').disabled = false;
-            document.getElementById('genBtn').style.display = 'none'; 
+async function loadAllBlessings() {
+const loadingStatus = document.getElementById('loadingStatus');
+try {
+const promises = jsonFiles.map(url => fetch(url).then(res => {
+if(!res.ok) throw new Error(`נכשל בטעינת: ${url}`);
+return res.json();
+}));
 
-        } catch (error) {
-            console.error(error);
-            loadingStatus.innerText = "⚠️ שגיאה בטעינת הנתונים (חלק מהברכות חסרות)";
-            setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 2000);
-        }
-    }
+const results = await Promise.all(promises);
+results.forEach(data => { generators = { ...generators, ...data }; });
 
-    function updateSenderUI() {
-        document.getElementById('senderMale').classList.remove('active');
-        document.getElementById('senderFemale').classList.remove('active');
-        
-        if (state.senderGender === 'male') {
-            document.getElementById('senderMale').classList.add('active');
-            document.documentElement.style.setProperty('--primary', '#4a90e2');
-            document.documentElement.style.setProperty('--primary-dark', '#357abd');
-            document.documentElement.style.setProperty('--bg', '#b3e5fc'); 
-            document.documentElement.style.setProperty('--card', '#f0f8ff'); 
-            document.documentElement.style.setProperty('--controls-bg', '#e1f5fe');
-        } else {
-            document.getElementById('senderFemale').classList.add('active');
-            document.documentElement.style.setProperty('--primary', '#e91e63'); 
-            document.documentElement.style.setProperty('--primary-dark', '#c2185b'); 
-            document.documentElement.style.setProperty('--bg', '#f8bbd0'); 
-            document.documentElement.style.setProperty('--card', '#fff0f5'); 
-            document.documentElement.style.setProperty('--controls-bg', '#fce4ec');
-        }
-    }
+document.getElementById('loadingOverlay').style.display = 'none';
+document.getElementById('genBtn').disabled = false;
+document.getElementById('genBtn').style.display = 'none';
 
-    function setSenderGender(g) {
-        state.senderGender = g;
-        localStorage.setItem('senderGender', g);
-        updateSenderUI();
-    }
+} catch (error) {
+console.error(error);
+loadingStatus.innerText = "⚠️ שגיאה בטעינת הנתונים";
+setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 2000);
+}
+}
 
-    function setLength(len) {
-        state.length = len;
-        localStorage.setItem('blessingLength', len);
-    }
+// --- שליטה בתצוגה (מגדר שולח, אימוג'י) ---
+function updateSenderUI() {
+document.getElementById('senderMale').classList.remove('active');
+document.getElementById('senderFemale').classList.remove('active');
+if (state.senderGender === 'male') {
+document.getElementById('senderMale').classList.add('active');
+document.documentElement.style.setProperty('--primary', '#4a90e2');
+document.documentElement.style.setProperty('--primary-dark', '#357abd');
+document.documentElement.style.setProperty('--bg', '#b3e5fc');
+document.documentElement.style.setProperty('--card', '#f0f8ff');
+document.documentElement.style.setProperty('--controls-bg', '#e1f5fe');
+} else {
+document.getElementById('senderFemale').classList.add('active');
+document.documentElement.style.setProperty('--primary', '#e91e63');
+document.documentElement.style.setProperty('--primary-dark', '#c2185b');
+document.documentElement.style.setProperty('--bg', '#f8bbd0');
+document.documentElement.style.setProperty('--card', '#fff0f5');
+document.documentElement.style.setProperty('--controls-bg', '#fce4ec');
+}
+}
 
-    const emojis = {
-        shabbat: ["🕯️", "🍷", "✨", "🥖", "🕍", "🍇", "🤍", "🕊️", "🏡", "💐"],
-        motzash: ["🎸", "🕯️", "🍷", "✨", "🌚", "🎶", "💫", "🍯", "🧿", "🌟"],
-        morning: ["☀️", "☕", "🌼", "🥐", "🧡", "✨", "יום נפלא"],
-        noon: ["🌤️", "🥗", "🥤", "😎", "💪", "המשך יום נעים"],
-        night: ["🌙", "⭐", "💤", "🛏️", "✨", "חלומות פז"],
-        wedding: ["💍", "💒", "🥂", "🤵", "👰"],
-        bar_mitzvah: ["📖", "🍬", "🕍", "✡️", "💙"],
-        bat_mitzvah: ["📖", "🌸", "🕍", "✡️", "💖"],
-        brit_milah: ["👶", "🍼", "💙", "✡️"],
-        brita: ["👶", "🍼", "💖", "🌸"],
-        birth_boy: ["👶", "💙", "🍼", "🚙", "🧸"],
-        birth_girl: ["👶", "💖", "🎀", "🌸", "🦄"],
-        housewarming: ["🏠", "🔑", "🪴", "🧿"],
-        henna: ["🤚", "🍬", "🕌", "👘"],
-        birthday: ["🎂", "🥳", "🎁", "🎈", "🍰"],
-        general: ["✨", "🌸", "💫", "🌟", "🙌", "💎", "💐", "🦋", "🌈", "☀️"],
-        recovery: ["💊", "🩺", "💪", "❤️"],
-        love: ["❤️", "😍", "💋", "💘", "🌹"],
-        success: ["🏆", "💼", "🚀", "📈", "⭐", "💰"],
-        thank_you: ["🙏", "💐", "💖", "🌺"],
-        rosh_hashanah: ["🍎", "🍯", "🍏"],
-        hanukkah: ["🕎", "🍩", "🕯️"],
-        passover: ["🍷", "🥬"],
-        purim: ["🎭", "🍷"],
-        tu_bishvat: ["🌳", "🌱", "🍇", "🍊", "🌧️"],
-        simchat_torah: ["📜", "💃", "🕍", "🙌"],
-        yom_haatzmaut: ["🇮🇱", "🎆", "💙", "🍖"],
-        lag_baomer: ["🔥", "🥔", "🕯️", "🏹"],
-        tu_beav: ["❤️", "💑", "💍", "💌"],
-        rosh_chodesh: ["🌑", "📅", "✨", "🙏"],
-        mimouna: ["🥞", "🍯", "🍪", "🪕"],
-        chabad: ["👑", "🕯️", "🕍", "📜", "📖"]
-    };
+function setSenderGender(g) {
+state.senderGender = g;
+localStorage.setItem('senderGender', g);
+updateSenderUI();
+}
 
-    function updateEmojiUI() {
-        const btn = document.getElementById('emojiBtn');
-        const icon = document.getElementById('emojiIcon');
-        if (state.useEmojis) {
-            btn.classList.add('active');
-            icon.innerText = "✅";
-        } else {
-            btn.classList.remove('active');
-            icon.innerText = "⚪";
-        }
-    }
+function setLength(len) {
+state.length = len;
+localStorage.setItem('blessingLength', len);
+}
 
-    function toggleEmoji() {
-        state.useEmojis = !state.useEmojis;
-        localStorage.setItem('useEmojis', state.useEmojis);
-        updateEmojiUI();
-    }
+const emojis = {
+shabbat: ["🕯️", "🍷", "✨", "🥖", "🕍", "🍇", "🤍", "🕊️", "🏡", "💐"],
+motzash: ["🎸", "🕯️", "🍷", "✨", "🌚", "🎶", "💫", "🍯", "🧿", "🌟"],
+morning: ["☀️", "☕", "🌼", "🥐", "🧡", "✨", "יום נפלא"],
+noon: ["🌤️", "🥗", "🥤", "😎", "💪", "המשך יום נעים"],
+night: ["🌙", "⭐", "💤", "🛏️", "✨", "חלומות פז"],
+wedding: ["💍", "💒", "🥂", "🤵", "👰"],
+bar_mitzvah: ["📖", "🍬", "🕍", "✡️", "💙"],
+bat_mitzvah: ["📖", "🌸", "🕍", "✡️", "💖"],
+brit_milah: ["👶", "🍼", "💙", "✡️"],
+brita: ["👶", "🍼", "💖", "🌸"],
+birth_boy: ["👶", "💙", "🍼", "🚙", "🧸"],
+birth_girl: ["👶", "💖", "🎀", "🌸", "🦄"],
+housewarming: ["🏠", "🔑", "🪴", "🧿"],
+henna: ["🤚", "🍬", "🕌", "👘"],
+birthday: ["🎂", "🥳", "🎁", "🎈", "🍰"],
+general: ["✨", "🌸", "💫", "🌟", "🙌", "💎", "💐", "🦋", "🌈", "☀️"],
+recovery: ["💊", "🩺", "💪", "❤️"],
+love: ["❤️", "😍", "💋", "💘", "🌹"],
+success: ["🏆", "💼", "🚀", "📈", "⭐", "💰"],
+thank_you: ["🙏", "💐", "💖", "🌺"],
+rosh_hashanah: ["🍎", "🍯", "🍏"],
+hanukkah: ["🕎", "🍩", "🕯️"],
+passover: ["🍷", "🥬"],
+purim: ["🎭", "🍷"],
+tu_bishvat: ["🌳", "🌱", "🍇", "🍊", "🌧️"],
+simchat_torah: ["📜", "💃", "🕍", "🙌"],
+yom_haatzmaut: ["🇮🇱", "🎆", "💙", "🍖"],
+lag_baomer: ["🔥", "🥔", "🕯️", "🏹"],
+tu_beav: ["❤️", "💑", "💍", "💌"],
+rosh_chodesh: ["🌑", "📅", "✨", "🙏"],
+mimouna: ["🥞", "🍯", "🍪", "🪕"],
+chabad: ["👑", "🕯️", "🕍", "📜", "📖"]
+};
 
-    function goBack() {
-        let currentEmojiState = state.useEmojis;
-        let currentSender = state.senderGender;
-        let currentLength = state.length;
-        state = { category: null, subCategory: null, shabbatTime: null, holidayName: null, holidayTarget: null, chabadDate: null, chabadTarget: null, timeOfDay: null, length: currentLength, gender: null, relationKey: null, useEmojis: currentEmojiState, senderGender: currentSender };
-        
-        document.getElementById('nameInput').value = "";
-        document.getElementById('ageInput').value = "";
-        document.getElementById('output').innerHTML = '<div style="opacity:0.5; text-align:center; padding-top:10px;">הברכה תופיע כאן...</div>';
-        document.getElementById('mainGrid').style.display = 'grid';
-        
-        document.getElementById('genBtn').style.display = 'none';
-        
-        document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-        
-        document.getElementById('holidayTargetSelector').style.display = 'none';
-        document.getElementById('timeTargetSelector').style.display = 'none';
-        
-        updateSenderUI();
-    }
+function updateEmojiUI() {
+const btn = document.getElementById('emojiBtn');
+const icon = document.getElementById('emojiIcon');
+if (state.useEmojis) {
+btn.classList.add('active');
+icon.innerText = "✅";
+} else {
+btn.classList.remove('active');
+icon.innerText = "⚪";
+}
+}
 
-    function selectCategory(cat, btn) {
-        state.category = cat;
-        document.getElementById('mainGrid').style.display = 'none';
-        document.getElementById('inputSection').style.display = 'block';
-        
-        if (cat === 'morning_evening') {
-            document.getElementById('morningEveningSection').style.display = 'block';
-            document.getElementById('timeTargetSelector').style.display = 'none';
-        }
-        else if (cat === 'shabbat') {
-            document.getElementById('shabbatSection').style.display = 'block';
-            document.getElementById('shabbatTimeSelector').style.display = 'block';
-            document.getElementById('shabbatTargetSelector').style.display = 'none';
-        }
-        else if (cat === 'holiday') {
-            document.getElementById('holidaySection').style.display = 'block';
-            document.getElementById('holidayNameSelector').style.display = 'block';
-            document.getElementById('holidayTargetSelector').style.display = 'none';
-        }
-        else if (cat === 'chabad') {
-            document.getElementById('chabadSection').style.display = 'block';
-        }
-        else if (cat === 'event') document.getElementById('eventSection').style.display = 'block';
-        else if (cat === 'birth') document.getElementById('birthSection').style.display = 'block';
-        else if (cat === 'birthday') document.getElementById('birthdaySection').style.display = 'block';
-        else {
-            if(['success', 'recovery', 'thank_you', 'love'].includes(cat)) {
-                document.getElementById('genderSection').style.display = 'block';
-            } else {
-                document.getElementById('genBtn').style.display = 'block';
-            }
-        }
-    }
+function toggleEmoji() {
+state.useEmojis = !state.useEmojis;
+localStorage.setItem('useEmojis', state.useEmojis);
+updateEmojiUI();
+}
 
-    function selectTimeOfDay(time, btn) {
-        state.timeOfDay = time;
-        const btns = document.querySelectorAll('#timeOfDaySelector .sub-btn');
-        btns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('timeTargetSelector').style.display = 'block';
-        document.getElementById('genBtn').style.display = 'none'; 
-    }
+function goBack() {
+let currentEmojiState = state.useEmojis;
+let currentSender = state.senderGender;
+let currentLength = state.length;
+state = {
+category: null,
+subCategory: null,
+shabbatTime: null,
+holidayName: null,
+holidayTarget: null,
+chabadDate: null,
+chabadTarget: null,
+timeOfDay: null,
+length: currentLength,
+gender: null,
+recipientGender: null,
+relationKey: null,
+birthType: null,
+useEmojis: currentEmojiState,
+senderGender: currentSender
+};
+document.getElementById('nameInput').value = "";
+document.getElementById('ageInput').value = "";
+document.getElementById('output').innerHTML = '<div style="opacity:0.5; text-align:center; padding-top:10px;">הברכה תופיע כאן...</div>';
+document.getElementById('mainGrid').style.display = 'grid';
+document.getElementById('genBtn').style.display = 'none';
+document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
+document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+document.getElementById('holidayTargetSelector').style.display = 'none';
+document.getElementById('timeTargetSelector').style.display = 'none';
+updateSenderUI();
+}
 
-    function selectTimeTarget(target, btn) {
-        state.subCategory = target;
-        const btns = document.querySelectorAll('#timeTargetSelector .sub-btn');
-        btns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('genBtn').style.display = 'block';
-    }
+// --- לוגיקת בחירת קטגוריות ---
+function selectCategory(cat, btn) {
+state.category = cat;
+document.getElementById('mainGrid').style.display = 'none';
+document.getElementById('inputSection').style.display = 'block';
 
-    function selectShabbatTime(time) {
-        state.shabbatTime = time;
-        const btns = document.querySelectorAll('#shabbatTimeSelector .sub-btn');
-        btns.forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-        document.getElementById('shabbatTargetSelector').style.display = 'block';
-        document.getElementById('genBtn').style.display = 'block';
-    }
+// הסתרת כל הסקציות
+document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
 
-    function selectSub(type, btn) {
-        if (type.startsWith('chabad_')) {
-            state.chabadDate = type;
-            let parent = btn.parentElement;
-            parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            if (state.chabadTarget) document.getElementById('genBtn').style.display = 'block';
-            return;
-        }
-        
-        if (state.category === 'chabad' && !type.startsWith('chabad_')) {
-            state.chabadTarget = type;
-            let parent = btn.parentElement;
-            parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            if (state.chabadDate) document.getElementById('genBtn').style.display = 'block';
-            return;
-        }
+if (cat === 'morning_evening') {
+document.getElementById('morningEveningSection').style.display = 'block';
+document.getElementById('timeTargetSelector').style.display = 'none';
+}
+else if (cat === 'shabbat') {
+document.getElementById('shabbatSection').style.display = 'block';
+document.getElementById('shabbatTimeSelector').style.display = 'block';
+document.getElementById('shabbatTargetSelector').style.display = 'none';
+}
+else if (cat === 'holiday') {
+document.getElementById('holidaySection').style.display = 'block';
+document.getElementById('holidayNameSelector').style.display = 'block';
+document.getElementById('holidayTargetSelector').style.display = 'none';
+}
+else if (cat === 'chabad') {
+document.getElementById('chabadSection').style.display = 'block';
+}
+else if (cat === 'event') document.getElementById('eventSection').style.display = 'block';
+else if (cat === 'birth') {
+document.getElementById('birthSection').style.display = 'block';
+document.getElementById('birthSubTargetSection').style.display = 'none';
+}
+else if (cat === 'birthday') document.getElementById('birthdaySection').style.display = 'block';
+else if (cat === 'recovery') {
+document.getElementById('recoveryTargetSection').style.display = 'block';
+}
+else if (cat === 'thank_you') {
+document.getElementById('thankYouTargetSection').style.display = 'block';
+}
+else if (['success', 'love'].includes(cat)) {
+document.getElementById('genderSection').style.display = 'block';
+} else {
+document.getElementById('genBtn').style.display = 'block';
+}
+}
 
-        state.subCategory = type;
-        let parent = btn.parentElement;
-        parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('genBtn').style.display = 'block';
-    }
+// --- פונקציות עזר לבחירות ספציפיות ---
 
-    function selectHolidayName(hName, btn) {
-        state.holidayName = hName;
-        const btns = document.querySelectorAll('#holidayNameSelector .sub-btn');
-        btns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('holidayTargetSelector').style.display = 'block';
-        document.getElementById('genBtn').style.display = 'block';
-    }
+function selectTimeOfDay(time, btn) {
+state.timeOfDay = time;
+const btns = document.querySelectorAll('#timeOfDaySelector .sub-btn');
+btns.forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+document.getElementById('timeTargetSelector').style.display = 'block';
+document.getElementById('genBtn').style.display = 'none';
+}
 
-    function selectHolidayTarget(target, btn) {
-        state.holidayTarget = target;
-        const btns = document.querySelectorAll('#holidayTargetSelector .sub-btn');
-        btns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    }
+function selectTimeTarget(target, btn) {
+state.subCategory = target;
+if (target === 'husband') state.recipientGender = 'male';
+if (target === 'wife') state.recipientGender = 'female';
+const btns = document.querySelectorAll('#timeTargetSelector .sub-btn');
+btns.forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+document.getElementById('genBtn').style.display = 'block';
+}
 
-    function selectGenderGeneral(g, btn) {
-        state.gender = g;
-        let parent = btn.parentElement;
-        parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('genBtn').style.display = 'block';
-    }
+function selectShabbatTime(time) {
+state.shabbatTime = time;
+const btns = document.querySelectorAll('#shabbatTimeSelector .sub-btn');
+btns.forEach(b => b.classList.remove('active'));
+event.target.classList.add('active');
+document.getElementById('shabbatTargetSelector').style.display = 'block';
+document.getElementById('genBtn').style.display = 'block';
+}
 
-    function selectGender(gender, btn) {
-        state.gender = gender;
-        let parent = btn.parentElement;
-        parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+function selectSub(type, btn) {
+if (type.startsWith('chabad_')) {
+state.chabadDate = type;
+let parent = btn.parentElement;
+parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+if (state.chabadTarget) document.getElementById('genBtn').style.display = 'block';
+return;
+}
+if (state.category === 'chabad' && !type.startsWith('chabad_')) {
+state.chabadTarget = type;
+let parent = btn.parentElement;
+parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+if (state.chabadDate) document.getElementById('genBtn').style.display = 'block';
+return;
+}
 
-        // --- סדר הכפתורים ---
-        const relationsMap = {
-            man: [
-                { label: "חבר 🍻", key: "friend_male" },
-                { label: "אח 👊", key: "brother" },
-                { label: "אבא 👑", key: "dad" },
-                { label: "בעלי 💍", key: "husband" },
-                { label: "בן זוגי 💑", key: "partner_male" }
-            ],
-            woman: [
-                { label: "חברה 👯‍♀️", key: "friend_female" },
-                { label: "אחות 🌸", key: "sister" },
-                { label: "אמא 👑", key: "mom" },
-                { label: "אשתי 💍", key: "wife" },
-                { label: "בת זוגתי 💑", key: "partner_female" }
-            ],
-            boy: [
-                { label: "ילד ⚽", key: "boy" }, // כללי
-                { label: "בן 💙", key: "son" }, // הבן שלי
-                { label: "נכד 🧸", key: "boy" }, 
-                { label: "חבר 🚲", key: "boy" }
-            ],
-            girl: [
-                { label: "ילדה 🎀", key: "girl" }, // כללי
-                { label: "בת 💖", key: "daughter" }, // הבת שלי
-                { label: "נכדה 🦄", key: "girl" },
-                { label: "חברה 👭", key: "girl" }
-            ]
-        };
-        
-        const grid = document.getElementById('relationsGrid');
-        grid.innerHTML = '';
-        (relationsMap[gender] || []).forEach(relItem => {
-            const b = document.createElement('button');
-            b.className = 'sub-btn';
-            b.innerText = relItem.label;
-            b.onclick = (e) => {
-                state.relationKey = relItem.key;
-                grid.querySelectorAll('.sub-btn').forEach(x => x.classList.remove('active'));
-                e.target.classList.add('active');
-            };
-            grid.appendChild(b);
-        });
-        document.getElementById('relationsContainer').style.display = 'block';
-        document.getElementById('genBtn').style.display = 'block';
-    }
+state.subCategory = type;
+const maleTargets = ['husband', 'brother', 'friend_male', 'dad', 'grandson', 'boy'];
+const femaleTargets = ['wife', 'sister', 'friend_female', 'mom', 'granddaughter', 'girl'];
+if (maleTargets.includes(type)) state.recipientGender = 'male';
+if (femaleTargets.includes(type)) state.recipientGender = 'female';
 
-    function getDistinctRandom(arr, count) {
-        if (!arr || arr.length === 0) return [];
-        const shuffled = [...arr].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, count);
-    }
+let parent = btn.parentElement;
+parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+document.getElementById('genBtn').style.display = 'block';
+}
 
-    function adjustTextForSender(text) {
-        if (state.senderGender === 'female') {
-            const replacements = [
-                { m: "מאחל", f: "מאחלת" },
-                { m: "אוהב", f: "אוהבת" },
-                { m: "מעריך", f: "מעריכה" },
-                { m: "שולח", f: "שולחת" },
-                { m: "בטוח", f: "בטוחה" },
-                { m: "חושב", f: "חושבת" },
-                { m: "מתגעגע", f: "מתגעגעת" },
-                { m: "מוקיר", f: "מוקירה" },
-                { m: "מאמין", f: "מאמינה" },
-                { m: "סומך", f: "סומכת" },
-                { m: "מחזיק", f: "מחזיקה" },
-                { m: "מודה", f: "מודה" }
-            ];
+function selectHolidayName(hName, btn) {
+state.holidayName = hName;
+const btns = document.querySelectorAll('#holidayNameSelector .sub-btn');
+btns.forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+document.getElementById('holidayTargetSelector').style.display = 'block';
+document.getElementById('genBtn').style.display = 'block';
+}
 
-            let newText = text;
-            replacements.forEach(pair => {
-                newText = newText.split(pair.m).join(pair.f);
-            });
-            return newText;
-        }
-        return text;
-    }
+function selectHolidayTarget(target, btn) {
+state.holidayTarget = target;
+if (['husband', 'brother', 'friend_male', 'father'].includes(target)) state.recipientGender = 'male';
+if (['wife', 'sister', 'friend_female', 'mother'].includes(target)) state.recipientGender = 'female';
+const btns = document.querySelectorAll('#holidayTargetSelector .sub-btn');
+btns.forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+}
 
-    function generateBlessing() {
-        document.getElementsByName('length').forEach(l => { if(l.checked) state.length = l.value });
-        const output = document.getElementById('output');
-        let key = "";
+// --- פונקציות לידה חדשות ---
+function selectBirthType(type) {
+state.birthType = type;
+const btns = document.querySelectorAll('#birthSection > .sub-grid > .sub-btn');
+btns.forEach(b => b.classList.remove('active'));
+event.target.classList.add('active');
 
-        if (state.category === 'morning_evening') {
-             if (!state.timeOfDay || !state.subCategory) { alert("נא לבחור זמן ויעד..."); return; }
-             key = `${state.timeOfDay}_${state.subCategory}`;
-        }
-        else if (state.category === 'shabbat') {
-            if (!state.shabbatTime || !state.subCategory) { alert("נא לבחור זמן ויעד..."); return; }
-            key = `${state.shabbatTime}_${state.subCategory}`;
-        }
-        else if (state.category === 'holiday') {
-             if (!state.holidayName || !state.holidayTarget) { alert("נא לבחור חג ויעד..."); return; }
-             key = `${state.holidayName}_${state.holidayTarget}`;
-        }
-        else if (state.category === 'chabad') {
-             if (!state.chabadDate || !state.chabadTarget) { alert("נא לבחור תאריך ויעד..."); return; }
-             key = `${state.chabadDate}_${state.chabadTarget}`;
-        }
-        else if (state.category === 'event') {
-             if (!state.subCategory) { alert("נא לבחור..."); return; }
-             key = state.subCategory;
-        }
-        else if (state.category === 'birth') {
-             if (!state.subCategory) { alert("נא לבחור..."); return; }
-             key = state.subCategory;
-        }
-        else if (state.category === 'birthday') {
-             if (state.relationKey) {
-                 key = `birthday_${state.relationKey}`;
-             } else {
-                 const bdKey = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female') ? 'birthday_female' : 'birthday_male';
-                 key = bdKey;
-             }
-        } 
-        else if (['success', 'recovery', 'thank_you', 'love'].includes(state.category)) {
-             if (!state.gender) { alert("נא לבחור מין..."); return; }
-             key = `${state.category}_${state.gender}`;
-        }
-        else {
-            key = state.category;
-        }
+const targetContainer = document.getElementById('birthTargetButtons');
+targetContainer.innerHTML = '';
+document.getElementById('birthSubTargetSection').style.display = 'block';
+document.getElementById('birthTargetTitle').innerText = (type === 'birth_boy') ? "למי נולד הבן?" : "למי נולדה הבת?";
 
-        let gen = generators[key];
-        
-        if (!gen && localBlessings[key]) {
-            gen = localBlessings[key];
-        }
+// בניית כפתורים לפי המין
+const targets = (type === 'birth_boy') ?
+[
+{key: 'brother', label: 'לאח 👦'},
+{key: 'friend', label: 'לחבר 🤜🤛'},
+{key: 'neighbor', label: 'לשכן 🏠'},
+{key: 'family', label: 'לבן משפחה 👨‍👩‍👧‍👦'}
+] :
+[
+{key: 'sister', label: 'לאחות 👧'},
+{key: 'friend', label: 'לחברה 👯‍♀️'},
+{key: 'neighbor', label: 'לשכנה 🏠'},
+{key: 'family', label: 'לבת משפחה 👨‍👩‍👧‍👦'}
+];
 
-        if (!gen) {
-            if (state.category === 'shabbat') gen = generators[`${state.shabbatTime}_general`];
-            else if (state.category === 'holiday') gen = generators[`${state.holidayName}_general`] || generators[`${state.holidayName}`];
-            else if (state.category === 'chabad') gen = generators[state.chabadDate];
-            else if (state.category === 'birthday') {
-                 const fallbackKey = (state.gender === 'woman' || state.gender === 'girl') ? 'birthday_female' : 'birthday_male';
-                 gen = generators[fallbackKey];
-            }
-        }
-        
-        if (!gen) { 
-            output.innerHTML = `<div style="color:red; text-align:center">לא נמצאו ברכות לקטגוריה: ${key}</div>`; 
-            return; 
-        }
+targets.forEach(t => {
+const b = document.createElement('button');
+b.className = 'sub-btn';
+b.innerText = t.label;
+b.onclick = (e) => selectBirthSubTarget(t.key, e.target);
+targetContainer.appendChild(b);
+});
+}
 
-        let parts = [];
-        const name = document.getElementById('nameInput').value.trim();
-        saveNameHistory(name); 
+function selectBirthSubTarget(target, btn) {
+state.subCategory = target;
+const btns = document.querySelectorAll('#birthTargetButtons .sub-btn');
+btns.forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+document.getElementById('genBtn').style.display = 'block';
+}
 
-        if (name) {
-            let suffix = "היקר/ה";
-            
-            const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife');
-            const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband');
+// --- פונקציות רפואה חדשות ---
+function selectRecoveryTarget(target, btn) {
+state.subCategory = target;
+if(['male', 'dad', 'brother', 'son', 'friend_male'].includes(target)) state.recipientGender = 'male';
+if(['female', 'mom', 'sister', 'daughter', 'friend_female'].includes(target)) state.recipientGender = 'female';
 
-            const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female');
-            const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male');
+const btns = document.querySelectorAll('#recoveryTargetSection .sub-btn');
+btns.forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+document.getElementById('genBtn').style.display = 'block';
+}
 
-            if (isWifeContext) {
-                suffix = wifeSuffixes[Math.floor(Math.random() * wifeSuffixes.length)];
-            } else if (isHusbandContext) {
-                suffix = husbandSuffixes[Math.floor(Math.random() * husbandSuffixes.length)];
-            } else {
-                if (isGenericFemale) suffix = "היקרה";
-                else if (isGenericMale) suffix = "היקר";
-            }
-            
-            parts.push(`${name} ${suffix},`);
-        }
+// --- פונקציות תודה חדשות ---
+function selectThankYouTarget(target, btn) {
+state.subCategory = target;
+if(['male_general', 'father', 'brother', 'friend_male'].includes(target)) state.recipientGender = 'male';
+if(['female_general', 'mother', 'sister', 'friend_female'].includes(target)) state.recipientGender = 'female';
 
-        parts.push(getDistinctRandom(gen.openers, 1)[0]);
-        const bodyCount = state.length === 'long' ? 2 : 1;
-        const bodies = getDistinctRandom(gen.bodies, bodyCount);
-        parts.push(...bodies);
+const btns = document.querySelectorAll('#thankYouTargetSection .sub-btn');
+btns.forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+document.getElementById('genBtn').style.display = 'block';
+}
 
-        if (state.category !== 'morning_evening') {
-            parts.push(getDistinctRandom(gen.closings, 1)[0]);
-        }
+function selectGenderGeneral(g, btn) {
+state.gender = g;
+state.recipientGender = g;
+let parent = btn.parentElement;
+parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+document.getElementById('genBtn').style.display = 'block';
+}
 
-        let adjustedParts = parts.map(part => adjustTextForSender(part));
+function selectGender(gender, btn) {
+state.gender = gender;
+if (gender === 'man' || gender === 'boy') state.recipientGender = 'male';
+if (gender === 'woman' || gender === 'girl') state.recipientGender = 'female';
 
-        let emojiSet = 'general';
-        if (state.category === 'morning_evening') emojiSet = state.timeOfDay;
-        else if (state.category === 'shabbat') emojiSet = state.shabbatTime;
-        else if (state.category === 'holiday') emojiSet = state.holidayName;
-        else if (state.category === 'birth') emojiSet = state.subCategory;
-        else if (state.category === 'chabad') emojiSet = state.chabadDate;
-        else if (emojis[key]) emojiSet = key;
-        else if (emojis[state.category]) emojiSet = state.category;
+let parent = btn.parentElement;
+parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
 
-        if (state.category === 'chabad' && !emojis[emojiSet]) emojiSet = 'chabad';
+const relationsMap = {
+man: [
+{ label: "חבר 🍻", key: "friend_male" },
+{ label: "אח 👊", key: "brother" },
+{ label: "אבא 👑", key: "dad" },
+{ label: "בעלי 💍", key: "husband" },
+{ label: "בן זוגי 💑", key: "partner_male" }
+],
+woman: [
+{ label: "חברה 👯‍♀️", key: "friend_female" },
+{ label: "אחות 🌸", key: "sister" },
+{ label: "אמא 👑", key: "mom" },
+{ label: "אשתי 💍", key: "wife" },
+{ label: "בת זוגתי 💑", key: "partner_female" }
+],
+boy: [
+{ label: "ילד ⚽", key: "boy" },
+{ label: "בן 💙", key: "son" },
+{ label: "נכד 🧸", key: "boy" },
+{ label: "חבר 🚲", key: "boy" }
+],
+girl: [
+{ label: "ילדה 🎀", key: "girl" },
+{ label: "בת 💖", key: "daughter" },
+{ label: "נכדה 🦄", key: "girl" },
+{ label: "חברה 👭", key: "girl" }
+]
+};
+const grid = document.getElementById('relationsGrid');
+grid.innerHTML = '';
+(relationsMap[gender] || []).forEach(relItem => {
+const b = document.createElement('button');
+b.className = 'sub-btn';
+b.innerText = relItem.label;
+b.onclick = (e) => {
+state.relationKey = relItem.key;
+if (['husband','partner_male','brother','friend_male','son','dad'].includes(relItem.key)) state.recipientGender = 'male';
+if (['wife','partner_female','sister','friend_female','daughter','mom'].includes(relItem.key)) state.recipientGender = 'female';
+grid.querySelectorAll('.sub-btn').forEach(x => x.classList.remove('active'));
+e.target.classList.add('active');
+};
+grid.appendChild(b);
+});
+document.getElementById('relationsContainer').style.display = 'block';
+document.getElementById('genBtn').style.display = 'block';
+}
 
-        renderLinesWithEmojis(adjustedParts, emojiSet);
-    }
+function getDistinctRandom(arr, count) {
+if (!arr || arr.length === 0) return [];
+const shuffled = [...arr].sort(() => 0.5 - Math.random());
+return shuffled.slice(0, count);
+}
 
-    function renderLinesWithEmojis(linesArray, setKey) {
-        const cleanLines = linesArray.filter(l => l && l.trim() !== "");
-        let availableEmojis = [...(emojis[setKey] || emojis['general'])]; 
-        
-        const container = document.getElementById('output');
-        container.innerHTML = ''; 
+// --- תיקון דקדוק חכם ---
+function smartGrammarFix(text) {
+let clean = text;
 
-        cleanLines.forEach(line => {
-            let lineContent = line.trim();
-            if (state.useEmojis) {
-                if (availableEmojis.length === 0) availableEmojis = [...(emojis[setKey] || emojis['general'])];
-                const randomIndex = Math.floor(Math.random() * availableEmojis.length);
-                const emoji = availableEmojis[randomIndex];
-                availableEmojis.splice(randomIndex, 1); 
-                lineContent = `${lineContent} ${emoji}`;
-            }
-            
-            const row = document.createElement('div');
-            row.className = 'line-item';
-            row.innerHTML = `
-                <button class="delete-line-btn" onclick="this.parentElement.remove()" title="מחק שורה זו">✕</button>
-                <div class="line-text" contenteditable="true">*${lineContent}*</div>
-            `;
-            container.appendChild(row);
-        });
-    }
+// שולח (אני)
+if (state.senderGender === 'female') {
+const senderReplacements = [
+{ m: "מאחל", f: "מאחלת" }, { m: "אוהב", f: "אוהבת" }, { m: "מעריך", f: "מעריכה" },
+{ m: "שולח", f: "שולחת" }, { m: "בטוח", f: "בטוחה" }, { m: "חושב", f: "חושבת" },
+{ m: "מתגעגע", f: "מתגעגעת" }, { m: "מוקיר", f: "מוקירה" }, { m: "מאמין", f: "מאמינה" },
+{ m: "סומך", f: "סומכת" }, { m: "מחזיק", f: "מחזיקה" }, { m: "מודה", f: "מודה" },
+{ m: "כותב", f: "כותבת" }, { m: "מבקש", f: "מבקשת" }
+];
+senderReplacements.forEach(pair => {
+clean = clean.replace(new RegExp(pair.m, 'g'), pair.f);
+});
+}
 
-    function getVisibleText() {
-        const rows = document.querySelectorAll('.line-text');
-        return Array.from(rows).map(r => r.innerText.trim()).join('\n');
-    }
+// מקבל (את/ה)
+if (state.recipientGender) {
+if (state.recipientGender === 'male') {
+const toMaleMap = [
+{ wrong: "יקרה", right: "יקר" }, { wrong: "אהובה", right: "אהוב" },
+{ wrong: "מדהימה", right: "מדהים" }, { wrong: "מקסימה", right: "מקסים" },
+{ wrong: "מושלמת", right: "מושלם" }, { wrong: "הטובה", right: "הטוב" },
+{ wrong: "את", right: "אתה" }, { wrong: "שלך", right: "שלך" },
+{ wrong: "בשבילך", right: "בשבילך" }, { wrong: "אלייך", right: "אלייך" },
+{ wrong: "נהדרת", right: "נהדר" }, { wrong: "חשובה", right: "חשוב" },
+{ wrong: "בריאה", right: "בריא" }, { wrong: "חזקה", right: "חזק" }
+];
+toMaleMap.forEach(pair => {
+clean = clean.replace(new RegExp(`\\b${pair.wrong}\\b`, 'g'), pair.right);
+});
+}
+else if (state.recipientGender === 'female') {
+const toFemaleMap = [
+{ wrong: "יקר", right: "יקרה" }, { wrong: "אהוב", right: "אהובה" },
+{ wrong: "מדהים", right: "מדהימה" }, { wrong: "מקסים", right: "מקסימה" },
+{ wrong: "מושלם", right: "מושלמת" }, { wrong: "הטוב", right: "הטובה" },
+{ wrong: "אתה", right: "את" }, { wrong: "נהדר", right: "נהדרת" },
+{ wrong: "חשוב", right: "חשובה" }, { wrong: "מלך", right: "מלכה" },
+{ wrong: "אלוף", right: "אלופה" }, { wrong: "בריא", right: "בריאה" },
+{ wrong: "חזק", right: "חזקה" }
+];
+toFemaleMap.forEach(pair => {
+clean = clean.replace(new RegExp(`\\b${pair.wrong}\\b`, 'g'), pair.right);
+});
+}
+}
+return clean;
+}
 
-    function copyText() {
-        const textToCopy = getVisibleText();
-        if(!textToCopy) return;
-        
-        navigator.clipboard.writeText(textToCopy);
-        const btn = document.querySelector('.btn-copy');
-        let old = btn.innerText; btn.innerText = "הועתק! 👍"; setTimeout(() => btn.innerText = old, 1500);
-    }
+// --- יצירת הברכה (הלב של המערכת) ---
+function generateBlessing() {
+document.getElementsByName('length').forEach(l => { if(l.checked) state.length = l.value });
+const output = document.getElementById('output');
+let key = "";
+let fallbackKey = null;
 
-    function sendWhatsapp() {
-        let text = getVisibleText();
-        if(!text) return alert("קודם צור ברכה!");
-        window.open(`whatsapp://send?text=${encodeURIComponent(text)}`, '_blank');
-    }
+// לוגיקה לבחירת המפתח לפי קטגוריה
+if (state.category === 'morning_evening') {
+if (!state.timeOfDay || !state.subCategory) { alert("נא לבחור זמן ויעד..."); return; }
+key = `${state.timeOfDay}_${state.subCategory}`;
+}
+else if (state.category === 'shabbat') {
+if (!state.shabbatTime || !state.subCategory) { alert("נא לבחור זמן ויעד..."); return; }
+key = `${state.shabbatTime}_${state.subCategory}`;
+fallbackKey = `shabbat_${state.subCategory}`; // גיבוי לכללי
+}
+else if (state.category === 'holiday') {
+if (!state.holidayName || !state.holidayTarget) { alert("נא לבחור חג ויעד..."); return; }
+key = `${state.holidayName}_${state.holidayTarget}`;
+// --- הקסם האוניברסלי לחגים ---
+fallbackKey = `holiday_${state.holidayTarget}`; 
+}
+else if (state.category === 'chabad') {
+if (!state.chabadDate || !state.chabadTarget) { alert("נא לבחור תאריך ויעד..."); return; }
+key = `${state.chabadDate}_${state.chabadTarget}`;
+}
+else if (state.category === 'event') {
+if (!state.subCategory) { alert("נא לבחור..."); return; }
+key = state.subCategory;
+}
+else if (state.category === 'birth') {
+// מפתח מורכב: birth_boy_brother
+if (!state.subCategory) { alert("נא לבחור למי נולד..."); return; }
+key = `${state.birthType}_${state.subCategory}`;
+// אם לא נמצא, נסה את הכללי (birth_boy)
+fallbackKey = state.birthType;
+}
+else if (state.category === 'recovery') {
+if (!state.subCategory) { alert("נא לבחור למי..."); return; }
+key = `recovery_${state.subCategory}`;
+}
+else if (state.category === 'thank_you') {
+if (!state.subCategory) { alert("נא לבחור למי..."); return; }
+key = `thank_you_${state.subCategory}`;
+}
+else if (state.category === 'birthday') {
+if (state.relationKey) {
+key = `birthday_${state.relationKey}`;
+} else {
+const bdKey = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female') ? 'birthday_female' : 'birthday_male';
+key = bdKey;
+}
+}
+else if (['success', 'love'].includes(state.category)) {
+if (!state.gender) { alert("נא לבחור מין..."); return; }
+key = `${state.category}_${state.gender}`;
+}
+else {
+key = state.category;
+}
+
+// ניסיון טעינה
+let gen = generators[key];
+if (!gen && localBlessings[key]) {
+gen = localBlessings[key];
+}
+
+// בדיקת Fallback (קסם)
+if (!gen && fallbackKey && generators[fallbackKey]) {
+gen = generators[fallbackKey];
+// שים לב: אנחנו משתמשים בברכה הגנרית אבל האימוג'ים יהיו של החג הספציפי שנבחר!
+}
+
+// Fallbacks מקוריים (אם הכל נכשל)
+if (!gen) {
+if (state.category === 'shabbat') gen = generators[`${state.shabbatTime}_general`];
+else if (state.category === 'holiday') gen = generators[`${state.holidayName}_general`] || generators[`${state.holidayName}`];
+else if (state.category === 'chabad') gen = generators[state.chabadDate];
+else if (state.category === 'birthday') {
+const fallbackKey = (state.gender === 'woman' || state.gender === 'girl') ? 'birthday_female' : 'birthday_male';
+gen = generators[fallbackKey];
+}
+}
+
+if (!gen) {
+output.innerHTML = `<div style="color:red; text-align:center">לא נמצאו ברכות לקטגוריה: ${key}</div>`;
+return;
+}
+
+// הרכבת הברכה
+let parts = [];
+const name = document.getElementById('nameInput').value.trim();
+saveNameHistory(name);
+
+if (name) {
+let suffix = "היקר/ה";
+const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife');
+const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband');
+
+const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || state.recipientGender === 'female');
+const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' || state.recipientGender === 'male');
+
+if (isWifeContext) {
+suffix = wifeSuffixes[Math.floor(Math.random() * wifeSuffixes.length)];
+} else if (isHusbandContext) {
+suffix = husbandSuffixes[Math.floor(Math.random() * husbandSuffixes.length)];
+} else {
+if (isGenericFemale) suffix = "היקרה";
+else if (isGenericMale) suffix = "היקר";
+}
+parts.push(`${name} ${suffix},`);
+}
+
+parts.push(getDistinctRandom(gen.openers, 1)[0]);
+const bodyCount = state.length === 'long' ? 2 : 1;
+const bodies = getDistinctRandom(gen.bodies, bodyCount);
+parts.push(...bodies);
+
+if (state.category !== 'morning_evening') {
+parts.push(getDistinctRandom(gen.closings, 1)[0]);
+}
+
+let adjustedParts = parts.map(part => smartGrammarFix(part));
+
+// בחירת אימוג'ים
+let emojiSet = 'general';
+if (state.category === 'morning_evening') emojiSet = state.timeOfDay;
+else if (state.category === 'shabbat') emojiSet = state.shabbatTime;
+else if (state.category === 'holiday') emojiSet = state.holidayName; // כאן הקסם: אימוג'י של חג ספציפי גם בברכה גנרית
+else if (state.category === 'birth') emojiSet = state.birthType; // birth_boy / birth_girl
+else if (state.category === 'chabad') emojiSet = state.chabadDate;
+else if (emojis[key]) emojiSet = key;
+else if (emojis[state.category]) emojiSet = state.category;
+
+if (state.category === 'chabad' && !emojis[emojiSet]) emojiSet = 'chabad';
+
+renderLinesWithEmojis(adjustedParts, emojiSet);
+}
+
+function renderLinesWithEmojis(linesArray, setKey) {
+const cleanLines = linesArray.filter(l => l && l.trim() !== "");
+let availableEmojis = [...(emojis[setKey] || emojis['general'])];
+const container = document.getElementById('output');
+container.innerHTML = '';
+
+cleanLines.forEach(line => {
+let lineContent = line.trim();
+if (state.useEmojis) {
+if (availableEmojis.length === 0) availableEmojis = [...(emojis[setKey] || emojis['general'])];
+const randomIndex = Math.floor(Math.random() * availableEmojis.length);
+const emoji = availableEmojis[randomIndex];
+availableEmojis.splice(randomIndex, 1);
+lineContent = `${lineContent} ${emoji}`;
+}
+const row = document.createElement('div');
+row.className = 'line-item';
+row.innerHTML = `
+<button class="delete-line-btn" onclick="this.parentElement.remove()" title="מחק שורה זו">✕</button>
+<div class="line-text" contenteditable="true">*${lineContent}*</div>
+`;
+container.appendChild(row);
+});
+}
+
+function getVisibleText() {
+const rows = document.querySelectorAll('.line-text');
+return Array.from(rows).map(r => r.innerText.trim()).join('\n');
+}
+
+function copyText() {
+const textToCopy = getVisibleText();
+if(!textToCopy) return;
+navigator.clipboard.writeText(textToCopy);
+const btn = document.querySelector('.btn-copy');
+let old = btn.innerText; btn.innerText = "הועתק! 👍"; setTimeout(() => btn.innerText = old, 1500);
+}
+
+function sendWhatsapp() {
+let text = getVisibleText();
+if(!text) return alert("קודם צור ברכה!");
+window.open(`whatsapp://send?text=${encodeURIComponent(text)}`, '_blank');
+}
 </script>
 
 </body>
