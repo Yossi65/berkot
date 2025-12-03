@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>מערכת הברכות החכמה 3.0</title>
+<title>מילים מהלב ❤️</title>
+<link rel="manifest" href="manifest.json">
+
 <style>
 /* הגדרת משתנים - ברירת מחדל */
 :root {
@@ -45,10 +47,11 @@ min-height: 600px;
 transition: background-color 0.4s ease;
 }
 /* כותרת וכפתור הגדרות */
-.header-row { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
-h1 { font-size: 1.5rem; margin: 0; color: var(--primary-dark); flex-grow: 1; text-align: center; }
+.header-row { display: flex; justify-content: space-between; align-items: center; margin: 5px 0 15px 0; }
+h1 { font-size: 1.8rem; margin: 0; color: var(--primary-dark); flex-grow: 1; text-align: center; }
 .settings-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 5px; color: #555; transition: transform 0.3s; }
 .settings-btn:hover { transform: rotate(45deg); color: var(--primary); }
+
 /* כפתור חזרה */
 .back-btn {
 background: #e4e6eb;
@@ -66,6 +69,7 @@ transition: 0.2s;
 }
 .back-btn:hover { background: #d0d2d6; }
 
+/* אזור הפקדים (ירד למטה) */
 .controls-area {
 display: flex;
 flex-direction: column;
@@ -74,6 +78,8 @@ background: var(--controls-bg);
 padding: 15px;
 border-radius: 12px;
 transition: background-color 0.4s ease;
+margin-top: 10px; /* רווח קטן מאנשי הקשר */
+border-top: 1px solid rgba(0,0,0,0.05);
 }
 
 .top-row {
@@ -97,6 +103,7 @@ flex-wrap: wrap;
 .length-selector input { display: none; }
 .length-selector input:checked + span { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); color: var(--primary); font-weight: bold; display: block; border-radius: 16px; padding: 4px 8px; }
 .length-selector span { display: block; }
+
 .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; transition: all 0.3s ease; }
 @media (min-width: 600px) { .grid-container { grid-template-columns: repeat(5, 1fr); } }
 .category-btn { background: white; border: 1px solid #e0e0e0; padding: 15px 5px; border-radius: 12px; font-size: 1rem; cursor: pointer; font-weight: 500; color: #444; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s; }
@@ -109,7 +116,6 @@ flex-wrap: wrap;
 .sub-btn { background: white; border: 1px solid #ccc; padding: 12px; border-radius: 10px; font-size: 0.95rem; cursor: pointer; transition: 0.2s; }
 .sub-btn.active { background: var(--primary-dark); color: white; border-color: var(--primary-dark); font-weight: bold; }
 
-/* כותרות בתוך הקטגוריות */
 .section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary-dark); margin-bottom: 10px; text-align: center; width: 100%; display:block;}
 
 .input-row { display: flex; gap: 10px; }
@@ -117,7 +123,8 @@ input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; 
 .generate-btn { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 10px; }
 .generate-btn:active { transform: scale(0.98); }
 .generate-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
-/* --- עיצוב אזור הפלט (שורות נפרדות) --- */
+
+/* --- עיצוב אזור הפלט --- */
 .output-container {
 background: #fff9c4;
 padding: 15px;
@@ -191,93 +198,31 @@ margin-top: 20px;
 padding-top: 20px;
 border-top: 1px solid #eee;
 }
-/* מיכל לאיש קשר + כיתוב */
-.contact-wrapper {
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 4px;
-}
-
+.contact-wrapper { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .contact-rect {
-width: 100%;
-padding: 8px 4px;
-border-radius: 10px;
-text-align: center;
-font-weight: bold;
-font-size: 0.9rem;
-color: white;
-cursor: pointer;
-box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-transition: transform 0.2s, opacity 0.2s;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
-text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-min-height: 40px;
-display: flex;
-align-items: center;
-justify-content: center;
+width: 100%; padding: 8px 4px; border-radius: 10px; text-align: center; font-weight: bold;
+font-size: 0.9rem; color: white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+transition: transform 0.2s, opacity 0.2s; white-space: nowrap; overflow: hidden;
+text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.2); min-height: 40px;
+display: flex; align-items: center; justify-content: center;
 }
-
 .contact-rect:hover { transform: translateY(-2px); opacity: 0.9; }
 .contact-rect.empty { background: #e0e0e0; color: #777; border: 1px dashed #aaa; box-shadow: none; text-shadow: none; }
-
-.contact-label {
-font-size: 0.75rem;
-color: #666;
-text-align: center;
-}
+.contact-label { font-size: 0.75rem; color: #666; text-align: center; }
 
 /* --- מודאל הגדרות --- */
-.modal-overlay {
-position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
-z-index: 1000; display: none; justify-content: center; align-items: center;
-}
-.modal-content {
-background: white; width: 95%; max-width: 450px;
-border-radius: 16px; padding: 20px;
-box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-max-height: 85vh; overflow-y: auto;
-}
-
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); z-index: 1000; display: none; justify-content: center; align-items: center; }
+.modal-content { background: white; width: 95%; max-width: 450px; border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 .modal-header h2 { margin: 0; font-size: 1.2rem; }
 .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
-
-.settings-row {
-background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 12px;
-display: flex; gap: 10px; align-items: center;
-}
-.color-picker-wrapper {
-width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
-border: 2px solid #ddd; flex-shrink: 0; cursor: pointer;
-}
-.color-picker-wrapper input[type="color"] {
-width: 150%; height: 150%; margin: -25%; cursor: pointer; border: none; padding: 0;
-}
-
+.settings-row { background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 12px; display: flex; gap: 10px; align-items: center; }
+.color-picker-wrapper { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 2px solid #ddd; flex-shrink: 0; cursor: pointer; }
+.color-picker-wrapper input[type="color"] { width: 150%; height: 150%; margin: -25%; cursor: pointer; border: none; padding: 0; }
 .setting-inputs { flex: 1; display: flex; flex-direction: column; gap: 5px; }
 .setting-inputs input[type="text"], .setting-inputs input[type="tel"] { padding: 8px; font-size: 0.9rem; border: 1px solid #ddd; border-radius: 6px; }
-
-/* כפתור ייבוא אנשי קשר */
-.import-contact-btn {
-background: #e1f5fe;
-border: 1px solid #b3e5fc;
-border-radius: 8px;
-width: 40px;
-height: 40px;
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-font-size: 1.2rem;
-transition: 0.2s;
-flex-shrink: 0;
-}
+.import-contact-btn { background: #e1f5fe; border: 1px solid #b3e5fc; border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: 0.2s; flex-shrink: 0; }
 .import-contact-btn:hover { background: #b3e5fc; }
-
 .save-settings-btn { width: 100%; background: var(--primary); color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; margin-top: 10px; }
 </style>
 </head>
@@ -292,29 +237,8 @@ flex-shrink: 0;
 
 <div class="header-row">
 <div style="width:30px"></div>
-<h1>מפעל הברכות 🚀</h1>
+<h1>מילים מהלב ❤️</h1>
 <button class="settings-btn" onclick="openSettings()" title="הגדרות אנשי קשר">⚙️</button>
-</div>
-
-<div class="controls-area">
-<div class="top-row">
-<div class="sender-toggle">
-<button class="sender-btn active" id="senderMale" onclick="setSenderGender('male')">גבר 👨</button>
-<button class="sender-btn" id="senderFemale" onclick="setSenderGender('female')">אישה 👩</button>
-</div>
-
-<div class="length-wrapper">
-<span class="length-label-title">ברכה</span>
-<div class="length-selector">
-<label><input type="radio" name="length" value="short" onchange="setLength('short')"><span>קצרה</span></label>
-<label><input type="radio" name="length" value="long" onchange="setLength('long')" checked><span>ארוכה</span></label>
-</div>
-</div>
-
-<button class="emoji-btn active" id="emojiBtn" onclick="toggleEmoji()">
-<span id="emojiIcon">✅</span> אימוג'י
-</button>
-</div>
 </div>
 
 <button class="back-btn" id="backBtn" onclick="goBack()">🔙 חזרה לתפריט הראשי</button>
@@ -459,8 +383,7 @@ flex-shrink: 0;
 </div>
 <div id="birthSubTargetSection" style="display:none; margin-top:15px;">
 <h3 id="birthTargetTitle">למי נולד?</h3>
-<div class="sub-grid" id="birthTargetButtons">
-</div>
+<div class="sub-grid" id="birthTargetButtons"></div>
 </div>
 </div>
 
@@ -491,7 +414,6 @@ flex-shrink: 0;
 <button class="sub-btn" onclick="selectThankYouTarget('father', this)">אבא 👑</button>
 <button class="sub-btn" onclick="selectThankYouTarget('brother', this)">אח 🦁</button>
 <button class="sub-btn" onclick="selectThankYouTarget('friend_male', this)">חבר 🍻</button>
-
 <button class="sub-btn" onclick="selectThankYouTarget('female_general', this)">אישה (כללית) 👩</button>
 <button class="sub-btn" onclick="selectThankYouTarget('mother', this)">אמא 💖</button>
 <button class="sub-btn" onclick="selectThankYouTarget('sister', this)">אחות 🌸</button>
@@ -539,6 +461,28 @@ flex-shrink: 0;
 </div>
 
 <div class="favorites-bar"></div>
+
+<div class="controls-area">
+<div class="top-row">
+<div class="sender-toggle">
+<button class="sender-btn active" id="senderMale" onclick="setSenderGender('male')">גבר 👨</button>
+<button class="sender-btn" id="senderFemale" onclick="setSenderGender('female')">אישה 👩</button>
+</div>
+
+<div class="length-wrapper">
+<span class="length-label-title">ברכה</span>
+<div class="length-selector">
+<label><input type="radio" name="length" value="short" onchange="setLength('short')"><span>קצרה</span></label>
+<label><input type="radio" name="length" value="long" onchange="setLength('long')" checked><span>ארוכה</span></label>
+</div>
+</div>
+
+<button class="emoji-btn active" id="emojiBtn" onclick="toggleEmoji()">
+<span id="emojiIcon">✅</span> אימוג'י
+</button>
+</div>
+</div>
+
 </div>
 
 <div class="modal-overlay" id="settingsModal">
@@ -568,7 +512,7 @@ length: 'long',
 gender: null, 
 recipientGender: null, 
 relationKey: null,
-birthType: null, // סוג הלידה (בן/בת)
+birthType: null,
 useEmojis: true,
 senderGender: 'male'
 };
@@ -592,7 +536,7 @@ const localBlessings = {
 const wifeSuffixes = ["המושלמת", "היפה שלי", "אהבת חיי", "מלכתי"];
 const husbandSuffixes = ["המושלם", "הגבר שלי", "אהבת חיי", "מלך העולם"];
 
-// רשימת הקבצים לטעינה (הקישורים המעודכנים שלך - גרסת RAW)
+// רשימת הקבצים לטעינה (RAW)
 const jsonFiles = [
 "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/(%D7%91%D7%95%D7%A7%D7%A8%2C%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D%2C%20%D7%A2%D7%A8%D7%91).json",
 "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%90%D7%99%D7%A8%D7%95%D7%A2.json",
@@ -629,7 +573,6 @@ loadContacts();
 renderContactButtons();
 };
 
-// --- ניהול אנשי קשר ---
 function loadContacts() {
 const saved = localStorage.getItem('myContacts_v5');
 if (saved) {
@@ -780,7 +723,6 @@ setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none
 }
 }
 
-// --- שליטה בתצוגה (מגדר שולח, אימוג'י) ---
 function updateSenderUI() {
 document.getElementById('senderMale').classList.remove('active');
 document.getElementById('senderFemale').classList.remove('active');
@@ -898,13 +840,10 @@ document.getElementById('timeTargetSelector').style.display = 'none';
 updateSenderUI();
 }
 
-// --- לוגיקת בחירת קטגוריות ---
 function selectCategory(cat, btn) {
 state.category = cat;
 document.getElementById('mainGrid').style.display = 'none';
 document.getElementById('inputSection').style.display = 'block';
-
-// הסתרת כל הסקציות
 document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
 
 if (cat === 'morning_evening') {
@@ -942,8 +881,6 @@ document.getElementById('genderSection').style.display = 'block';
 document.getElementById('genBtn').style.display = 'block';
 }
 }
-
-// --- פונקציות עזר לבחירות ספציפיות ---
 
 function selectTimeOfDay(time, btn) {
 state.timeOfDay = time;
@@ -1021,7 +958,6 @@ btns.forEach(b => b.classList.remove('active'));
 btn.classList.add('active');
 }
 
-// --- פונקציות לידה חדשות ---
 function selectBirthType(type) {
 state.birthType = type;
 const btns = document.querySelectorAll('#birthSection > .sub-grid > .sub-btn');
@@ -1033,7 +969,6 @@ targetContainer.innerHTML = '';
 document.getElementById('birthSubTargetSection').style.display = 'block';
 document.getElementById('birthTargetTitle').innerText = (type === 'birth_boy') ? "למי נולד הבן?" : "למי נולדה הבת?";
 
-// בניית כפתורים לפי המין
 const targets = (type === 'birth_boy') ?
 [
 {key: 'brother', label: 'לאח 👦'},
@@ -1065,7 +1000,6 @@ btn.classList.add('active');
 document.getElementById('genBtn').style.display = 'block';
 }
 
-// --- פונקציות רפואה חדשות ---
 function selectRecoveryTarget(target, btn) {
 state.subCategory = target;
 if(['male', 'dad', 'brother', 'son', 'friend_male'].includes(target)) state.recipientGender = 'male';
@@ -1077,7 +1011,6 @@ btn.classList.add('active');
 document.getElementById('genBtn').style.display = 'block';
 }
 
-// --- פונקציות תודה חדשות ---
 function selectThankYouTarget(target, btn) {
 state.subCategory = target;
 if(['male_general', 'father', 'brother', 'friend_male'].includes(target)) state.recipientGender = 'male';
@@ -1160,11 +1093,8 @@ const shuffled = [...arr].sort(() => 0.5 - Math.random());
 return shuffled.slice(0, count);
 }
 
-// --- תיקון דקדוק חכם ---
 function smartGrammarFix(text) {
 let clean = text;
-
-// שולח (אני)
 if (state.senderGender === 'female') {
 const senderReplacements = [
 { m: "מאחל", f: "מאחלת" }, { m: "אוהב", f: "אוהבת" }, { m: "מעריך", f: "מעריכה" },
@@ -1177,8 +1107,6 @@ senderReplacements.forEach(pair => {
 clean = clean.replace(new RegExp(pair.m, 'g'), pair.f);
 });
 }
-
-// מקבל (את/ה)
 if (state.recipientGender) {
 if (state.recipientGender === 'male') {
 const toMaleMap = [
@@ -1212,14 +1140,12 @@ clean = clean.replace(new RegExp(`\\b${pair.wrong}\\b`, 'g'), pair.right);
 return clean;
 }
 
-// --- יצירת הברכה (הלב של המערכת) ---
 function generateBlessing() {
 document.getElementsByName('length').forEach(l => { if(l.checked) state.length = l.value });
 const output = document.getElementById('output');
 let key = "";
 let fallbackKey = null;
 
-// לוגיקה לבחירת המפתח לפי קטגוריה
 if (state.category === 'morning_evening') {
 if (!state.timeOfDay || !state.subCategory) { alert("נא לבחור זמן ויעד..."); return; }
 key = `${state.timeOfDay}_${state.subCategory}`;
@@ -1227,12 +1153,11 @@ key = `${state.timeOfDay}_${state.subCategory}`;
 else if (state.category === 'shabbat') {
 if (!state.shabbatTime || !state.subCategory) { alert("נא לבחור זמן ויעד..."); return; }
 key = `${state.shabbatTime}_${state.subCategory}`;
-fallbackKey = `shabbat_${state.subCategory}`; // גיבוי לכללי
+fallbackKey = `shabbat_${state.subCategory}`;
 }
 else if (state.category === 'holiday') {
 if (!state.holidayName || !state.holidayTarget) { alert("נא לבחור חג ויעד..."); return; }
 key = `${state.holidayName}_${state.holidayTarget}`;
-// --- הקסם האוניברסלי לחגים ---
 fallbackKey = `holiday_${state.holidayTarget}`; 
 }
 else if (state.category === 'chabad') {
@@ -1244,10 +1169,8 @@ if (!state.subCategory) { alert("נא לבחור..."); return; }
 key = state.subCategory;
 }
 else if (state.category === 'birth') {
-// מפתח מורכב: birth_boy_brother
 if (!state.subCategory) { alert("נא לבחור למי נולד..."); return; }
 key = `${state.birthType}_${state.subCategory}`;
-// אם לא נמצא, נסה את הכללי (birth_boy)
 fallbackKey = state.birthType;
 }
 else if (state.category === 'recovery') {
@@ -1274,19 +1197,15 @@ else {
 key = state.category;
 }
 
-// ניסיון טעינה
 let gen = generators[key];
 if (!gen && localBlessings[key]) {
 gen = localBlessings[key];
 }
 
-// בדיקת Fallback (קסם)
 if (!gen && fallbackKey && generators[fallbackKey]) {
 gen = generators[fallbackKey];
-// שים לב: אנחנו משתמשים בברכה הגנרית אבל האימוג'ים יהיו של החג הספציפי שנבחר!
 }
 
-// Fallbacks מקוריים (אם הכל נכשל)
 if (!gen) {
 if (state.category === 'shabbat') gen = generators[`${state.shabbatTime}_general`];
 else if (state.category === 'holiday') gen = generators[`${state.holidayName}_general`] || generators[`${state.holidayName}`];
@@ -1302,7 +1221,6 @@ output.innerHTML = `<div style="color:red; text-align:center">לא נמצאו ב
 return;
 }
 
-// הרכבת הברכה
 let parts = [];
 const name = document.getElementById('nameInput').value.trim();
 saveNameHistory(name);
@@ -1337,12 +1255,11 @@ parts.push(getDistinctRandom(gen.closings, 1)[0]);
 
 let adjustedParts = parts.map(part => smartGrammarFix(part));
 
-// בחירת אימוג'ים
 let emojiSet = 'general';
 if (state.category === 'morning_evening') emojiSet = state.timeOfDay;
 else if (state.category === 'shabbat') emojiSet = state.shabbatTime;
-else if (state.category === 'holiday') emojiSet = state.holidayName; // כאן הקסם: אימוג'י של חג ספציפי גם בברכה גנרית
-else if (state.category === 'birth') emojiSet = state.birthType; // birth_boy / birth_girl
+else if (state.category === 'holiday') emojiSet = state.holidayName; 
+else if (state.category === 'birth') emojiSet = state.birthType; 
 else if (state.category === 'chabad') emojiSet = state.chabadDate;
 else if (emojis[key]) emojiSet = key;
 else if (emojis[state.category]) emojiSet = state.category;
