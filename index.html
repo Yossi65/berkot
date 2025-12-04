@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>מילים מהלב</title>
+
+<meta property="og:title" content="מילים מהלב - מחולל הברכות האישי שלך">
+<meta property="og:description" content="הכלי החינמי שיעזור לכם לכתוב את הברכה המושלמת לכל אירוע בשניות! שבת, חגים, ימי הולדת ועוד.">
+<meta property="og:image" content="https://raw.githubusercontent.com/Yossi65/berkot/be2837772cb5769b31e218602eba9cf9a52cb678/AISelect_20251203_223400_Google.jpg">
+<meta property="og:url" content="https://yossi65.github.io/berkot/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="מילים מהלב">
+<meta name="theme-color" content="#e6ebef"> <title>מילים מהלב</title>
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,12 +19,14 @@
 <style>
 /* --- CLAYMORPHISM STYLE (SOFT 3D) --- */
 :root {
-    --bg-body: #eef2f6;
-    --clay-bg: #eef2f6;
+    --bg-body: #e3e8ef; /* רקע כללי קבוע - אפור נקי */
+    --card-bg: #e6ebef; /* צבע הכרטיס המשתנה (ברירת מחדל: גבר - הצבע החדש) */
+    --clay-bg: #eef2f6; /* צבע הכפתורים (נשאר קבוע) */
+    
     --primary: #4f46e5;
     --text-main: #4a5568;
     --text-sec: #718096;     
-    --shadow-light: -8px -8px 16px 0px rgba(255, 255, 255, 0.8);
+    --shadow-light: -8px -8px 16px 0px rgba(255, 255, 255, 0.8); /* חזרנו לצל בהיר חזק יותר לרקעים בהירים */
     --shadow-dark: 8px 8px 16px 0px rgba(166, 180, 200, 0.7);
     --shadow-inset: inset 6px 6px 10px 0 rgba(166, 180, 200, 0.7), inset -6px -6px 10px 0 rgba(255, 255, 255, 0.8);
     --radius: 24px;
@@ -26,7 +36,7 @@
 
 body {
     font-family: 'Rubik', sans-serif;
-    background-color: var(--bg-body);
+    background-color: var(--bg-body); /* הרקע הכללי */
     color: var(--text-main);
     margin: 0;
     padding: 20px 15px;
@@ -38,7 +48,7 @@ body {
 .container {
     width: 100%;
     max-width: 550px;
-    background: var(--clay-bg);
+    background: var(--card-bg); /* הכרטיס מקבל את הצבע המשתנה */
     padding: 30px;
     border-radius: 30px;
     box-shadow: 
@@ -50,6 +60,7 @@ body {
     position: relative;
     min-height: 85vh;
     z-index: 1;
+    transition: background-color 0.5s ease; /* מעבר חלק בצבע הכרטיס */
 }
 
 .header-row { 
@@ -66,6 +77,7 @@ h1 {
     color: #2d3748; 
     font-weight: 700;
     letter-spacing: -0.5px;
+    /* חזרנו להצללה כהה כדי שיראה טוב על הרקעים הבהירים החדשים */
     text-shadow: 2px 2px 4px rgba(166, 180, 200, 0.5);
 }
 
@@ -300,6 +312,25 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .contact-rect:active { box-shadow: var(--shadow-inset); transform: scale(0.97); }
 .contact-rect.empty { box-shadow: var(--shadow-inset); color: #a0aec0 !important; }
 .contact-label { font-size: 0.75rem; color: #a0aec0; text-align: center; margin-top: 6px; display: block; font-weight: 500;}
+
+/* עיצוב כפתור השיתוף החדש */
+.share-app-btn {
+    background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    color: white;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3);
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.share-app-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(109, 40, 217, 0.4); }
+.share-app-btn:active { transform: scale(0.98); }
 
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(226, 232, 240, 0.6); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; }
 .modal-content { background: var(--clay-bg); width: 90%; max-width: 450px; max-height: 85vh; overflow-y: auto; border-radius: 30px; padding: 0; box-shadow: 20px 20px 40px rgba(166, 180, 200, 0.5), -20px -20px 40px #fff; display: flex; flex-direction: column; animation: popIn 0.3s ease; }
@@ -549,7 +580,7 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <button class="sub-btn" onclick="selectThankYouTarget('father', this)"><i class="fa-solid fa-user-tie"></i> אבא</button>
             <button class="sub-btn" onclick="selectThankYouTarget('brother', this)"><i class="fa-solid fa-user"></i> אח</button>
             <button class="sub-btn" onclick="selectThankYouTarget('friend_male', this)"><i class="fa-solid fa-user-group"></i> חבר</button>
-            <button class="sub-btn" onclick="selectThankYouTarget('female_general', this)"><i class="fa-solid fa-person-dress"></i> אישה כללית</button>
+            <button class="sub-btn" onclick="selectThankYouTarget('female_general', this)"><i class="fa-solid fa-user-group"></i> אישה כללית</button>
             <button class="sub-btn" onclick="selectThankYouTarget('mother', this)"><i class="fa-solid fa-person-breastfeeding"></i> אמא</button>
             <button class="sub-btn" onclick="selectThankYouTarget('sister', this)"><i class="fa-solid fa-person-dress"></i> אחות</button>
             <button class="sub-btn" onclick="selectThankYouTarget('friend_female', this)"><i class="fa-solid fa-user-group"></i> חברה</button>
@@ -625,6 +656,10 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
                 <button class="toggle-btn" id="senderFemale" onclick="setSenderGender('female')">אני אישה 👩</button>
             </div>
         </div>
+        
+        <button class="share-app-btn" onclick="shareApp()">
+            <i class="fa-solid fa-bullhorn"></i> שתף את האפליקציה לחברים
+        </button>
     </div>
 
 </div>
@@ -887,15 +922,23 @@ setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none
 }
 
 function updateSenderUI() {
-document.getElementById('senderMale').classList.remove('active');
-document.getElementById('senderFemale').classList.remove('active');
-if (state.senderGender === 'male') {
-document.getElementById('senderMale').classList.add('active');
-document.documentElement.style.setProperty('--primary', '#4f46e5');
-} else {
-document.getElementById('senderFemale').classList.add('active');
-document.documentElement.style.setProperty('--primary', '#db2777');
-}
+    document.getElementById('senderMale').classList.remove('active');
+    document.getElementById('senderFemale').classList.remove('active');
+    
+    // עדכון כותרת הדפדפן (Browser Theme Color)
+    const metaThemeColor = document.querySelector("meta[name='theme-color']");
+
+    if (state.senderGender === 'male') {
+        document.getElementById('senderMale').classList.add('active');
+        document.documentElement.style.setProperty('--primary', '#4f46e5');
+        document.documentElement.style.setProperty('--card-bg', '#e6ebef'); // צבע הכרטיס לגבר (החדש)
+        if(metaThemeColor) metaThemeColor.setAttribute("content", "#e6ebef");
+    } else {
+        document.getElementById('senderFemale').classList.add('active');
+        document.documentElement.style.setProperty('--primary', '#db2777');
+        document.documentElement.style.setProperty('--card-bg', '#f5edec'); // צבע הכרטיס לאישה (החדש)
+        if(metaThemeColor) metaThemeColor.setAttribute("content", "#f5edec");
+    }
 }
 
 function setSenderGender(g) {
@@ -1466,6 +1509,13 @@ function sendWhatsapp() {
 let text = getVisibleText();
 if(!text) return alert("קודם צור ברכה!");
 window.open(`whatsapp://send?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function shareApp() {
+    // עדכון: כתובת האתר קבועה כדי שתעבוד גם כשמריצים את הקובץ מקומית בטלפון
+    const url = "https://yossi65.github.io/berkot/";
+    const text = "היי, גיליתי כלי מדהים שכותב ברכות לכל אירוע בשניות! שווה לנסות (זה בחינם): \n" + url;
+    window.open(`whatsapp://send?text=${encodeURIComponent(text)}`, '_blank');
 }
 </script>
 
