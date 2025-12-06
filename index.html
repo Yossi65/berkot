@@ -1058,8 +1058,9 @@ function selectCategory(cat, btn) {
         document.getElementById('loveSection').style.display = 'block';
         document.getElementById('loveTargets').style.display = 'none'; // איפוס תצוגת יעד
     }
-    else if (cat === 'success') {
-        document.getElementById('successSection').style.display = 'block';
+    else if (['success'].includes(state.category)) {
+        if (!state.gender) { alert("נא לבחור מין..."); return; }
+        key = `${state.category}_${state.gender}`;
     } 
     else if (cat === 'forgiveness') {
         document.getElementById('forgivenessSection').style.display = 'block';
@@ -1533,12 +1534,8 @@ function generateBlessing() {
         key = `${state.timeOfDay}_${state.subCategory}`;
     }
     else if (state.category === 'daily_strengthen') {
-        // מתוקן: תמיכה גם במפתחות ישנים וגם בחדשים כדי למנוע תקלות
-        // אם המשתמש לוחץ על 'wife', נחפש 'strength_wife' ואם אין, נחפש 'mental_support_wife'
-        let target = state.subCategory || 'husband'; // fallback
+        let target = state.subCategory || 'husband';
         key = `strength_${target}`;
-        
-        // בדיקה אם המפתח קיים, אם לא - ננסה את המפתח הישן
         if (!generators[key]) {
              key = `mental_support_${target}`;
         }
@@ -1623,32 +1620,56 @@ function generateBlessing() {
     const name = document.getElementById('nameInput').value.trim();
     saveNameHistory(name);
 
-    if (name) {
-        let suffix = "היקר/ה";
-        const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife');
-        const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband');
+    if (Array.isArray(gen)) {
+        // --- טיפול במקרה של רשימה פשוטה (כמו חיזוק יומי) ---
+        if (name) {
+             let suffix = "היקר/ה";
+             const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife');
+             const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband');
+             const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || state.recipientGender === 'female');
+             const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' || state.recipientGender === 'male');
 
-        const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || state.recipientGender === 'female');
-        const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' || state.recipientGender === 'male');
-
-        if (isWifeContext) {
-            suffix = wifeSuffixes[Math.floor(Math.random() * wifeSuffixes.length)];
-        } else if (isHusbandContext) {
-            suffix = husbandSuffixes[Math.floor(Math.random() * husbandSuffixes.length)];
-        } else {
-            if (isGenericFemale) suffix = "היקרה";
-            else if (isGenericMale) suffix = "היקר";
+             if (isWifeContext) suffix = wifeSuffixes[Math.floor(Math.random() * wifeSuffixes.length)];
+             else if (isHusbandContext) suffix = husbandSuffixes[Math.floor(Math.random() * husbandSuffixes.length)];
+             else if (isGenericFemale) suffix = "היקרה";
+             else if (isGenericMale) suffix = "היקר";
+             
+             parts.push(`${name} ${suffix},`);
         }
-        parts.push(`${name} ${suffix},`);
-    }
+        
+        // בחירת משפטים מהרשימה
+        const count = state.length === 'long' ? 3 : 1; 
+        parts.push(...getDistinctRandom(gen, count));
 
-    parts.push(getDistinctRandom(gen.openers, 1)[0]);
-    const bodyCount = state.length === 'long' ? 2 : 1;
-    const bodies = getDistinctRandom(gen.bodies, bodyCount);
-    parts.push(...bodies);
+    } else {
+        // --- טיפול במבנה הרגיל (פתיחה, גוף, סיום) ---
+        if (name) {
+            let suffix = "היקר/ה";
+            const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife');
+            const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband');
 
-    if (state.category !== 'morning_evening') {
-        parts.push(getDistinctRandom(gen.closings, 1)[0]);
+            const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || state.recipientGender === 'female');
+            const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' || state.recipientGender === 'male');
+
+            if (isWifeContext) {
+                suffix = wifeSuffixes[Math.floor(Math.random() * wifeSuffixes.length)];
+            } else if (isHusbandContext) {
+                suffix = husbandSuffixes[Math.floor(Math.random() * husbandSuffixes.length)];
+            } else {
+                if (isGenericFemale) suffix = "היקרה";
+                else if (isGenericMale) suffix = "היקר";
+            }
+            parts.push(`${name} ${suffix},`);
+        }
+
+        parts.push(getDistinctRandom(gen.openers, 1)[0]);
+        const bodyCount = state.length === 'long' ? 2 : 1;
+        const bodies = getDistinctRandom(gen.bodies, bodyCount);
+        parts.push(...bodies);
+
+        if (state.category !== 'morning_evening') {
+            parts.push(getDistinctRandom(gen.closings, 1)[0]);
+        }
     }
 
     let adjustedParts = parts.map(part => smartGrammarFix(part));
