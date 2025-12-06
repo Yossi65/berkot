@@ -433,16 +433,12 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         </div>
     </div>
 
-    <div id="forgivenessSection" class="dynamic-section">
+<div id="forgivenessSection" class="dynamic-section">
         <h3><span>ביקוש סליחה מ...</span></h3>
         <div class="sub-grid">
             <button class="sub-btn" onclick="selectSub('apology_general', this)"><i class="fa-solid fa-comment-dots"></i> כללי</button>
-            <button class="sub-btn" onclick="selectSub('apology_wife', this)"><i class="fa-solid fa-person-dress"></i> מאישתי</button>
             <button class="sub-btn" onclick="selectSub('apology_husband', this)"><i class="fa-solid fa-user-tie"></i> מבעלי</button>
-            <button class="sub-btn" onclick="selectSub('apology_friend_m', this)"><i class="fa-solid fa-user-group"></i> מחבר</button>
-            <button class="sub-btn" onclick="selectSub('apology_friend_f', this)"><i class="fa-solid fa-user-group"></i> מחברה</button>
-            <button class="sub-btn" onclick="selectSub('apology_brother', this)"><i class="fa-solid fa-user"></i> מאח</button>
-            <button class="sub-btn" onclick="selectSub('apology_sister', this)"><i class="fa-solid fa-person-dress"></i> מאחות</button>
+            <button class="sub-btn" onclick="selectSub('apology_wife', this)"><i class="fa-solid fa-person-dress"></i> מאישתי</button>
         </div>
     </div>
 
@@ -1040,12 +1036,16 @@ function selectCategory(cat, btn) {
     else if (cat === 'chabad') {
         document.getElementById('chabadSection').style.display = 'block';
     }
-    else if (cat === 'event') document.getElementById('eventSection').style.display = 'block';
+    else if (cat === 'event') {
+        document.getElementById('eventSection').style.display = 'block';
+    }
     else if (cat === 'birth') {
         document.getElementById('birthSection').style.display = 'block';
         document.getElementById('birthSubTargetSection').style.display = 'none';
     }
-    else if (cat === 'birthday') document.getElementById('birthdaySection').style.display = 'block';
+    else if (cat === 'birthday') {
+        document.getElementById('birthdaySection').style.display = 'block';
+    }
     else if (cat === 'recovery') {
         document.getElementById('recoveryTargetSection').style.display = 'block';
         document.getElementById('recoveryTargets').style.display = 'none'; // איפוס תצוגת יעד
@@ -1058,10 +1058,11 @@ function selectCategory(cat, btn) {
         document.getElementById('loveSection').style.display = 'block';
         document.getElementById('loveTargets').style.display = 'none'; // איפוס תצוגת יעד
     }
-    else if (['success'].includes(state.category)) {
-        if (!state.gender) { alert("נא לבחור מין..."); return; }
-        key = `${state.category}_${state.gender}`;
+    // --- התיקון כאן: הצגת המסך במקום בדיקת מגדר ---
+    else if (cat === 'success') {
+        document.getElementById('successSection').style.display = 'block';
     } 
+    // ---------------------------------------------
     else if (cat === 'forgiveness') {
         document.getElementById('forgivenessSection').style.display = 'block';
     }
