@@ -194,6 +194,19 @@ button[onclick*="'yom_haatzmaut'"] i { background-image: linear-gradient(to righ
 button[onclick*="'shavuot'"] i { background-image: linear-gradient(to right, #facc15, #fef08a) !important; }
 button[onclick*="'tu_beav'"] i { background-image: linear-gradient(to right, #f43f5e, #e11d48) !important; }
 
+/* === צבעים מיוחדים לתאריכי חב"ד === */
+button[onclick*="'chabad_6_tishrei'"] i { background-image: linear-gradient(to right, #d4fc79, #96e6a1) !important; }
+button[onclick*="'chabad_14_kislev'"] i { background-image: linear-gradient(to right, #a18cd1, #fbc2eb) !important; }
+button[onclick*="'chabad_19_kislev'"] i { background-image: linear-gradient(to right, #f6d365, #fda085) !important; }
+button[onclick*="'chabad_5_tevet'"] i { background-image: linear-gradient(to right, #89f7fe, #66a6ff) !important; }
+button[onclick*="'chabad_24_tevet'"] i { background-image: linear-gradient(to right, #4facfe, #00f2fe) !important; }
+button[onclick*="'chabad_10_shevat'"] i { background-image: linear-gradient(to right, #43e97b, #38f9d7) !important; }
+button[onclick*="'chabad_22_shevat'"] i { background-image: linear-gradient(to right, #fa709a, #fee140) !important; }
+button[onclick*="'chabad_11_nissan'"] i { background-image: linear-gradient(to right, #30cfd0, #330867) !important; }
+button[onclick*="'chabad_2_iyar'"] i { background-image: linear-gradient(to right, #ff9a9e, #fecfef) !important; }
+button[onclick*="'chabad_3_tammuz'"] i { background-image: linear-gradient(to right, #cd9cf2, #f6f3ff) !important; }
+button[onclick*="'chabad_12_tammuz'"] i { background-image: linear-gradient(to right, #ffecd2, #fcb69f) !important; }
+button[onclick*="'chabad_18_elul'"] i { background-image: linear-gradient(to right, #ff8177, #ff867a) !important; }
 h3 { font-size: 1.1rem; color: var(--text-sec); margin: 25px 0 15px; font-weight: 600; text-align: center; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; } 
 h3 span { background: transparent; padding: 0 10px; }
 
@@ -330,7 +343,7 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <i class="fa-solid fa-hands-praying"></i> תודה
         </button>
         <button class="category-btn" onclick="selectCategory('forgiveness', this)">
-            <i class="fa-solid fa-handshake"></i> סליחה
+            <i class="fa-solid fa-handshake"></i> סליחה/פיוס
         </button>
 
         <div class="grid-section-title">ציוני דרך</div>
@@ -434,13 +447,15 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
     </div>
 
 <div id="forgivenessSection" class="dynamic-section">
-        <h3><span>ביקוש סליחה מ...</span></h3>
-        <div class="sub-grid">
-            <button class="sub-btn" onclick="selectSub('apology_general', this)"><i class="fa-solid fa-comment-dots"></i> כללי</button>
-            <button class="sub-btn" onclick="selectSub('apology_husband', this)"><i class="fa-solid fa-user-tie"></i> מבעלי</button>
-            <button class="sub-btn" onclick="selectSub('apology_wife', this)"><i class="fa-solid fa-person-dress"></i> מאישתי</button>
-        </div>
+    <h3><span>ביקוש סליחה מ...</span></h3>
+    <div class="sub-grid">
+        <button class="sub-btn" onclick="selectSub('apology_general', this)"><i class="fa-solid fa-comment-dots"></i> כללי</button>
+        
+        <button class="sub-btn" onclick="selectSub('apology_wife', this)"><i class="fa-solid fa-user-tie"></i> מבעלי</button>
+        
+        <button class="sub-btn" onclick="selectSub('apology_husband', this)"><i class="fa-solid fa-person-dress"></i> מאישתי</button>
     </div>
+</div>
 
     <div id="loveSection" class="dynamic-section">
         <h3><span>למי מיועד?</span></h3>
@@ -477,21 +492,30 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         <div id="thankYouTargets" style="display:none; margin-top:20px;"></div>
     </div>
 
-    <div id="chabadSection" class="dynamic-section">
-        <h3><span>תאריך חסידי</span></h3>
+   <div id="chabadSection" class="dynamic-section">
+        <h3><span>תאריך חסידי (לפי סדר השנה)</span></h3>
         <div class="holidays-grid">
+            <button class="sub-btn" onclick="selectSub('chabad_6_tishrei', this)"><i class="fa-solid fa-person-breastfeeding"></i> ו' תשרי</button>
+            <button class="sub-btn" onclick="selectSub('chabad_14_kislev', this)"><i class="fa-solid fa-ring"></i> י"ד כסלו</button>
             <button class="sub-btn" onclick="selectSub('chabad_19_kislev', this)"><i class="fa-solid fa-crown"></i> י"ט כסלו</button>
+            <button class="sub-btn" onclick="selectSub('chabad_5_tevet', this)"><i class="fa-solid fa-book"></i> ה' טבת</button>
+            <button class="sub-btn" onclick="selectSub('chabad_24_tevet', this)"><i class="fa-solid fa-scroll"></i> כ"ד טבת</button>
             <button class="sub-btn" onclick="selectSub('chabad_10_shevat', this)"><i class="fa-solid fa-user-tie"></i> י' שבט</button>
+            <button class="sub-btn" onclick="selectSub('chabad_22_shevat', this)"><i class="fa-solid fa-gem"></i> כ"ב שבט</button>
             <button class="sub-btn" onclick="selectSub('chabad_11_nissan', this)"><i class="fa-solid fa-cake-candles"></i> י"א ניסן</button>
+            <button class="sub-btn" onclick="selectSub('chabad_2_iyar', this)"><i class="fa-solid fa-arrow-trend-up"></i> ב' אייר</button>
             <button class="sub-btn" onclick="selectSub('chabad_3_tammuz', this)"><i class="fa-solid fa-fire-flame-simple"></i> ג' תמוז</button>
             <button class="sub-btn" onclick="selectSub('chabad_12_tammuz', this)"><i class="fa-solid fa-lock-open"></i> י"ב תמוז</button>
             <button class="sub-btn" onclick="selectSub('chabad_18_elul', this)"><i class="fa-solid fa-star"></i> ח"י אלול</button>
         </div>
+        
+        
         <h3 style="margin-top:15px;"><span>למי?</span></h3>
         <div class="sub-grid">
             <button class="sub-btn" onclick="selectSub('general', this)"><i class="fa-regular fa-star"></i> כללי</button>
             <button class="sub-btn" onclick="selectSub('family', this)"><i class="fa-solid fa-people-roof"></i> משפחה</button>
         </div>
+    
     </div>
 
     <div id="eventSection" class="dynamic-section">
@@ -661,7 +685,8 @@ const jsonFiles = [
     "https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%9C%D7%99%D7%93%D7%94.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%A8%D7%A4%D7%95%D7%90%D7%94.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%A9%D7%91%D7%AA%20%D7%95%D7%9E%D7%95%D7%A6%D7%90%D7%99%20%D7%A9%D7%91%D7%AA.json",
-    "https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%AA%D7%95%D7%93%D7%94.json"
+    "https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%AA%D7%95%D7%93%D7%94.json",
+    "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A1%D7%9C%D7%99%D7%97%D7%94%20%D7%A4%D7%99%D7%95%D7%A1.json"
 ];
 
 // מפת צבעים דינמית לקטגוריות
@@ -1214,6 +1239,7 @@ function selectSuccessGender(gender, btn) {
     document.getElementById('genBtn').style.display = 'flex';
 }
 
+
 function selectThankYouGender(gender, btn) {
     state.gender = gender;
     state.recipientGender = (gender === 'male') ? 'male' : 'female';
@@ -1588,7 +1614,10 @@ function generateBlessing() {
             key = bdKey;
         }
     }
-    else if (state.category === 'forgiveness') key = `apology_${state.subCategory}`;
+    // --- התיקון נמצא כאן: לוקחים את השם ישר מהכפתור בלי תוספות ---
+    else if (state.category === 'forgiveness') {
+        key = state.subCategory;
+    }
     else {
         key = state.category;
     }
@@ -1622,11 +1651,11 @@ function generateBlessing() {
     saveNameHistory(name);
 
     if (Array.isArray(gen)) {
-        // --- טיפול במקרה של רשימה פשוטה (כמו חיזוק יומי) ---
+        // --- טיפול במקרה של רשימה פשוטה (כמו חיזוק יומי או סליחה) ---
         if (name) {
              let suffix = "היקר/ה";
-             const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife');
-             const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband');
+             const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife' || state.subCategory === 'apology_wife');
+             const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband' || state.subCategory === 'apology_husband');
              const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || state.recipientGender === 'female');
              const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' || state.recipientGender === 'male');
 
@@ -1639,7 +1668,7 @@ function generateBlessing() {
         }
         
         // בחירת משפטים מהרשימה
-        const count = state.length === 'long' ? 3 : 1; 
+        const count = state.length === 'long' ? 1 : 1; // תמיד משפט אחד לסליחה וחיזוק יומי
         parts.push(...getDistinctRandom(gen, count));
 
     } else {
@@ -1688,7 +1717,6 @@ function generateBlessing() {
 
     renderLinesWithEmojis(adjustedParts, emojiSet);
 }
-
 function renderLinesWithEmojis(linesArray, setKey) {
     const cleanLines = linesArray.filter(l => l && l.trim() !== "");
     let availableEmojis = [...(emojis[setKey] || emojis['general'])];
