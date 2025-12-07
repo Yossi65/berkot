@@ -6,8 +6,12 @@
 
 <meta property="og:title" content="מילים מהלב - מחולל הברכות האישי שלך">
 <meta name="theme-color" content="#e6ebef"> 
-<title>מילים מהלב</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon.jpg">
 <link rel="manifest" href="manifest.json">
+
+<title>מילים מהלב</title>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -25,8 +29,6 @@
     --shadow-dark: 8px 8px 16px 0px rgba(166, 180, 200, 0.7);
     --shadow-inset: inset 6px 6px 10px 0 rgba(166, 180, 200, 0.7), inset -6px -6px 10px 0 rgba(255, 255, 255, 0.8);
     --radius: 24px;
-    
-    /* משתנה דינמי לצבעי האייקונים */
     --dynamic-icon-gradient: linear-gradient(to right, #a1c4fd, #c2e9fb);
 }
 
@@ -61,12 +63,15 @@ body {
     transition: background-color 0.5s ease;
 }
 
+/* --- תיקון CSS למרכוז הכותרת --- */
 .header-row { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
     margin-bottom: 10px;
     padding-bottom: 10px;
+    position: relative; /* חשוב למרכוז */
+    height: 50px;       /* גובה קבוע */
 }
 
 h1 { 
@@ -76,12 +81,19 @@ h1 {
     font-weight: 700;
     letter-spacing: -0.5px;
     text-shadow: 2px 2px 4px rgba(166, 180, 200, 0.5);
+    
+    /* קוד המרכוז החדש */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    z-index: 0;
+    
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* אנימציית לב */
 .watercolor-heart {
     background: none;
     -webkit-text-fill-color: #dc2626;
@@ -97,33 +109,39 @@ h1 {
     50% { transform: scale(1.1); }
 }
 
-.settings-btn { 
-    background: var(--clay-bg); border: none; border-radius: 50%; width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center; color: var(--text-sec); cursor: pointer; transition: 0.2s; font-size: 1rem; box-shadow: var(--shadow-dark), var(--shadow-light);
+.settings-btn, .install-btn { 
+    position: relative;
+    z-index: 2; /* כדי שיהיו מעל הכותרת */
+    background: var(--clay-bg); 
+    border: none; 
+    border-radius: 50%; 
+    width: 36px; 
+    height: 36px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: var(--text-sec); 
+    cursor: pointer; 
+    transition: 0.2s; 
+    font-size: 1rem; 
+    box-shadow: var(--shadow-dark), var(--shadow-light);
 }
-.settings-btn:active { box-shadow: var(--shadow-inset); transform: scale(0.95); }
 
-.back-btn {
-    background: var(--clay-bg); color: var(--text-main); border: none; padding: 12px; border-radius: var(--radius);
-    font-size: 0.9rem; font-weight: 600; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; box-shadow: var(--shadow-dark), var(--shadow-light);
-}
+.install-btn { color: var(--primary); display: none; margin-left:10px;}
+
+.settings-btn:active, .install-btn:active { box-shadow: var(--shadow-inset); transform: scale(0.95); }
+
+/* --- המשך CSS רגיל --- */
+.back-btn { background: var(--clay-bg); color: var(--text-main); border: none; padding: 12px; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; box-shadow: var(--shadow-dark), var(--shadow-light); }
 .back-btn:active { box-shadow: var(--shadow-inset); color: var(--primary); transform: scale(0.98); }
 
 .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-
-.grid-section-title {
-    grid-column: 1 / -1; font-size: 0.9rem; color: var(--text-sec); margin-top: 15px; margin-bottom: 5px; font-weight: 700; display: flex; align-items: center; gap: 10px;
-}
+.grid-section-title { grid-column: 1 / -1; font-size: 0.9rem; color: var(--text-sec); margin-top: 15px; margin-bottom: 5px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
 .grid-section-title::after { content: ""; flex: 1; height: 1px; background: rgba(166, 180, 200, 0.3); }
 
-/* כפתורים ראשיים */
-.category-btn { 
-    background: var(--clay-bg); border: none; padding: 16px 8px; border-radius: var(--radius);
-    font-size: 0.85rem; cursor: pointer; font-weight: 600; color: var(--text-main); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; box-shadow: var(--shadow-dark), var(--shadow-light); position: relative;
-}
+.category-btn { background: var(--clay-bg); border: none; padding: 16px 8px; border-radius: var(--radius); font-size: 0.85rem; cursor: pointer; font-weight: 600; color: var(--text-main); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; box-shadow: var(--shadow-dark), var(--shadow-light); position: relative; }
 .category-btn i { font-size: 1.5rem; color: #4a5568; margin-bottom: 2px; transition: 0.2s; }
 
-/* === צבעי Gradient מעודכנים === */
 .category-btn[onclick*="morning_evening"] i { background: linear-gradient(to right, #ffd2a5, #ff8c42); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="daily_strengthen"] i { background: linear-gradient(to right, #84fab0, #8fd3f4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="forgiveness"] i { background: linear-gradient(to right, #a18cd1, #fbc2eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -137,10 +155,7 @@ h1 {
 .category-btn[onclick*="event"] i { background: linear-gradient(to right, #c084fc, #e879f9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="thank_you"] i { background: linear-gradient(to right, #2dd4bf, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-/* SVG שבת */
-.shabbat-svg {
-    width: 32px; height: 32px; fill: none; stroke: #333; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px;
-}
+.shabbat-svg { width: 32px; height: 32px; fill: none; stroke: #333; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px; }
 
 .category-btn:hover { transform: translateY(-2px); }
 .category-btn:active, .category-btn.active { box-shadow: var(--shadow-inset); color: var(--primary); transform: scale(0.97); }
@@ -153,33 +168,19 @@ h1 {
 .sub-grid { grid-template-columns: repeat(2, 1fr); }
 .holidays-grid { grid-template-columns: repeat(3, 1fr); }
 
-/* כפתורים משניים */
-.sub-btn { 
-    background: var(--clay-bg); border: none; padding: 14px; border-radius: var(--radius);
-    font-size: 0.9rem; cursor: pointer; color: var(--text-main); transition: all 0.2s ease;
-    font-weight: 500; text-align: center; box-shadow: var(--shadow-dark), var(--shadow-light);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-}
+.sub-btn { background: var(--clay-bg); border: none; padding: 14px; border-radius: var(--radius); font-size: 0.9rem; cursor: pointer; color: var(--text-main); transition: all 0.2s ease; font-weight: 500; text-align: center; box-shadow: var(--shadow-dark), var(--shadow-light); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
 .sub-btn:hover { transform: translateY(-2px); }
 .sub-btn.active { box-shadow: var(--shadow-inset); color: var(--primary); font-weight: 700; }
 .sub-btn.active i { -webkit-text-fill-color: transparent; }
+.sub-btn i { font-size: 1.2rem; margin-bottom: 2px; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent; background-image: var(--dynamic-icon-gradient); }
 
-/* שימוש במשתנה הדינמי לצבעי האייקונים המשניים */
-.sub-btn i {
-    font-size: 1.2rem; margin-bottom: 2px;
-    background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
-    background-image: var(--dynamic-icon-gradient);
-}
-
-/* === חריגים ספציפיים === */
+/* חריגים לצבעי אייקונים */
 .sub-btn[onclick*="'morning'"] i { background-image: linear-gradient(to right, #ff9966, #ff5e62) !important; } 
 .sub-btn[onclick*="'noon'"] i { background-image: linear-gradient(to right, #56ccf2, #2f80ed) !important; } 
 .sub-btn[onclick*="'evening'"] i { background-image: linear-gradient(to right, #ff7e5f, #feb47b) !important; }
 .sub-btn[onclick*="'night'"] i { background-image: linear-gradient(to right, #232526, #414345) !important; } 
 .sub-btn[onclick*="selectShabbatTime('shabbat')"] i { background-image: linear-gradient(to right, #8e44ad, #c0392b) !important; }
 .sub-btn[onclick*="selectShabbatTime('motzash')"] i { background-image: linear-gradient(to right, #d35400, #f39c12) !important; }
-
-/* צבעי חגים */
 button[onclick*="'rosh_chodesh'"] i { background-image: linear-gradient(to right, #e2e8f0, #94a3b8) !important; }
 button[onclick*="'rosh_hashanah'"] i { background-image: linear-gradient(to right, #ef4444, #22c55e) !important; }
 button[onclick*="'yom_kippur'"] i { background-image: linear-gradient(to right, #fbbf24, #fff) !important; }
@@ -193,8 +194,6 @@ button[onclick*="'mimouna'"] i { background-image: linear-gradient(to right, #fb
 button[onclick*="'yom_haatzmaut'"] i { background-image: linear-gradient(to right, #0ea5e9, #0369a1) !important; }
 button[onclick*="'shavuot'"] i { background-image: linear-gradient(to right, #facc15, #fef08a) !important; }
 button[onclick*="'tu_beav'"] i { background-image: linear-gradient(to right, #f43f5e, #e11d48) !important; }
-
-/* === צבעים מיוחדים לתאריכי חב"ד === */
 button[onclick*="'chabad_6_tishrei'"] i { background-image: linear-gradient(to right, #d4fc79, #96e6a1) !important; }
 button[onclick*="'chabad_14_kislev'"] i { background-image: linear-gradient(to right, #a18cd1, #fbc2eb) !important; }
 button[onclick*="'chabad_19_kislev'"] i { background-image: linear-gradient(to right, #f6d365, #fda085) !important; }
@@ -207,6 +206,7 @@ button[onclick*="'chabad_2_iyar'"] i { background-image: linear-gradient(to righ
 button[onclick*="'chabad_3_tammuz'"] i { background-image: linear-gradient(to right, #cd9cf2, #f6f3ff) !important; }
 button[onclick*="'chabad_12_tammuz'"] i { background-image: linear-gradient(to right, #ffecd2, #fcb69f) !important; }
 button[onclick*="'chabad_18_elul'"] i { background-image: linear-gradient(to right, #ff8177, #ff867a) !important; }
+
 h3 { font-size: 1.1rem; color: var(--text-sec); margin: 25px 0 15px; font-weight: 600; text-align: center; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; } 
 h3 span { background: transparent; padding: 0 10px; }
 
@@ -214,28 +214,19 @@ h3 span { background: transparent; padding: 0 10px; }
 input { width: 100%; padding: 18px; border: none; border-radius: var(--radius); font-size: 1rem; outline: none; transition: 0.2s; background: var(--clay-bg); font-family: 'Rubik', sans-serif; color: #2d3748; box-shadow: inset 4px 4px 8px rgba(166, 180, 200, 0.5), inset -4px -4px 8px rgba(255, 255, 255, 0.8); }
 input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6px -6px 12px rgba(255, 255, 255, 0.9); }
 
-.generate-btn { 
-    background: var(--clay-bg); color: var(--primary); border: none; padding: 16px; border-radius: var(--radius);
-    font-size: 1.1rem; font-weight: 700; cursor: pointer; box-shadow: 10px 10px 20px rgba(166, 180, 200, 0.6), -10px -10px 20px rgba(255, 255, 255, 0.9); margin-top: 15px; width: 100%; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; 
-}
+.generate-btn { background: var(--clay-bg); color: var(--primary); border: none; padding: 16px; border-radius: var(--radius); font-size: 1.1rem; font-weight: 700; cursor: pointer; box-shadow: 10px 10px 20px rgba(166, 180, 200, 0.6), -10px -10px 20px rgba(255, 255, 255, 0.9); margin-top: 15px; width: 100%; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .generate-btn:hover { transform: translateY(-2px); }
 .generate-btn:active { box-shadow: var(--shadow-inset); transform: scale(0.98); }
 
 .middle-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 10px; margin-bottom: 2px;}
-
-.output-container { 
-    background: var(--clay-bg); padding: 18px; border-radius: var(--radius); min-height: 100px; margin-top: 8px; border: none; box-shadow: var(--shadow-inset); font-size: 1.1rem; line-height: 1.7; 
-}
-
+.output-container { background: var(--clay-bg); padding: 18px; border-radius: var(--radius); min-height: 100px; margin-top: 8px; border: none; box-shadow: var(--shadow-inset); font-size: 1.1rem; line-height: 1.7; }
 .line-item { display: flex; align-items: center; margin-bottom: 12px; gap: 12px; background: var(--clay-bg); padding: 14px 18px; border-radius: 16px; box-shadow: 6px 6px 12px rgba(166, 180, 200, 0.4), -6px -6px 12px rgba(255, 255, 255, 0.8); border: none; }
 .line-text { flex: 1; outline: none; color: #2d3748; }
 .delete-line-btn { background: var(--clay-bg); color: #e53e3e; border: none; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: 0.2s; border-radius: 50%; box-shadow: 3px 3px 6px rgba(166, 180, 200, 0.4), -3px -3px 6px rgba(255, 255, 255, 0.8); }
 .delete-line-btn:active { box-shadow: inset 2px 2px 5px rgba(166, 180, 200, 0.5), inset -2px -2px 5px #fff; }
 
 .actions-bar { display: flex; gap: 12px; margin-top: 12px; }
-.action-btn { 
-    flex: 1; padding: 14px; border: none; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; background: var(--clay-bg); color: var(--text-main); box-shadow: var(--shadow-dark), var(--shadow-light); 
-}
+.action-btn { flex: 1; padding: 14px; border: none; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; background: var(--clay-bg); color: var(--text-main); box-shadow: var(--shadow-dark), var(--shadow-light); }
 .action-btn:active { box-shadow: var(--shadow-inset); transform: scale(0.98); }
 .btn-whatsapp { color: #047857; }
 .btn-copy { color: #2d3748; }
@@ -243,11 +234,8 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .controls-area { background: var(--clay-bg); padding: 25px; border-radius: 30px; box-shadow: 0 -10px 20px rgba(255,255,255, 0.5); margin-top: auto; border: none; }
 .favorites-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 2px solid rgba(166, 180, 200, 0.2); }
 .top-row { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
-
 .toggle-group { background: var(--clay-bg); padding: 6px; border-radius: 50px; display: flex; gap: 8px; box-shadow: var(--shadow-inset); }
-.toggle-btn { 
-    border: none; background: transparent; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; color: var(--text-sec); font-weight: 500; transition: 0.2s; 
-}
+.toggle-btn { border: none; background: transparent; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; color: var(--text-sec); font-weight: 500; transition: 0.2s; }
 .toggle-btn.active { background: var(--clay-bg); color: var(--primary); box-shadow: 5px 5px 10px rgba(166, 180, 200, 0.5), -5px -5px 10px #fff; font-weight: 700; }
 .toggle-btn input { display: none; }
 
@@ -256,9 +244,7 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .contact-rect.empty { box-shadow: var(--shadow-inset); color: #a0aec0 !important; }
 .contact-label { font-size: 0.75rem; color: #a0aec0; text-align: center; margin-top: 6px; display: block; font-weight: 500;}
 
-.share-app-btn {
-    background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; width: 100%; padding: 14px; border: none; border-radius: 18px; font-weight: 700; font-size: 1rem; margin-top: 25px; cursor: pointer; box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3); transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;
-}
+.share-app-btn { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; width: 100%; padding: 14px; border: none; border-radius: 18px; font-weight: 700; font-size: 1rem; margin-top: 25px; cursor: pointer; box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3); transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .share-app-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(109, 40, 217, 0.4); }
 .share-app-btn:active { transform: scale(0.98); }
 
@@ -271,13 +257,9 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .card-label { font-size: 0.85rem; font-weight: 700; color: #718096; background:transparent; padding:0; }
 .input-with-icon input { background: var(--clay-bg); height: 48px; font-size: 0.95rem; box-shadow: inset 3px 3px 6px rgba(166, 180, 200, 0.5), inset -3px -3px 6px #fff; border-radius: 12px; }
 .input-with-icon i { right: 15px; color: #a0aec0; }
-.import-btn { 
-    width: 100%; background: var(--clay-bg); color: var(--primary); border: none; padding: 12px; border-radius: 15px; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; transition: 0.2s; box-shadow: 5px 5px 10px rgba(166, 180, 200, 0.4), -5px -5px 10px #fff; 
-}
+.import-btn { width: 100%; background: var(--clay-bg); color: var(--primary); border: none; padding: 12px; border-radius: 15px; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; transition: 0.2s; box-shadow: 5px 5px 10px rgba(166, 180, 200, 0.4), -5px -5px 10px #fff; }
 .import-btn:active { box-shadow: inset 3px 3px 6px rgba(166, 180, 200, 0.5), inset -3px -3px 6px #fff; }
-.save-settings-btn { 
-    background: var(--clay-bg); color: var(--primary); border-radius: 15px; padding: 14px; width: 100%; border: none; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; margin-top: 20px; box-shadow: 6px 6px 12px rgba(166, 180, 200, 0.5), -6px -6px 12px #fff; 
-}
+.save-settings-btn { background: var(--clay-bg); color: var(--primary); border-radius: 15px; padding: 14px; width: 100%; border: none; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; margin-top: 20px; box-shadow: 6px 6px 12px rgba(166, 180, 200, 0.5), -6px -6px 12px #fff; }
 .save-settings-btn:active { box-shadow: inset 3px 3px 6px rgba(166, 180, 200, 0.5), inset -3px -3px 6px #fff; }
 #loadingOverlay { background: rgba(238, 242, 246, 0.9); z-index: 999; backdrop-filter: blur(5px); }
 .spinner { border: 4px solid #cbd5e0; border-top: 4px solid var(--primary); width: 40px; height: 40px; border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -293,7 +275,10 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
     </div>
 
     <div class="header-row">
-        <div style="width:40px"></div> 
+        <button id="installAppBtn" class="install-btn" onclick="installApp()" title="התקן אפליקציה">
+            <i class="fa-solid fa-download"></i>
+        </button>
+
         <h1>
             מילים 
             <i class="fa-solid fa-heart watercolor-heart"></i> 
@@ -303,7 +288,6 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <i class="fa-solid fa-gear"></i>
         </button>
     </div>
-
     <button class="back-btn" id="backBtn" onclick="goBack()">
         <i class="fa-solid fa-arrow-right"></i> חזרה לתפריט הראשי
     </button>
@@ -446,16 +430,14 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         </div>
     </div>
 
-<div id="forgivenessSection" class="dynamic-section">
-    <h3><span>ביקוש סליחה מ...</span></h3>
-    <div class="sub-grid">
-        <button class="sub-btn" onclick="selectSub('apology_general', this)"><i class="fa-solid fa-comment-dots"></i> כללי</button>
-        
-        <button class="sub-btn" onclick="selectSub('apology_wife', this)"><i class="fa-solid fa-user-tie"></i> מבעלי</button>
-        
-        <button class="sub-btn" onclick="selectSub('apology_husband', this)"><i class="fa-solid fa-person-dress"></i> מאישתי</button>
+    <div id="forgivenessSection" class="dynamic-section">
+        <h3><span>ביקוש סליחה מ...</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSub('apology_general', this)"><i class="fa-solid fa-comment-dots"></i> כללי</button>
+            <button class="sub-btn" onclick="selectSub('apology_wife', this)"><i class="fa-solid fa-user-tie"></i> מבעלי</button>
+            <button class="sub-btn" onclick="selectSub('apology_husband', this)"><i class="fa-solid fa-person-dress"></i> מאישתי</button>
+        </div>
     </div>
-</div>
 
     <div id="loveSection" class="dynamic-section">
         <h3><span>למי מיועד?</span></h3>
@@ -492,7 +474,7 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         <div id="thankYouTargets" style="display:none; margin-top:20px;"></div>
     </div>
 
-   <div id="chabadSection" class="dynamic-section">
+    <div id="chabadSection" class="dynamic-section">
         <h3><span>תאריך חסידי (לפי סדר השנה)</span></h3>
         <div class="holidays-grid">
             <button class="sub-btn" onclick="selectSub('chabad_6_tishrei', this)"><i class="fa-solid fa-person-breastfeeding"></i> ו' תשרי</button>
@@ -508,14 +490,11 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <button class="sub-btn" onclick="selectSub('chabad_12_tammuz', this)"><i class="fa-solid fa-lock-open"></i> י"ב תמוז</button>
             <button class="sub-btn" onclick="selectSub('chabad_18_elul', this)"><i class="fa-solid fa-star"></i> ח"י אלול</button>
         </div>
-        
-        
         <h3 style="margin-top:15px;"><span>למי?</span></h3>
         <div class="sub-grid">
             <button class="sub-btn" onclick="selectSub('general', this)"><i class="fa-regular fa-star"></i> כללי</button>
             <button class="sub-btn" onclick="selectSub('family', this)"><i class="fa-solid fa-people-roof"></i> משפחה</button>
         </div>
-    
     </div>
 
     <div id="eventSection" class="dynamic-section">
@@ -633,6 +612,51 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 </div>
 
 <script>
+// --- PWA LOGIC ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW Registered'))
+            .catch(err => console.log('SW reg failed', err));
+    });
+}
+
+let deferredPrompt;
+const installBtn = document.getElementById('installAppBtn');
+
+const isIos = () => {
+  return /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+};
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'flex';
+});
+
+if (isIos() && !window.navigator.standalone) {
+    installBtn.style.display = 'flex';
+}
+
+async function installApp() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if(outcome === 'accepted') {
+            installBtn.style.display = 'none';
+        }
+    } else if (isIos()) {
+        alert("כדי להתקין באייפון:\n1. לחץ על כפתור השיתוף למטה (ריבוע עם חץ)\n2. בחר 'הוסף למסך הבית' (Add to Home Screen)");
+    }
+}
+
+window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+    console.log('App installed');
+});
+
+// --- APP LOGIC ---
 let generators = {};
 let state = {
     category: null,
@@ -691,7 +715,6 @@ const jsonFiles = [
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%AA%D7%95%D7%93%D7%94%20%D7%9C%D7%91%D7%A2%D7%9C%D7%99%20%D7%95%D7%9C%D7%90%D7%99%D7%A9%D7%AA%D7%99%20.json"
 ];
 
-// מפת צבעים דינמית לקטגוריות
 const categoryColors = {
     'morning_evening': 'linear-gradient(to right, #ffd2a5, #ff8c42)',
     'daily_strengthen': 'linear-gradient(to right, #84fab0, #8fd3f4)',
@@ -705,7 +728,6 @@ const categoryColors = {
     'default': 'linear-gradient(to right, #a1c4fd, #c2e9fb)'
 };
 
-// מפת צבעים לחגים
 const holidayColors = {
     'rosh_chodesh': 'linear-gradient(to right, #e2e8f0, #94a3b8)',
     'rosh_hashanah': 'linear-gradient(to right, #ef4444, #22c55e)',
@@ -894,7 +916,6 @@ function saveNameHistory(name) {
 async function loadAllBlessings() {
     const loadingStatus = document.getElementById('loadingStatus'); 
     try {
-        // הוספתי פרמטר ?v=timestamp כדי למנוע cache ולטעון תמיד גרסה מעודכנת
         const promises = jsonFiles.map(url => fetch(url + '?v=' + new Date().getTime()).then(res => {
             if(!res.ok) throw new Error(`נכשל בטעינת: ${url}`);
             return res.json();
@@ -1016,7 +1037,6 @@ function goBack() {
         senderGender: currentSender
     };
     
-    // איפוס צבע
     document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #a1c4fd, #c2e9fb)');
 
     document.getElementById('nameInput').value = "";
@@ -1039,7 +1059,6 @@ function selectCategory(cat, btn) {
     document.getElementById('optionsRow').style.display = 'flex';
     document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
     
-    // עדכון צבע דינמי לפי הקטגוריה
     const newColor = categoryColors[cat] || categoryColors['default'];
     document.documentElement.style.setProperty('--dynamic-icon-gradient', newColor);
 
@@ -1075,21 +1094,19 @@ function selectCategory(cat, btn) {
     }
     else if (cat === 'recovery') {
         document.getElementById('recoveryTargetSection').style.display = 'block';
-        document.getElementById('recoveryTargets').style.display = 'none'; // איפוס תצוגת יעד
+        document.getElementById('recoveryTargets').style.display = 'none'; 
     }
     else if (cat === 'thank_you') {
         document.getElementById('thankYouTargetSection').style.display = 'block';
-        document.getElementById('thankYouTargets').style.display = 'none'; // איפוס תצוגת יעד
+        document.getElementById('thankYouTargets').style.display = 'none'; 
     }
     else if (cat === 'love') {
         document.getElementById('loveSection').style.display = 'block';
-        document.getElementById('loveTargets').style.display = 'none'; // איפוס תצוגת יעד
+        document.getElementById('loveTargets').style.display = 'none'; 
     }
-    // --- התיקון כאן: הצגת המסך במקום בדיקת מגדר ---
     else if (cat === 'success') {
         document.getElementById('successSection').style.display = 'block';
     } 
-    // ---------------------------------------------
     else if (cat === 'forgiveness') {
         document.getElementById('forgivenessSection').style.display = 'block';
     }
@@ -1126,22 +1143,18 @@ function selectTimeTarget(target, btn) {
     document.getElementById('genBtn').style.display = 'flex';
 }
 
-/* לוגיקה חכמה לאהבה */
 function selectLoveGender(gender, btn) {
     state.gender = gender;
     state.recipientGender = (gender === 'male') ? 'male' : 'female';
     
-    // UI Update
     const btns = document.querySelectorAll('#loveSection > .sub-grid > .sub-btn');
     btns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // Generate Sub-buttons with specific order
     const targetContainer = document.getElementById('loveTargets');
     targetContainer.innerHTML = '';
     targetContainer.style.display = 'block';
     
-    // Sub-grid
     const grid = document.createElement('div');
     grid.className = 'sub-grid';
     grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
@@ -1176,7 +1189,6 @@ function selectLoveGender(gender, btn) {
     targetContainer.appendChild(grid);
 }
 
-/* לוגיקה חכמה לרפואה */
 function selectRecoveryGender(gender, btn) {
     state.gender = gender;
     state.recipientGender = (gender === 'male') ? 'male' : 'female';
@@ -1241,7 +1253,6 @@ function selectSuccessGender(gender, btn) {
     document.getElementById('genBtn').style.display = 'flex';
 }
 
-
 function selectThankYouGender(gender, btn) {
     state.gender = gender;
     state.recipientGender = (gender === 'male') ? 'male' : 'female';
@@ -1250,11 +1261,10 @@ function selectThankYouGender(gender, btn) {
     btns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // שינוי צבעים דינמי
     if (gender === 'male') {
-        document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #2dd4bf, #0ea5e9)'); // טורקיז/כחול
+        document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #2dd4bf, #0ea5e9)'); 
     } else {
-        document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #d946ef, #8b5cf6)'); // סגול/ורוד
+        document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #d946ef, #8b5cf6)'); 
     }
 
     const targetContainer = document.getElementById('thankYouTargets');
@@ -1351,7 +1361,6 @@ function selectHolidayName(hName, btn) {
     btns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     
-    // שינוי צבע דינמי לחג הנבחר
     if(holidayColors[hName]) {
         document.documentElement.style.setProperty('--dynamic-icon-gradient', holidayColors[hName]);
     }
@@ -1375,12 +1384,9 @@ function selectBirthType(type) {
     btns.forEach(b => b.classList.remove('active'));
     event.target.classList.add('active');
 
-    // שינוי צבעים דינמי
     if (type === 'birth_boy') {
-        // כחול לבן
         document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #3b82f6, #60a5fa)');
     } else {
-        // ורוד לבת
         document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #ec4899, #f472b6)');
     }
 
@@ -1389,27 +1395,22 @@ function selectBirthType(type) {
     document.getElementById('birthSubTargetSection').style.display = 'block';
     document.getElementById('birthTargetTitle').innerText = (type === 'birth_boy') ? "למי נולד הבן?" : "למי נולדה הבת?";
 
-    // --- עדכון הרשימות לפי הבקשה: הוספת האופציות החסרות ---
     const targets = (type === 'birth_boy') ?
     [
-        // הקיים (קונטקסט זכרי בדרך כלל)
         {key: 'brother', label: 'לאח', icon: 'fa-solid fa-user'},
         {key: 'friend_m', label: 'לחבר', icon: 'fa-solid fa-user-group'},
         {key: 'neighbor_m', label: 'לשכן', icon: 'fa-solid fa-house-user'},
         {key: 'family_m', label: 'לבן משפחה', icon: 'fa-solid fa-people-roof'},
-        // חדש (קונטקסט נקבי)
         {key: 'sister', label: 'לאחותי', icon: 'fa-solid fa-person-dress'},
         {key: 'friend_f', label: 'לחברה', icon: 'fa-solid fa-user-group'},
         {key: 'neighbor_f', label: 'לשכנה', icon: 'fa-solid fa-house-user'},
         {key: 'family_f', label: 'לבת משפחה', icon: 'fa-solid fa-people-roof'}
     ] :
     [
-        // הקיים (קונטקסט נקבי בדרך כלל)
         {key: 'sister', label: 'לאחות', icon: 'fa-solid fa-person-dress'},
         {key: 'friend_f', label: 'לחברה', icon: 'fa-solid fa-user-group'},
         {key: 'neighbor_f', label: 'לשכנה', icon: 'fa-solid fa-house-user'},
         {key: 'family_f', label: 'לבת משפחה', icon: 'fa-solid fa-people-roof'},
-        // חדש (קונטקסט זכרי)
         {key: 'brother', label: 'לאחי', icon: 'fa-solid fa-user'},
         {key: 'friend_m', label: 'לחבר', icon: 'fa-solid fa-user-group'},
         {key: 'neighbor_m', label: 'לשכן', icon: 'fa-solid fa-house-user'},
@@ -1442,7 +1443,6 @@ function selectGenderGeneral(g, btn) {
     document.getElementById('genBtn').style.display = 'flex';
 }
 
-/* לוגיקה חכמה ליום הולדת (עם צבעים ספציפיים לכל קרוב) */
 function selectBirthdayGender(gender, btn) {
     state.gender = gender;
     if (gender === 'man' || gender === 'boy') state.recipientGender = 'male';
@@ -1616,7 +1616,6 @@ function generateBlessing() {
             key = bdKey;
         }
     }
-    // --- התיקון נמצא כאן: לוקחים את השם ישר מהכפתור בלי תוספות ---
     else if (state.category === 'forgiveness') {
         key = state.subCategory;
     }
@@ -1653,7 +1652,6 @@ function generateBlessing() {
     saveNameHistory(name);
 
     if (Array.isArray(gen)) {
-        // --- טיפול במקרה של רשימה פשוטה (כמו חיזוק יומי או סליחה) ---
         if (name) {
              let suffix = "היקר/ה";
              const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife' || state.subCategory === 'apology_wife');
@@ -1669,12 +1667,10 @@ function generateBlessing() {
              parts.push(`${name} ${suffix},`);
         }
         
-        // בחירת משפטים מהרשימה
-        const count = state.length === 'long' ? 1 : 1; // תמיד משפט אחד לסליחה וחיזוק יומי
+        const count = state.length === 'long' ? 1 : 1; 
         parts.push(...getDistinctRandom(gen, count));
 
     } else {
-        // --- טיפול במבנה הרגיל (פתיחה, גוף, סיום) ---
         if (name) {
             let suffix = "היקר/ה";
             const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife');
