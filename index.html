@@ -151,6 +151,9 @@ h1 {
 /* צבע לכפתור יום נישואין החדש */
 .category-btn[onclick*="anniversary"] i { background: linear-gradient(to right, #ff758c, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
+/* צבע לניחום אבלים (סולידי/אפור כהה) */
+.category-btn[onclick*="mourning"] i { background: linear-gradient(to right, #434343, #000000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
 .shabbat-svg { width: 32px; height: 32px; fill: none; stroke: #333; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px; }
 
 .category-btn:hover { transform: translateY(-2px); }
@@ -183,8 +186,41 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 
 .middle-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 10px; margin-bottom: 2px;}
 .output-container { background: var(--clay-bg); padding: 18px; border-radius: var(--radius); min-height: 100px; margin-top: 8px; border: none; box-shadow: var(--shadow-inset); font-size: 1.1rem; line-height: 1.7; }
-.line-item { display: flex; align-items: center; margin-bottom: 12px; gap: 12px; background: var(--clay-bg); padding: 14px 18px; border-radius: 16px; box-shadow: 6px 6px 12px rgba(166, 180, 200, 0.4), -6px -6px 12px rgba(255, 255, 255, 0.8); border: none; }
+
+/* שינוי עיצוב לשורה כדי להכיל כפתורי עריכה */
+.line-item { display: flex; align-items: center; margin-bottom: 12px; gap: 12px; background: var(--clay-bg); padding: 10px 18px; border-radius: 16px; box-shadow: 6px 6px 12px rgba(166, 180, 200, 0.4), -6px -6px 12px rgba(255, 255, 255, 0.8); border: none; }
+
 .line-text { flex: 1; outline: none; color: #2d3748; }
+
+/* --- תוספת כפתור עריכה ועיצוב חדש --- */
+.line-btns-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;           /* רווח בין הכפתורים */
+    margin-left: 12px;  /* רווח מהטקסט */
+}
+
+.edit-line-btn {
+    background: var(--clay-bg);
+    color: var(--primary);
+    border: none;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: 0.2s;
+    border-radius: 50%;
+    box-shadow: 3px 3px 6px rgba(166, 180, 200, 0.4), -3px -3px 6px rgba(255, 255, 255, 0.8);
+}
+
+.edit-line-btn:active {
+    box-shadow: inset 2px 2px 5px rgba(166, 180, 200, 0.5), inset -2px -2px 5px #fff;
+    transform: scale(0.95);
+}
+
 .delete-line-btn { background: var(--clay-bg); color: #e53e3e; border: none; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: 0.2s; border-radius: 50%; box-shadow: 3px 3px 6px rgba(166, 180, 200, 0.4), -3px -3px 6px rgba(255, 255, 255, 0.8); }
 .delete-line-btn:active { box-shadow: inset 2px 2px 5px rgba(166, 180, 200, 0.5), inset -2px -2px 5px #fff; }
 
@@ -236,6 +272,9 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .sub-btn[onclick*="'brita'"] i { background-image: linear-gradient(to right, #ff9a9e, #fad0c4) !important; }
 .sub-btn[onclick*="'housewarming'"] i { background-image: linear-gradient(to right, #11998e, #38ef7d) !important; }
 .sub-btn[onclick*="'henna'"] i { background-image: linear-gradient(to right, #d31027, #ea384d) !important; }
+
+/* צבע אירוסין */
+.sub-btn[onclick*="'engagement'"] i { background-image: linear-gradient(to right, #E0AA3E, #F9F295) !important; }
 
 /* --- צבעים ליום נישואין (מהאתר החדש) --- */
 .sub-btn[onclick*="anniversary_husband"] i { background-image: linear-gradient(to right, #4facfe, #00f2fe) !important; }
@@ -289,7 +328,6 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         <div class="spinner"></div>
         <span class="loading-text">טוען...</span>
     </div>
-
     <div class="header-row">
         <button id="installAppBtn" class="install-btn" onclick="installApp()" title="התקן אפליקציה">
             <i class="fa-solid fa-download"></i>
@@ -366,6 +404,9 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         </button>
         <button class="category-btn" onclick="selectCategory('chabad', this)">
             <i class="fa-solid fa-crown"></i> חב"ד
+        </button>
+        <button class="category-btn" onclick="selectCategory('mourning', this)">
+            <i class="fa-solid fa-candle-holder" style="font-family: 'Font Awesome 6 Pro', 'Font Awesome 6 Free';">🕯️</i> ניחום אבלים
         </button>
     </div>
     <div id="morningEveningSection" class="dynamic-section">
@@ -459,50 +500,6 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         </div>
     </div>
 
-    <div id="forgivenessSection" class="dynamic-section">
-        <h3><span>ביקוש סליחה מ...</span></h3>
-        <div class="sub-grid">
-            <button class="sub-btn" onclick="selectSub('apology_general', this)"><i class="fa-solid fa-comment-dots"></i> כללי</button>
-            <button class="sub-btn" onclick="selectSub('apology_wife', this)"><i class="fa-solid fa-user-tie"></i> מבעלי</button>
-            <button class="sub-btn" onclick="selectSub('apology_husband', this)"><i class="fa-solid fa-person-dress"></i> מאישתי</button>
-        </div>
-    </div>
-
-    <div id="loveSection" class="dynamic-section">
-        <h3><span>למי מיועד?</span></h3>
-        <div class="sub-grid">
-            <button class="sub-btn" onclick="selectLoveGender('male', this)"><i class="fa-solid fa-user-tie"></i> לגבר</button>
-            <button class="sub-btn" onclick="selectLoveGender('female', this)"><i class="fa-solid fa-person-dress"></i> לאישה</button>
-        </div>
-        <div id="loveTargets" style="display:none; margin-top:20px;"></div>
-    </div>
-
-    <div id="successSection" class="dynamic-section">
-        <h3><span>בהצלחה ל...</span></h3>
-        <div class="sub-grid">
-            <button class="sub-btn" onclick="selectSuccessGender('male', this)"><i class="fa-solid fa-user-tie"></i> לגבר</button>
-            <button class="sub-btn" onclick="selectSuccessGender('female', this)"><i class="fa-solid fa-person-dress"></i> לאישה</button>
-        </div>
-    </div>
-
-    <div id="recoveryTargetSection" class="dynamic-section">
-        <h3><span>למי ההחלמה?</span></h3>
-        <div class="sub-grid">
-            <button class="sub-btn" onclick="selectRecoveryGender('male', this)"><i class="fa-solid fa-user-tie"></i> לגבר</button>
-            <button class="sub-btn" onclick="selectRecoveryGender('female', this)"><i class="fa-solid fa-person-dress"></i> לאישה</button>
-        </div>
-        <div id="recoveryTargets" style="display:none; margin-top:20px;"></div>
-    </div>
-
-    <div id="thankYouTargetSection" class="dynamic-section">
-        <h3><span>למי התודה?</span></h3>
-        <div class="sub-grid">
-            <button class="sub-btn" onclick="selectThankYouGender('male', this)"><i class="fa-solid fa-user-tie"></i> לגבר</button>
-            <button class="sub-btn" onclick="selectThankYouGender('female', this)"><i class="fa-solid fa-person-dress"></i> לאישה</button>
-        </div>
-        <div id="thankYouTargets" style="display:none; margin-top:20px;"></div>
-    </div>
-
     <div id="chabadSection" class="dynamic-section">
         <h3><span>תאריך חסידי (לפי סדר השנה)</span></h3>
         <div class="holidays-grid">
@@ -527,16 +524,32 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
     </div>
 
     <div id="eventSection" class="dynamic-section">
-        <h3><span>אירוע</span></h3>
-        <div class="sub-grid">
+        <h3 id="eventTitle"><span>אירוע</span></h3>
+        
+        <div id="eventMainButtons" class="sub-grid">
+            <button class="sub-btn" onclick="showEngagementSubMenu()">
+                <i class="fa-solid fa-gem"></i> אירוסין / וורט 💍
+            </button>
+            
             <button class="sub-btn" onclick="selectSub('wedding', this)"><i class="fa-solid fa-ring"></i> חתונה</button>
             <button class="sub-btn" onclick="selectSub('bar_mitzvah', this)"><i class="fa-solid fa-scroll"></i> בר מצווה</button>
             <button class="sub-btn" onclick="selectSub('bat_mitzvah', this)"><i class="fa-solid fa-star-of-david"></i> בת מצווה</button>
             <button class="sub-btn" onclick="selectSub('brit_milah', this)"><i class="fa-solid fa-baby"></i> ברית מילה</button>
             <button class="sub-btn" onclick="selectSub('brita', this)"><i class="fa-solid fa-baby-carriage"></i> בריתה</button>
-            
             <button class="sub-btn" onclick="selectSub('housewarming', this)"><i class="fa-solid fa-house-chimney"></i> חנוכת בית</button>
             <button class="sub-btn" onclick="selectSub('henna', this)"><i class="fa-solid fa-hand-sparkles"></i> חינה</button>
+        </div>
+
+        <div id="engagementSubButtons" class="sub-grid" style="display:none;">
+            <button class="sub-btn" onclick="selectSub('engagement_general', this)"><i class="fa-regular fa-star"></i> כללי</button>
+            <button class="sub-btn" onclick="selectSub('engagement_sister', this)"><i class="fa-solid fa-person-dress"></i> לאחותי</button>
+            <button class="sub-btn" onclick="selectSub('engagement_friend_f', this)"><i class="fa-solid fa-user-group"></i> לחברה</button>
+            <button class="sub-btn" onclick="selectSub('engagement_brother', this)"><i class="fa-solid fa-user"></i> לאחי</button>
+            <button class="sub-btn" onclick="selectSub('engagement_friend_m', this)"><i class="fa-solid fa-user-group"></i> לחבר</button>
+            
+            <button class="sub-btn" onclick="hideEngagementSubMenu()" style="grid-column: 1 / -1; background: #e2e8f0; margin-top:10px;">
+                <i class="fa-solid fa-arrow-right"></i> חזרה לבחירת אירוע
+            </button>
         </div>
     </div>
 
@@ -582,6 +595,59 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <button class="sub-btn" onclick="selectSub('anniversary_brother', this)"><i class="fa-solid fa-user"></i> לאחי</button>
             <button class="sub-btn" onclick="selectSub('anniversary_sister', this)"><i class="fa-solid fa-person-dress"></i> לאחותי</button>
         </div>
+    </div>
+
+    <div id="mourningSection" class="dynamic-section">
+        <h3><span>לזכר...</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSub('mourning_shiva', this)"><i class="fa-solid fa-chair"></i> שבעה</button>
+            <button class="sub-btn" onclick="selectSub('mourning_30', this)"><i class="fa-regular fa-calendar"></i> יום ה-30</button>
+            <button class="sub-btn" onclick="selectSub('mourning_year', this)"><i class="fa-solid fa-calendar-days"></i> שנה / אזכרה</button>
+        </div>
+    </div>
+
+    <div id="forgivenessSection" class="dynamic-section">
+        <h3><span>ביקוש סליחה מ...</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSub('apology_general', this)"><i class="fa-solid fa-comment-dots"></i> כללי</button>
+            <button class="sub-btn" onclick="selectSub('apology_wife', this)"><i class="fa-solid fa-user-tie"></i> מבעלי</button>
+            <button class="sub-btn" onclick="selectSub('apology_husband', this)"><i class="fa-solid fa-person-dress"></i> מאישתי</button>
+        </div>
+    </div>
+
+    <div id="loveSection" class="dynamic-section">
+        <h3><span>למי מיועד?</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectLoveGender('male', this)"><i class="fa-solid fa-user-tie"></i> לגבר</button>
+            <button class="sub-btn" onclick="selectLoveGender('female', this)"><i class="fa-solid fa-person-dress"></i> לאישה</button>
+        </div>
+        <div id="loveTargets" style="display:none; margin-top:20px;"></div>
+    </div>
+
+    <div id="successSection" class="dynamic-section">
+        <h3><span>בהצלחה ל...</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSuccessGender('male', this)"><i class="fa-solid fa-user-tie"></i> לגבר</button>
+            <button class="sub-btn" onclick="selectSuccessGender('female', this)"><i class="fa-solid fa-person-dress"></i> לאישה</button>
+        </div>
+    </div>
+
+    <div id="recoveryTargetSection" class="dynamic-section">
+        <h3><span>למי ההחלמה?</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectRecoveryGender('male', this)"><i class="fa-solid fa-user-tie"></i> לגבר</button>
+            <button class="sub-btn" onclick="selectRecoveryGender('female', this)"><i class="fa-solid fa-person-dress"></i> לאישה</button>
+        </div>
+        <div id="recoveryTargets" style="display:none; margin-top:20px;"></div>
+    </div>
+
+    <div id="thankYouTargetSection" class="dynamic-section">
+        <h3><span>למי התודה?</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectThankYouGender('male', this)"><i class="fa-solid fa-user-tie"></i> לגבר</button>
+            <button class="sub-btn" onclick="selectThankYouGender('female', this)"><i class="fa-solid fa-person-dress"></i> לאישה</button>
+        </div>
+        <div id="thankYouTargets" style="display:none; margin-top:20px;"></div>
     </div>
 
     <div id="inputSection" class="dynamic-section" style="display:none;">
@@ -726,6 +792,7 @@ let contacts = [
     { name: '', phone: '', color: '#e2e8f0' }
 ];
 
+// ברכות מקומיות (לא הוספנו לחדשים כבקשתך)
 const localBlessings = {
     "birthday_partner_female": {
         "openers": ["בת הזוג האהובה,", "יקירתי,", "אהבת חיי,", "הנסיכה שלי,"],
@@ -736,7 +803,7 @@ const localBlessings = {
 const wifeSuffixes = ["המושלמת", "היפה שלי", "אהבת חיי", "מלכתי"];
 const husbandSuffixes = ["המושלם", "הגבר שלי", "אהבת חיי", "מלך העולם"];
 
-// --- רשימת הקבצים המעודכנת (כולל יום נישואין החדש) ---
+// --- רשימת הקבצים המעודכנת ---
 const jsonFiles = [
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%91%D7%95%D7%A7%D7%A8%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A2%D7%A8%D7%91%20%D7%9C%D7%99%D7%9C%D7%94.json",
@@ -769,6 +836,8 @@ const categoryColors = {
     'birthday': 'linear-gradient(to right, #ffc3a0, #ffafbd)',
     'forgiveness': 'linear-gradient(to right, #a18cd1, #fbc2eb)',
     'anniversary': 'linear-gradient(to right, #ff758c, #ff7eb3)',
+    'mourning': 'linear-gradient(to right, #434343, #000000)',
+    'engagement': 'linear-gradient(to right, #E0AA3E, #F9F295)',
     'default': 'linear-gradient(to right, #a1c4fd, #c2e9fb)'
 };
 
@@ -1040,7 +1109,9 @@ const emojis = {
     chabad: ["👑", "🕯️", "🕍", "📜", "📖"],
     daily_strengthen: ["💪", "✨", "🦁", "💎", "🌱", "🦋"],
     forgiveness: ["🙏", "🤍", "🕊️", "🤝", "💫"],
-    anniversary: ["🥂", "💍", "❤️", "🌹", "💏", "💑"]
+    anniversary: ["🥂", "💍", "❤️", "🌹", "💏", "💑"],
+    mourning: ["🕯️", "🙏", "🖤", "🔯"],
+    engagement: ["💍", "🥂", "💖", "✨"]
 };
 
 function updateEmojiUI() {
@@ -1098,6 +1169,21 @@ function goBack() {
     updateSenderUI();
 }
 
+// --- פונקציות לתפריט אירוסין ---
+function showEngagementSubMenu() {
+    document.getElementById('eventMainButtons').style.display = 'none';
+    document.getElementById('engagementSubButtons').style.display = 'grid';
+    document.getElementById('eventTitle').innerText = "אירוסין ל...";
+    document.getElementById('genBtn').style.display = 'none';
+}
+
+function hideEngagementSubMenu() {
+    document.getElementById('engagementSubButtons').style.display = 'none';
+    document.getElementById('eventMainButtons').style.display = 'grid';
+    document.getElementById('eventTitle').innerText = "אירוע";
+}
+
+// --- פונקציה מעודכנת לבחירת קטגוריה ושינוי טקסט כפתור ---
 function selectCategory(cat, btn) {
     state.category = cat;
     document.getElementById('mainGrid').style.display = 'none';
@@ -1105,6 +1191,14 @@ function selectCategory(cat, btn) {
     document.getElementById('optionsRow').style.display = 'flex';
     document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
     
+    // שינוי טקסט הכפתור
+    const genBtn = document.getElementById('genBtn');
+    if (cat === 'mourning') {
+        genBtn.innerHTML = '<i class="fa-solid fa-feather"></i> צור ניחום';
+    } else {
+        genBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> צור ברכה';
+    }
+
     const newColor = categoryColors[cat] || categoryColors['default'];
     document.documentElement.style.setProperty('--dynamic-icon-gradient', newColor);
 
@@ -1130,6 +1224,7 @@ function selectCategory(cat, btn) {
     }
     else if (cat === 'event') {
         document.getElementById('eventSection').style.display = 'block';
+        hideEngagementSubMenu(); // איפוס
     }
     else if (cat === 'birth') {
         document.getElementById('birthSection').style.display = 'block';
@@ -1158,6 +1253,9 @@ function selectCategory(cat, btn) {
     }
     else if (cat === 'anniversary') {
         document.getElementById('anniversarySection').style.display = 'block';
+    }
+    else if (cat === 'mourning') {
+        document.getElementById('mourningSection').style.display = 'block';
     }
     else {
         document.getElementById('genBtn').style.display = 'flex';
@@ -1393,8 +1491,8 @@ function selectSub(type, btn) {
     }
 
     state.subCategory = type;
-    const maleTargets = ['husband', 'brother', 'friend_m', 'friend_male', 'dad', 'grandson', 'boy', 'male', 'male_general', 'apology_friend_m', 'apology_husband', 'apology_brother', 'neighbor_m', 'family_m', 'anniversary_husband', 'anniversary_brother'];
-    const femaleTargets = ['wife', 'sister', 'friend_f', 'friend_female', 'mom', 'granddaughter', 'girl', 'female', 'female_general', 'apology_friend_f', 'apology_wife', 'apology_sister', 'neighbor_f', 'family_f', 'anniversary_wife', 'anniversary_sister'];
+    const maleTargets = ['husband', 'brother', 'friend_m', 'friend_male', 'dad', 'grandson', 'boy', 'male', 'male_general', 'apology_friend_m', 'apology_husband', 'apology_brother', 'neighbor_m', 'family_m', 'anniversary_husband', 'anniversary_brother', 'engagement_brother', 'engagement_friend_m'];
+    const femaleTargets = ['wife', 'sister', 'friend_f', 'friend_female', 'mom', 'granddaughter', 'girl', 'female', 'female_general', 'apology_friend_f', 'apology_wife', 'apology_sister', 'neighbor_f', 'family_f', 'anniversary_wife', 'anniversary_sister', 'engagement_sister', 'engagement_friend_f'];
     if (maleTargets.includes(type)) state.recipientGender = 'male';
     if (femaleTargets.includes(type)) state.recipientGender = 'female';
     if (['anniversary_parents', 'family'].includes(type)) state.recipientGender = 'plural'; 
@@ -1670,7 +1768,10 @@ function generateBlessing() {
         key = state.subCategory;
     }
     else if (state.category === 'anniversary') {
-        key = state.subCategory; // 'anniversary_husband', etc.
+        key = state.subCategory; 
+    }
+    else if (state.category === 'mourning') {
+        key = state.subCategory;
     }
     else {
         key = state.category;
@@ -1768,6 +1869,8 @@ function generateBlessing() {
 
     renderLinesWithEmojis(adjustedParts, emojiSet);
 }
+
+// --- פונקציה מעודכנת עם כפתור עריכה ומחיקה ---
 function renderLinesWithEmojis(linesArray, setKey) {
     const cleanLines = linesArray.filter(l => l && l.trim() !== "");
     let availableEmojis = [...(emojis[setKey] || emojis['general'])];
@@ -1783,15 +1886,33 @@ function renderLinesWithEmojis(linesArray, setKey) {
             availableEmojis.splice(randomIndex, 1);
             lineContent = `${lineContent} ${emoji}`;
         }
-        lineContent = `*${lineContent}*`;
+        
+        if (!lineContent.startsWith('*')) lineContent = `*${lineContent}*`;
+        
         const row = document.createElement('div');
         row.className = 'line-item';
+        
+        // הוספת עטיפה לכפתורים: עריכה ומחיקה
         row.innerHTML = `
-        <button class="delete-line-btn" onclick="this.parentElement.remove()" title="מחק שורה זו">✕</button>
+        <div class="line-btns-wrapper">
+            <button class="edit-line-btn" onclick="focusLine(this)" title="ערוך טקסט">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="delete-line-btn" onclick="this.closest('.line-item').remove()" title="מחק שורה זו">✕</button>
+        </div>
         <div class="line-text" contenteditable="true">${lineContent}</div>
         `;
         container.appendChild(row);
     });
+}
+
+function focusLine(btn) {
+    const textDiv = btn.closest('.line-item').querySelector('.line-text');
+    if (textDiv) {
+        textDiv.focus();
+        textDiv.style.outline = "2px solid var(--primary)";
+        setTimeout(() => textDiv.style.outline = "none", 500);
+    }
 }
 
 function getVisibleText() {
