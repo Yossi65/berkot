@@ -63,15 +63,14 @@ body {
     transition: background-color 0.5s ease;
 }
 
-/* --- תיקון CSS למרכוז הכותרת --- */
 .header-row { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
     margin-bottom: 10px;
     padding-bottom: 10px;
-    position: relative; /* חשוב למרכוז */
-    height: 50px;       /* גובה קבוע */
+    position: relative;
+    height: 50px;
 }
 
 h1 { 
@@ -81,14 +80,11 @@ h1 {
     font-weight: 700;
     letter-spacing: -0.5px;
     text-shadow: 2px 2px 4px rgba(166, 180, 200, 0.5);
-    
-    /* קוד המרכוז החדש */
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     width: max-content;
     z-index: 0;
-    
     display: flex;
     align-items: center;
     gap: 8px;
@@ -111,7 +107,7 @@ h1 {
 
 .settings-btn, .install-btn { 
     position: relative;
-    z-index: 2; /* כדי שיהיו מעל הכותרת */
+    z-index: 2;
     background: var(--clay-bg); 
     border: none; 
     border-radius: 50%; 
@@ -128,10 +124,8 @@ h1 {
 }
 
 .install-btn { color: var(--primary); display: none; margin-left:10px;}
-
 .settings-btn:active, .install-btn:active { box-shadow: var(--shadow-inset); transform: scale(0.95); }
 
-/* --- המשך CSS רגיל --- */
 .back-btn { background: var(--clay-bg); color: var(--text-main); border: none; padding: 12px; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; box-shadow: var(--shadow-dark), var(--shadow-light); }
 .back-btn:active { box-shadow: var(--shadow-inset); color: var(--primary); transform: scale(0.98); }
 
@@ -154,6 +148,8 @@ h1 {
 .category-btn[onclick*="success"] i { background: linear-gradient(to right, #ffe7a1, #e6b800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="event"] i { background: linear-gradient(to right, #c084fc, #e879f9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="thank_you"] i { background: linear-gradient(to right, #2dd4bf, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+/* צבע לכפתור יום נישואין החדש */
+.category-btn[onclick*="anniversary"] i { background: linear-gradient(to right, #ff758c, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
 .shabbat-svg { width: 32px; height: 32px; fill: none; stroke: #333; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px; }
 
@@ -173,39 +169,6 @@ h1 {
 .sub-btn.active { box-shadow: var(--shadow-inset); color: var(--primary); font-weight: 700; }
 .sub-btn.active i { -webkit-text-fill-color: transparent; }
 .sub-btn i { font-size: 1.2rem; margin-bottom: 2px; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent; background-image: var(--dynamic-icon-gradient); }
-
-/* חריגים לצבעי אייקונים */
-.sub-btn[onclick*="'morning'"] i { background-image: linear-gradient(to right, #ff9966, #ff5e62) !important; } 
-.sub-btn[onclick*="'noon'"] i { background-image: linear-gradient(to right, #56ccf2, #2f80ed) !important; } 
-.sub-btn[onclick*="'evening'"] i { background-image: linear-gradient(to right, #ff7e5f, #feb47b) !important; }
-.sub-btn[onclick*="'night'"] i { background-image: linear-gradient(to right, #232526, #414345) !important; } 
-.sub-btn[onclick*="selectShabbatTime('shabbat')"] i { background-image: linear-gradient(to right, #8e44ad, #c0392b) !important; }
-.sub-btn[onclick*="selectShabbatTime('motzash')"] i { background-image: linear-gradient(to right, #d35400, #f39c12) !important; }
-button[onclick*="'rosh_chodesh'"] i { background-image: linear-gradient(to right, #e2e8f0, #94a3b8) !important; }
-button[onclick*="'rosh_hashanah'"] i { background-image: linear-gradient(to right, #ef4444, #22c55e) !important; }
-button[onclick*="'yom_kippur'"] i { background-image: linear-gradient(to right, #fbbf24, #fff) !important; }
-button[onclick*="'sukkot'"] i { background-image: linear-gradient(to right, #16a34a, #854d0e) !important; }
-button[onclick*="'simchat_torah'"] i { background-image: linear-gradient(to right, #3b82f6, #9333ea) !important; }
-button[onclick*="'hanukkah'"] i { background-image: linear-gradient(to right, #f59e0b, #fbbf24) !important; }
-button[onclick*="'tu_bishvat'"] i { background-image: linear-gradient(to right, #22c55e, #15803d) !important; }
-button[onclick*="'purim'"] i { background-image: linear-gradient(to right, #d946ef, #8b5cf6) !important; }
-button[onclick*="'passover'"] i { background-image: linear-gradient(to right, #6366f1, #3b82f6) !important; }
-button[onclick*="'mimouna'"] i { background-image: linear-gradient(to right, #fbbf24, #f59e0b) !important; }
-button[onclick*="'yom_haatzmaut'"] i { background-image: linear-gradient(to right, #0ea5e9, #0369a1) !important; }
-button[onclick*="'shavuot'"] i { background-image: linear-gradient(to right, #facc15, #fef08a) !important; }
-button[onclick*="'tu_beav'"] i { background-image: linear-gradient(to right, #f43f5e, #e11d48) !important; }
-button[onclick*="'chabad_6_tishrei'"] i { background-image: linear-gradient(to right, #d4fc79, #96e6a1) !important; }
-button[onclick*="'chabad_14_kislev'"] i { background-image: linear-gradient(to right, #a18cd1, #fbc2eb) !important; }
-button[onclick*="'chabad_19_kislev'"] i { background-image: linear-gradient(to right, #f6d365, #fda085) !important; }
-button[onclick*="'chabad_5_tevet'"] i { background-image: linear-gradient(to right, #89f7fe, #66a6ff) !important; }
-button[onclick*="'chabad_24_tevet'"] i { background-image: linear-gradient(to right, #4facfe, #00f2fe) !important; }
-button[onclick*="'chabad_10_shevat'"] i { background-image: linear-gradient(to right, #43e97b, #38f9d7) !important; }
-button[onclick*="'chabad_22_shevat'"] i { background-image: linear-gradient(to right, #fa709a, #fee140) !important; }
-button[onclick*="'chabad_11_nissan'"] i { background-image: linear-gradient(to right, #30cfd0, #330867) !important; }
-button[onclick*="'chabad_2_iyar'"] i { background-image: linear-gradient(to right, #ff9a9e, #fecfef) !important; }
-button[onclick*="'chabad_3_tammuz'"] i { background-image: linear-gradient(to right, #cd9cf2, #f6f3ff) !important; }
-button[onclick*="'chabad_12_tammuz'"] i { background-image: linear-gradient(to right, #ffecd2, #fcb69f) !important; }
-button[onclick*="'chabad_18_elul'"] i { background-image: linear-gradient(to right, #ff8177, #ff867a) !important; }
 
 h3 { font-size: 1.1rem; color: var(--text-sec); margin: 25px 0 15px; font-weight: 600; text-align: center; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; } 
 h3 span { background: transparent; padding: 0 10px; }
@@ -264,42 +227,59 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 #loadingOverlay { background: rgba(238, 242, 246, 0.9); z-index: 999; backdrop-filter: blur(5px); }
 .spinner { border: 4px solid #cbd5e0; border-top: 4px solid var(--primary); width: 40px; height: 40px; border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-/* --- צבעים לכפתורי אירועים --- */
 
-/* חתונה - זהב יוקרתי */
-.sub-btn[onclick*="'wedding'"] i { 
-    background-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728) !important; 
-}
+/* --- צבעים לכפתורי אירועים (קיים גם באתר החדש וגם בישן) --- */
+.sub-btn[onclick*="'wedding'"] i { background-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728) !important; }
+.sub-btn[onclick*="'bar_mitzvah'"] i { background-image: linear-gradient(to right, #0052D4, #4364F7, #6FB1FC) !important; }
+.sub-btn[onclick*="'bat_mitzvah'"] i { background-image: linear-gradient(to right, #ec008c, #fc6767) !important; }
+.sub-btn[onclick*="'brit_milah'"] i { background-image: linear-gradient(to right, #4facfe, #00f2fe) !important; }
+.sub-btn[onclick*="'brita'"] i { background-image: linear-gradient(to right, #ff9a9e, #fad0c4) !important; }
+.sub-btn[onclick*="'housewarming'"] i { background-image: linear-gradient(to right, #11998e, #38ef7d) !important; }
+.sub-btn[onclick*="'henna'"] i { background-image: linear-gradient(to right, #d31027, #ea384d) !important; }
 
-/* בר מצווה - כחול עמוק (טלית/יהדות) */
-.sub-btn[onclick*="'bar_mitzvah'"] i { 
-    background-image: linear-gradient(to right, #0052D4, #4364F7, #6FB1FC) !important; 
-}
+/* --- צבעים ליום נישואין (מהאתר החדש) --- */
+.sub-btn[onclick*="anniversary_husband"] i { background-image: linear-gradient(to right, #4facfe, #00f2fe) !important; }
+.sub-btn[onclick*="anniversary_wife"] i { background-image: linear-gradient(to right, #ff9a9e, #fad0c4) !important; }
+.sub-btn[onclick*="anniversary_parents"] i { background-image: linear-gradient(to right, #f6d365, #fda085) !important; }
+.sub-btn[onclick*="anniversary_brother"] i { background-image: linear-gradient(to right, #43e97b, #38f9d7) !important; }
+.sub-btn[onclick*="anniversary_sister"] i { background-image: linear-gradient(to right, #a18cd1, #fbc2eb) !important; }
 
-/* בת מצווה - ורוד מג'נטה חגיגי */
-.sub-btn[onclick*="'bat_mitzvah'"] i { 
-    background-image: linear-gradient(to right, #ec008c, #fc6767) !important; 
-}
+/* --- צבעים משוחזרים (מהאתר הישן) - בוקר/ערב --- */
+.sub-btn[onclick*="'morning'"] i { background-image: linear-gradient(to right, #ff9966, #ff5e62) !important; } 
+.sub-btn[onclick*="'noon'"] i { background-image: linear-gradient(to right, #56ccf2, #2f80ed) !important; } 
+.sub-btn[onclick*="'evening'"] i { background-image: linear-gradient(to right, #ff7e5f, #feb47b) !important; }
+.sub-btn[onclick*="'night'"] i { background-image: linear-gradient(to right, #232526, #414345) !important; } 
 
-/* ברית מילה - תכלת תינוקי */
-.sub-btn[onclick*="'brit_milah'"] i { 
-    background-image: linear-gradient(to right, #4facfe, #00f2fe) !important; 
-}
+/* --- צבעים משוחזרים (מהאתר הישן) - חגים --- */
+.sub-btn[onclick*="'rosh_chodesh'"] i { background-image: linear-gradient(to right, #e2e8f0, #94a3b8) !important; }
+.sub-btn[onclick*="'rosh_hashanah'"] i { background-image: linear-gradient(to right, #ef4444, #22c55e) !important; }
+.sub-btn[onclick*="'yom_kippur'"] i { background-image: linear-gradient(to right, #fbbf24, #fff) !important; }
+.sub-btn[onclick*="'sukkot'"] i { background-image: linear-gradient(to right, #16a34a, #854d0e) !important; }
+.sub-btn[onclick*="'simchat_torah'"] i { background-image: linear-gradient(to right, #3b82f6, #9333ea) !important; }
+.sub-btn[onclick*="'hanukkah'"] i { background-image: linear-gradient(to right, #f59e0b, #fbbf24) !important; }
+.sub-btn[onclick*="'tu_bishvat'"] i { background-image: linear-gradient(to right, #22c55e, #15803d) !important; }
+.sub-btn[onclick*="'purim'"] i { background-image: linear-gradient(to right, #d946ef, #8b5cf6) !important; }
+.sub-btn[onclick*="'passover'"] i { background-image: linear-gradient(to right, #6366f1, #3b82f6) !important; }
+.sub-btn[onclick*="'mimouna'"] i { background-image: linear-gradient(to right, #fbbf24, #f59e0b) !important; }
+.sub-btn[onclick*="'yom_haatzmaut'"] i { background-image: linear-gradient(to right, #0ea5e9, #0369a1) !important; }
+.sub-btn[onclick*="'shavuot'"] i { background-image: linear-gradient(to right, #facc15, #fef08a) !important; }
+.sub-btn[onclick*="'tu_beav'"] i { background-image: linear-gradient(to right, #f43f5e, #e11d48) !important; }
+.sub-btn[onclick*="'lag_baomer'"] i { background-image: linear-gradient(to right, #ff4500, #ff8c00) !important; }
 
-/* בריתה - ורוד רך */
-.sub-btn[onclick*="'brita'"] i { 
-    background-image: linear-gradient(to right, #ff9a9e, #fad0c4) !important; 
-}
+/* --- צבעים משוחזרים (מהאתר הישן) - חב"ד --- */
+.sub-btn[onclick*="'chabad_6_tishrei'"] i { background-image: linear-gradient(to right, #d4fc79, #96e6a1) !important; }
+.sub-btn[onclick*="'chabad_14_kislev'"] i { background-image: linear-gradient(to right, #a18cd1, #fbc2eb) !important; }
+.sub-btn[onclick*="'chabad_19_kislev'"] i { background-image: linear-gradient(to right, #f6d365, #fda085) !important; }
+.sub-btn[onclick*="'chabad_5_tevet'"] i { background-image: linear-gradient(to right, #89f7fe, #66a6ff) !important; }
+.sub-btn[onclick*="'chabad_24_tevet'"] i { background-image: linear-gradient(to right, #4facfe, #00f2fe) !important; }
+.sub-btn[onclick*="'chabad_10_shevat'"] i { background-image: linear-gradient(to right, #43e97b, #38f9d7) !important; }
+.sub-btn[onclick*="'chabad_22_shevat'"] i { background-image: linear-gradient(to right, #fa709a, #fee140) !important; }
+.sub-btn[onclick*="'chabad_11_nissan'"] i { background-image: linear-gradient(to right, #30cfd0, #330867) !important; }
+.sub-btn[onclick*="'chabad_2_iyar'"] i { background-image: linear-gradient(to right, #ff9a9e, #fecfef) !important; }
+.sub-btn[onclick*="'chabad_3_tammuz'"] i { background-image: linear-gradient(to right, #cd9cf2, #f6f3ff) !important; }
+.sub-btn[onclick*="'chabad_12_tammuz'"] i { background-image: linear-gradient(to right, #ffecd2, #fcb69f) !important; }
+.sub-btn[onclick*="'chabad_18_elul'"] i { background-image: linear-gradient(to right, #ff8177, #ff867a) !important; }
 
-/* חנוכת בית - ירוק (צמיחה ובית) */
-.sub-btn[onclick*="'housewarming'"] i { 
-    background-image: linear-gradient(to right, #11998e, #38ef7d) !important; 
-}
-
-/* חינה - אדום/כתום לוהט (מסורתי) */
-.sub-btn[onclick*="'henna'"] i { 
-    background-image: linear-gradient(to right, #d31027, #ea384d) !important; 
-}
 </style>
 </head>
 <body>
@@ -376,6 +356,9 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         <button class="category-btn" onclick="selectCategory('birth', this)">
             <i class="fa-solid fa-baby-carriage"></i> לידה
         </button>
+        <button class="category-btn" onclick="selectCategory('anniversary', this)">
+            <i class="fa-solid fa-champagne-glasses"></i> יום נישואין
+        </button>
 
         <div class="grid-section-title">מסורת ורגש</div>
         <button class="category-btn" onclick="selectCategory('holiday', this)">
@@ -385,7 +368,6 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <i class="fa-solid fa-crown"></i> חב"ד
         </button>
     </div>
-
     <div id="morningEveningSection" class="dynamic-section">
         <div id="timeOfDaySelector">
             <h3><span>מה השעה?</span></h3>
@@ -431,6 +413,10 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
                 <button class="sub-btn" onclick="selectSub('husband', this)"><i class="fa-solid fa-user-tie"></i> בעלי</button>
                 <button class="sub-btn" onclick="selectSub('parents', this)"><i class="fa-solid fa-user-group"></i> הורים</button>
                 <button class="sub-btn" onclick="selectSub('kids', this)"><i class="fa-solid fa-children"></i> ילדים</button>
+                <button class="sub-btn" onclick="selectSub('brother', this)"><i class="fa-solid fa-user"></i> אח</button>
+                <button class="sub-btn" onclick="selectSub('sister', this)"><i class="fa-solid fa-person-dress"></i> אחות</button>
+                <button class="sub-btn" onclick="selectSub('friend_male', this)"><i class="fa-solid fa-user-group"></i> חבר</button>
+                <button class="sub-btn" onclick="selectSub('friend_female', this)"><i class="fa-solid fa-user-group"></i> חברה</button>
             </div>
         </div>
     </div>
@@ -450,6 +436,7 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
                 <button class="sub-btn" onclick="selectHolidayName('passover', this)"><i class="fa-solid fa-wine-glass"></i> פסח</button>
                 <button class="sub-btn" onclick="selectHolidayName('mimouna', this)"><i class="fa-solid fa-cookie-bite"></i> מימונה</button>
                 <button class="sub-btn" onclick="selectHolidayName('yom_haatzmaut', this)"><i class="fa-solid fa-flag"></i> העצמאות</button>
+                <button class="sub-btn" onclick="selectHolidayName('lag_baomer', this)"><i class="fa-solid fa-fire"></i> ל"ג בעומר</button>
                 <button class="sub-btn" onclick="selectHolidayName('shavuot', this)"><i class="fa-solid fa-wheat-awn"></i> שבועות</button>
                 <button class="sub-btn" onclick="selectHolidayName('tu_beav', this)"><i class="fa-solid fa-heart"></i> ט"ו באב</button>
                 <button class="sub-btn" onclick="selectHolidayName('generic_holiday', this)"><i class="fa-solid fa-calendar-check"></i> כללי</button>
@@ -462,6 +449,12 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
                 <button class="sub-btn" onclick="selectHolidayTarget('family', this)"><i class="fa-solid fa-people-roof"></i> משפחה</button>
                 <button class="sub-btn" onclick="selectHolidayTarget('wife', this)"><i class="fa-solid fa-person-dress"></i> אשתי</button>
                 <button class="sub-btn" onclick="selectHolidayTarget('husband', this)"><i class="fa-solid fa-user-tie"></i> בעלי</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('parents', this)"><i class="fa-solid fa-user-group"></i> הורים</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('kids', this)"><i class="fa-solid fa-children"></i> ילדים</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('brother', this)"><i class="fa-solid fa-user"></i> אח</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('sister', this)"><i class="fa-solid fa-person-dress"></i> אחות</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('friend_male', this)"><i class="fa-solid fa-user-group"></i> חבר</button>
+                <button class="sub-btn" onclick="selectHolidayTarget('friend_female', this)"><i class="fa-solid fa-user-group"></i> חברה</button>
             </div>
         </div>
     </div>
@@ -580,6 +573,17 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         </div>
     </div>
 
+    <div id="anniversarySection" class="dynamic-section">
+        <h3><span>יום נישואין ל...</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSub('anniversary_husband', this)"><i class="fa-solid fa-user-tie"></i> לבעלי</button>
+            <button class="sub-btn" onclick="selectSub('anniversary_wife', this)"><i class="fa-solid fa-person-dress"></i> לאשתי</button>
+            <button class="sub-btn" onclick="selectSub('anniversary_parents', this)"><i class="fa-solid fa-user-group"></i> להורים שלי</button>
+            <button class="sub-btn" onclick="selectSub('anniversary_brother', this)"><i class="fa-solid fa-user"></i> לאחי</button>
+            <button class="sub-btn" onclick="selectSub('anniversary_sister', this)"><i class="fa-solid fa-person-dress"></i> לאחותי</button>
+        </div>
+    </div>
+
     <div id="inputSection" class="dynamic-section" style="display:none;">
         <div class="input-row">
             <input type="text" id="nameInput" placeholder="שם מקבל/ת הברכה" list="nameHistory">
@@ -648,7 +652,6 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         </div>
     </div>
 </div>
-
 <script>
 // --- PWA LOGIC ---
 if ('serviceWorker' in navigator) {
@@ -733,6 +736,7 @@ const localBlessings = {
 const wifeSuffixes = ["המושלמת", "היפה שלי", "אהבת חיי", "מלכתי"];
 const husbandSuffixes = ["המושלם", "הגבר שלי", "אהבת חיי", "מלך העולם"];
 
+// --- רשימת הקבצים המעודכנת (כולל יום נישואין החדש) ---
 const jsonFiles = [
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%91%D7%95%D7%A7%D7%A8%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A2%D7%A8%D7%91%20%D7%9C%D7%99%D7%9C%D7%94.json",
@@ -750,7 +754,8 @@ const jsonFiles = [
     "https://raw.githubusercontent.com/Yossi65/berkot/a115f2dacee968e59cce722dd783844c8b0eac7f/%D7%AA%D7%95%D7%93%D7%94.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A1%D7%9C%D7%99%D7%97%D7%94%20%D7%A4%D7%99%D7%95%D7%A1.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A8%D7%A4%D7%95%D7%90%D7%94%20%D7%9C%D7%91%D7%A2%D7%9C%20%D7%95%D7%9C%D7%90%D7%99%D7%A9%D7%94.json",
-    "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%AA%D7%95%D7%93%D7%94%20%D7%9C%D7%91%D7%A2%D7%9C%D7%99%20%D7%95%D7%9C%D7%90%D7%99%D7%A9%D7%AA%D7%99%20.json"
+    "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%AA%D7%95%D7%93%D7%94%20%D7%9C%D7%91%D7%A2%D7%9C%D7%99%20%D7%95%D7%9C%D7%90%D7%99%D7%A9%D7%AA%D7%99%20.json",
+    "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%99%D7%95%D7%9D%20%D7%A0%D7%99%D7%A9%D7%95%D7%90%D7%99%D7%9F.json"
 ];
 
 const categoryColors = {
@@ -763,6 +768,7 @@ const categoryColors = {
     'success': 'linear-gradient(to right, #ffe7a1, #e6b800)',
     'birthday': 'linear-gradient(to right, #ffc3a0, #ffafbd)',
     'forgiveness': 'linear-gradient(to right, #a18cd1, #fbc2eb)',
+    'anniversary': 'linear-gradient(to right, #ff758c, #ff7eb3)',
     'default': 'linear-gradient(to right, #a1c4fd, #c2e9fb)'
 };
 
@@ -780,7 +786,8 @@ const holidayColors = {
     'yom_haatzmaut': 'linear-gradient(to right, #0ea5e9, #0369a1)',
     'shavuot': 'linear-gradient(to right, #facc15, #fef08a)',
     'tu_beav': 'linear-gradient(to right, #f43f5e, #e11d48)',
-    'generic_holiday': 'linear-gradient(to right, #EC6F66, #F3A183)'
+    'generic_holiday': 'linear-gradient(to right, #EC6F66, #F3A183)',
+    'lag_baomer': 'linear-gradient(to right, #ff4500, #ff8c00)'
 };
 
 window.onload = function() {
@@ -1032,7 +1039,8 @@ const emojis = {
     mimouna: ["🥞", "🍯", "🍪", "🪕"],
     chabad: ["👑", "🕯️", "🕍", "📜", "📖"],
     daily_strengthen: ["💪", "✨", "🦁", "💎", "🌱", "🦋"],
-    forgiveness: ["🙏", "🤍", "🕊️", "🤝", "💫"]
+    forgiveness: ["🙏", "🤍", "🕊️", "🤝", "💫"],
+    anniversary: ["🥂", "💍", "❤️", "🌹", "💏", "💑"]
 };
 
 function updateEmojiUI() {
@@ -1147,6 +1155,9 @@ function selectCategory(cat, btn) {
     } 
     else if (cat === 'forgiveness') {
         document.getElementById('forgivenessSection').style.display = 'block';
+    }
+    else if (cat === 'anniversary') {
+        document.getElementById('anniversarySection').style.display = 'block';
     }
     else {
         document.getElementById('genBtn').style.display = 'flex';
@@ -1382,10 +1393,11 @@ function selectSub(type, btn) {
     }
 
     state.subCategory = type;
-    const maleTargets = ['husband', 'brother', 'friend_m', 'friend_male', 'dad', 'grandson', 'boy', 'male', 'male_general', 'apology_friend_m', 'apology_husband', 'apology_brother', 'neighbor_m', 'family_m'];
-    const femaleTargets = ['wife', 'sister', 'friend_f', 'friend_female', 'mom', 'granddaughter', 'girl', 'female', 'female_general', 'apology_friend_f', 'apology_wife', 'apology_sister', 'neighbor_f', 'family_f'];
+    const maleTargets = ['husband', 'brother', 'friend_m', 'friend_male', 'dad', 'grandson', 'boy', 'male', 'male_general', 'apology_friend_m', 'apology_husband', 'apology_brother', 'neighbor_m', 'family_m', 'anniversary_husband', 'anniversary_brother'];
+    const femaleTargets = ['wife', 'sister', 'friend_f', 'friend_female', 'mom', 'granddaughter', 'girl', 'female', 'female_general', 'apology_friend_f', 'apology_wife', 'apology_sister', 'neighbor_f', 'family_f', 'anniversary_wife', 'anniversary_sister'];
     if (maleTargets.includes(type)) state.recipientGender = 'male';
     if (femaleTargets.includes(type)) state.recipientGender = 'female';
+    if (['anniversary_parents', 'family'].includes(type)) state.recipientGender = 'plural'; 
 
     let parent = btn.parentElement;
     parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
@@ -1656,6 +1668,9 @@ function generateBlessing() {
     }
     else if (state.category === 'forgiveness') {
         key = state.subCategory;
+    }
+    else if (state.category === 'anniversary') {
+        key = state.subCategory; // 'anniversary_husband', etc.
     }
     else {
         key = state.category;
