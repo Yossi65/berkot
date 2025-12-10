@@ -136,6 +136,7 @@ h1 {
 .category-btn { background: var(--clay-bg); border: none; padding: 16px 8px; border-radius: var(--radius); font-size: 0.85rem; cursor: pointer; font-weight: 600; color: var(--text-main); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; box-shadow: var(--shadow-dark), var(--shadow-light); position: relative; }
 .category-btn i { font-size: 1.5rem; color: #4a5568; margin-bottom: 2px; transition: 0.2s; }
 
+/* צבעים לכפתורים הראשיים */
 .category-btn[onclick*="morning_evening"] i { background: linear-gradient(to right, #ffd2a5, #ff8c42); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="daily_strengthen"] i { background: linear-gradient(to right, #84fab0, #8fd3f4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="forgiveness"] i { background: linear-gradient(to right, #a18cd1, #fbc2eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -148,11 +149,12 @@ h1 {
 .category-btn[onclick*="success"] i { background: linear-gradient(to right, #ffe7a1, #e6b800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="event"] i { background: linear-gradient(to right, #c084fc, #e879f9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="thank_you"] i { background: linear-gradient(to right, #2dd4bf, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-/* צבע לכפתור יום נישואין החדש */
 .category-btn[onclick*="anniversary"] i { background: linear-gradient(to right, #ff758c, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-/* צבע לניחום אבלים (סולידי/אפור כהה) */
 .category-btn[onclick*="mourning"] i { background: linear-gradient(to right, #434343, #000000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+/* כפתור הילולה */
+.category-btn[onclick*="hillula"] i { background: linear-gradient(to right, #d4fc79, #96e6a1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+/* כפתור מחמאות */
+.category-btn[onclick*="compliments"] i { background: linear-gradient(to right, #a18cd1, #fbc2eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
 .shabbat-svg { width: 32px; height: 32px; fill: none; stroke: #333; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px; }
 
@@ -173,6 +175,10 @@ h1 {
 .sub-btn.active i { -webkit-text-fill-color: transparent; }
 .sub-btn i { font-size: 1.2rem; margin-bottom: 2px; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent; background-image: var(--dynamic-icon-gradient); }
 
+/* עיצוב מיוחד לכפתורי הילולה (ללא אייקון, טקסט שחור) */
+.sub-btn.text-only-btn { color: #000; font-weight: 600; padding: 16px 5px; }
+.sub-btn.text-only-btn.active { color: var(--primary); }
+
 h3 { font-size: 1.1rem; color: var(--text-sec); margin: 25px 0 15px; font-weight: 600; text-align: center; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; } 
 h3 span { background: transparent; padding: 0 10px; }
 
@@ -187,39 +193,13 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .middle-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 10px; margin-bottom: 2px;}
 .output-container { background: var(--clay-bg); padding: 18px; border-radius: var(--radius); min-height: 100px; margin-top: 8px; border: none; box-shadow: var(--shadow-inset); font-size: 1.1rem; line-height: 1.7; }
 
-/* שינוי עיצוב לשורה כדי להכיל כפתורי עריכה */
 .line-item { display: flex; align-items: center; margin-bottom: 12px; gap: 12px; background: var(--clay-bg); padding: 10px 18px; border-radius: 16px; box-shadow: 6px 6px 12px rgba(166, 180, 200, 0.4), -6px -6px 12px rgba(255, 255, 255, 0.8); border: none; }
-
 .line-text { flex: 1; outline: none; color: #2d3748; }
 
-/* --- תוספת כפתור עריכה ועיצוב חדש --- */
-.line-btns-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;           /* רווח בין הכפתורים */
-    margin-left: 12px;  /* רווח מהטקסט */
-}
+.line-btns-wrapper { display: flex; flex-direction: column; gap: 8px; margin-left: 12px; }
 
-.edit-line-btn {
-    background: var(--clay-bg);
-    color: var(--primary);
-    border: none;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    transition: 0.2s;
-    border-radius: 50%;
-    box-shadow: 3px 3px 6px rgba(166, 180, 200, 0.4), -3px -3px 6px rgba(255, 255, 255, 0.8);
-}
-
-.edit-line-btn:active {
-    box-shadow: inset 2px 2px 5px rgba(166, 180, 200, 0.5), inset -2px -2px 5px #fff;
-    transform: scale(0.95);
-}
+.edit-line-btn { background: var(--clay-bg); color: var(--primary); border: none; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: 0.2s; border-radius: 50%; box-shadow: 3px 3px 6px rgba(166, 180, 200, 0.4), -3px -3px 6px rgba(255, 255, 255, 0.8); }
+.edit-line-btn:active { box-shadow: inset 2px 2px 5px rgba(166, 180, 200, 0.5), inset -2px -2px 5px #fff; transform: scale(0.95); }
 
 .delete-line-btn { background: var(--clay-bg); color: #e53e3e; border: none; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: 0.2s; border-radius: 50%; box-shadow: 3px 3px 6px rgba(166, 180, 200, 0.4), -3px -3px 6px rgba(255, 255, 255, 0.8); }
 .delete-line-btn:active { box-shadow: inset 2px 2px 5px rgba(166, 180, 200, 0.5), inset -2px -2px 5px #fff; }
@@ -264,7 +244,7 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .spinner { border: 4px solid #cbd5e0; border-top: 4px solid var(--primary); width: 40px; height: 40px; border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* --- צבעים לכפתורי אירועים (קיים גם באתר החדש וגם בישן) --- */
+/* --- GRADIENTS FOR BUTTONS (EXISTING + NEW) --- */
 .sub-btn[onclick*="'wedding'"] i { background-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728) !important; }
 .sub-btn[onclick*="'bar_mitzvah'"] i { background-image: linear-gradient(to right, #0052D4, #4364F7, #6FB1FC) !important; }
 .sub-btn[onclick*="'bat_mitzvah'"] i { background-image: linear-gradient(to right, #ec008c, #fc6767) !important; }
@@ -272,24 +252,24 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .sub-btn[onclick*="'brita'"] i { background-image: linear-gradient(to right, #ff9a9e, #fad0c4) !important; }
 .sub-btn[onclick*="'housewarming'"] i { background-image: linear-gradient(to right, #11998e, #38ef7d) !important; }
 .sub-btn[onclick*="'henna'"] i { background-image: linear-gradient(to right, #d31027, #ea384d) !important; }
-
-/* צבע אירוסין */
 .sub-btn[onclick*="'engagement'"] i { background-image: linear-gradient(to right, #E0AA3E, #F9F295) !important; }
 
-/* --- צבעים ליום נישואין (מהאתר החדש) --- */
+/* יום נישואין - הוספת חבר וחברה */
 .sub-btn[onclick*="anniversary_husband"] i { background-image: linear-gradient(to right, #4facfe, #00f2fe) !important; }
 .sub-btn[onclick*="anniversary_wife"] i { background-image: linear-gradient(to right, #ff9a9e, #fad0c4) !important; }
 .sub-btn[onclick*="anniversary_parents"] i { background-image: linear-gradient(to right, #f6d365, #fda085) !important; }
 .sub-btn[onclick*="anniversary_brother"] i { background-image: linear-gradient(to right, #43e97b, #38f9d7) !important; }
 .sub-btn[onclick*="anniversary_sister"] i { background-image: linear-gradient(to right, #a18cd1, #fbc2eb) !important; }
+.sub-btn[onclick*="anniversary_friend_m"] i { background-image: linear-gradient(to right, #00c6fb, #005bea) !important; }
+.sub-btn[onclick*="anniversary_friend_f"] i { background-image: linear-gradient(to right, #f43b47, #453a94) !important; }
 
-/* --- צבעים משוחזרים (מהאתר הישן) - בוקר/ערב --- */
+/* זמנים */
 .sub-btn[onclick*="'morning'"] i { background-image: linear-gradient(to right, #ff9966, #ff5e62) !important; } 
 .sub-btn[onclick*="'noon'"] i { background-image: linear-gradient(to right, #56ccf2, #2f80ed) !important; } 
 .sub-btn[onclick*="'evening'"] i { background-image: linear-gradient(to right, #ff7e5f, #feb47b) !important; }
 .sub-btn[onclick*="'night'"] i { background-image: linear-gradient(to right, #232526, #414345) !important; } 
 
-/* --- צבעים משוחזרים (מהאתר הישן) - חגים --- */
+/* חגים */
 .sub-btn[onclick*="'rosh_chodesh'"] i { background-image: linear-gradient(to right, #e2e8f0, #94a3b8) !important; }
 .sub-btn[onclick*="'rosh_hashanah'"] i { background-image: linear-gradient(to right, #ef4444, #22c55e) !important; }
 .sub-btn[onclick*="'yom_kippur'"] i { background-image: linear-gradient(to right, #fbbf24, #fff) !important; }
@@ -305,7 +285,7 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .sub-btn[onclick*="'tu_beav'"] i { background-image: linear-gradient(to right, #f43f5e, #e11d48) !important; }
 .sub-btn[onclick*="'lag_baomer'"] i { background-image: linear-gradient(to right, #ff4500, #ff8c00) !important; }
 
-/* --- צבעים משוחזרים (מהאתר הישן) - חב"ד --- */
+/* חב"ד */
 .sub-btn[onclick*="'chabad_6_tishrei'"] i { background-image: linear-gradient(to right, #d4fc79, #96e6a1) !important; }
 .sub-btn[onclick*="'chabad_14_kislev'"] i { background-image: linear-gradient(to right, #a18cd1, #fbc2eb) !important; }
 .sub-btn[onclick*="'chabad_19_kislev'"] i { background-image: linear-gradient(to right, #f6d365, #fda085) !important; }
@@ -368,6 +348,9 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         <button class="category-btn" onclick="selectCategory('daily_strengthen', this)">
             <i class="fa-solid fa-seedling"></i> חיזוק יומי
         </button>
+        <button class="category-btn" onclick="selectCategory('compliments', this)">
+            <i class="fa-regular fa-gem"></i> מחמאות
+        </button>
         <button class="category-btn" onclick="selectCategory('success', this)">
             <i class="fa-solid fa-trophy"></i> בהצלחה
         </button>
@@ -398,7 +381,10 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <i class="fa-solid fa-champagne-glasses"></i> יום נישואין
         </button>
 
-        <div class="grid-section-title">מסורת ורגש</div>
+        <div class="grid-section-title">מסורת</div>
+        <button class="category-btn" onclick="selectCategory('hillula', this)">
+            <i class="fa-solid fa-fire-flame-curved"></i> הילולה
+        </button>
         <button class="category-btn" onclick="selectCategory('holiday', this)">
             <i class="fa-solid fa-wine-glass"></i> חגים
         </button>
@@ -409,6 +395,7 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <i class="fa-solid fa-candle-holder" style="font-family: 'Font Awesome 6 Pro', 'Font Awesome 6 Free';">🕯️</i> ניחום אבלים
         </button>
     </div>
+
     <div id="morningEveningSection" class="dynamic-section">
         <div id="timeOfDaySelector">
             <h3><span>מה השעה?</span></h3>
@@ -425,7 +412,21 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
                 <button class="sub-btn" onclick="selectTimeTarget('general', this)"><i class="fa-regular fa-star"></i> כללי</button>
                 <button class="sub-btn" onclick="selectTimeTarget('husband', this)"><i class="fa-solid fa-user-tie"></i> לבעלי</button>
                 <button class="sub-btn" onclick="selectTimeTarget('wife', this)"><i class="fa-solid fa-person-dress"></i> לאשתי</button>
+                <button class="sub-btn" onclick="selectTimeTarget('son', this)"><i class="fa-solid fa-child"></i> לבן שלי</button>
+                <button class="sub-btn" onclick="selectTimeTarget('daughter', this)"><i class="fa-solid fa-child-dress"></i> לבת שלי</button>
             </div>
+        </div>
+    </div>
+
+    <div id="complimentsSection" class="dynamic-section">
+        <h3><span>מחמאות למי?</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSub('compliments_general', this)"><i class="fa-regular fa-star"></i> כללי</button>
+            <button class="sub-btn" onclick="selectSub('compliments_husband', this)"><i class="fa-solid fa-user-tie"></i> לבעלי</button>
+            <button class="sub-btn" onclick="selectSub('compliments_wife', this)"><i class="fa-solid fa-person-dress"></i> לאשתי</button>
+            <button class="sub-btn" onclick="selectSub('compliments_parents', this)"><i class="fa-solid fa-user-group"></i> להורים</button>
+            <button class="sub-btn" onclick="selectSub('compliments_friend_m', this)"><i class="fa-solid fa-user-group"></i> לחבר</button>
+            <button class="sub-btn" onclick="selectSub('compliments_friend_f', this)"><i class="fa-solid fa-user-group"></i> לחברה</button>
         </div>
     </div>
 
@@ -459,6 +460,22 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
                 <button class="sub-btn" onclick="selectSub('friend_male', this)"><i class="fa-solid fa-user-group"></i> חבר</button>
                 <button class="sub-btn" onclick="selectSub('friend_female', this)"><i class="fa-solid fa-user-group"></i> חברה</button>
             </div>
+        </div>
+    </div>
+
+    <div id="hillulaSection" class="dynamic-section">
+        <h3><span>בחר צדיק</span></h3>
+        <div class="sub-grid">
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_rashbi', this)">רשב"י</button>
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_baba_sali', this)">הבאבא סאלי</button>
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_rachel', this)">רחל אמנו</button>
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_meir', this)">רבי מאיר</button>
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_ari', this)">האר"י הקדוש</button>
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_or_hachaim', this)">אור החיים</button>
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_nachman', this)">רבי נחמן</button>
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_ovadia', this)">הרב עובדיה יוסף</button>
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_abir_yaakov', this)">אביר יעקב</button>
+            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_rambam', this)">הרמב"ם</button>
         </div>
     </div>
 
@@ -594,12 +611,15 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <button class="sub-btn" onclick="selectSub('anniversary_parents', this)"><i class="fa-solid fa-user-group"></i> להורים שלי</button>
             <button class="sub-btn" onclick="selectSub('anniversary_brother', this)"><i class="fa-solid fa-user"></i> לאחי</button>
             <button class="sub-btn" onclick="selectSub('anniversary_sister', this)"><i class="fa-solid fa-person-dress"></i> לאחותי</button>
+            <button class="sub-btn" onclick="selectSub('anniversary_friend_m', this)"><i class="fa-solid fa-user-group"></i> לחבר</button>
+            <button class="sub-btn" onclick="selectSub('anniversary_friend_f', this)"><i class="fa-solid fa-user-group"></i> לחברה</button>
         </div>
     </div>
 
     <div id="mourningSection" class="dynamic-section">
         <h3><span>לזכר...</span></h3>
         <div class="sub-grid">
+            <button class="sub-btn" onclick="selectSub('mourning_day_of_passing', this)"><i class="fa-solid fa-calendar-minus"></i> יום הפטירה</button>
             <button class="sub-btn" onclick="selectSub('mourning_shiva', this)"><i class="fa-solid fa-chair"></i> שבעה</button>
             <button class="sub-btn" onclick="selectSub('mourning_30', this)"><i class="fa-regular fa-calendar"></i> יום ה-30</button>
             <button class="sub-btn" onclick="selectSub('mourning_year', this)"><i class="fa-solid fa-calendar-days"></i> שנה / אזכרה</button>
@@ -792,7 +812,7 @@ let contacts = [
     { name: '', phone: '', color: '#e2e8f0' }
 ];
 
-// ברכות מקומיות (לא הוספנו לחדשים כבקשתך)
+// ברכות מקומיות לגיבוי
 const localBlessings = {
     "birthday_partner_female": {
         "openers": ["בת הזוג האהובה,", "יקירתי,", "אהבת חיי,", "הנסיכה שלי,"],
@@ -803,7 +823,7 @@ const localBlessings = {
 const wifeSuffixes = ["המושלמת", "היפה שלי", "אהבת חיי", "מלכתי"];
 const husbandSuffixes = ["המושלם", "הגבר שלי", "אהבת חיי", "מלך העולם"];
 
-// --- רשימת הקבצים המעודכנת ---
+// רשימת קבצי JSON (ניתן להוסיף כאן קבצים חדשים עבור הילולות ומחמאות בעתיד)
 const jsonFiles = [
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%91%D7%95%D7%A7%D7%A8%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A2%D7%A8%D7%91%20%D7%9C%D7%99%D7%9C%D7%94.json",
@@ -837,6 +857,8 @@ const categoryColors = {
     'forgiveness': 'linear-gradient(to right, #a18cd1, #fbc2eb)',
     'anniversary': 'linear-gradient(to right, #ff758c, #ff7eb3)',
     'mourning': 'linear-gradient(to right, #434343, #000000)',
+    'hillula': 'linear-gradient(to right, #d4fc79, #96e6a1)',
+    'compliments': 'linear-gradient(to right, #a18cd1, #fbc2eb)',
     'engagement': 'linear-gradient(to right, #E0AA3E, #F9F295)',
     'default': 'linear-gradient(to right, #a1c4fd, #c2e9fb)'
 };
@@ -1111,7 +1133,10 @@ const emojis = {
     forgiveness: ["🙏", "🤍", "🕊️", "🤝", "💫"],
     anniversary: ["🥂", "💍", "❤️", "🌹", "💏", "💑"],
     mourning: ["🕯️", "🙏", "🖤", "🔯"],
-    engagement: ["💍", "🥂", "💖", "✨"]
+    engagement: ["💍", "🥂", "💖", "✨"],
+    // אימוג'ים חדשים להילולה ולמחמאות
+    hillula: ["🕯️", "🔥", "🙏", "✡️", "📜", "🍷", "✨"],
+    compliments: ["💎", "👑", "✨", "👏", "💖", "🌺", "⭐"]
 };
 
 function updateEmojiUI() {
@@ -1169,7 +1194,6 @@ function goBack() {
     updateSenderUI();
 }
 
-// --- פונקציות לתפריט אירוסין ---
 function showEngagementSubMenu() {
     document.getElementById('eventMainButtons').style.display = 'none';
     document.getElementById('engagementSubButtons').style.display = 'grid';
@@ -1183,7 +1207,7 @@ function hideEngagementSubMenu() {
     document.getElementById('eventTitle').innerText = "אירוע";
 }
 
-// --- פונקציה מעודכנת לבחירת קטגוריה ושינוי טקסט כפתור ---
+// עדכון פונקציית בחירת קטגוריה כולל מחמאות והילולה
 function selectCategory(cat, btn) {
     state.category = cat;
     document.getElementById('mainGrid').style.display = 'none';
@@ -1191,7 +1215,6 @@ function selectCategory(cat, btn) {
     document.getElementById('optionsRow').style.display = 'flex';
     document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
     
-    // שינוי טקסט הכפתור
     const genBtn = document.getElementById('genBtn');
     if (cat === 'mourning') {
         genBtn.innerHTML = '<i class="fa-solid fa-feather"></i> צור ניחום';
@@ -1224,7 +1247,7 @@ function selectCategory(cat, btn) {
     }
     else if (cat === 'event') {
         document.getElementById('eventSection').style.display = 'block';
-        hideEngagementSubMenu(); // איפוס
+        hideEngagementSubMenu(); 
     }
     else if (cat === 'birth') {
         document.getElementById('birthSection').style.display = 'block';
@@ -1257,6 +1280,13 @@ function selectCategory(cat, btn) {
     else if (cat === 'mourning') {
         document.getElementById('mourningSection').style.display = 'block';
     }
+    // קטגוריות חדשות
+    else if (cat === 'hillula') {
+        document.getElementById('hillulaSection').style.display = 'block';
+    }
+    else if (cat === 'compliments') {
+        document.getElementById('complimentsSection').style.display = 'block';
+    }
     else {
         document.getElementById('genBtn').style.display = 'flex';
     }
@@ -1284,6 +1314,10 @@ function selectTimeTarget(target, btn) {
     state.subCategory = target;
     if (target === 'husband') state.recipientGender = 'male';
     if (target === 'wife') state.recipientGender = 'female';
+    // תוספת לילדים
+    if (target === 'son') state.recipientGender = 'male';
+    if (target === 'daughter') state.recipientGender = 'female';
+
     const btns = document.querySelectorAll('#timeTargetSelector .sub-btn');
     btns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -1473,6 +1507,7 @@ function selectShabbatTime(time) {
 }
 
 function selectSub(type, btn) {
+    // טיפול בחב"ד
     if (type.startsWith('chabad_')) {
         state.chabadDate = type;
         let parent = btn.parentElement;
@@ -1491,11 +1526,14 @@ function selectSub(type, btn) {
     }
 
     state.subCategory = type;
-    const maleTargets = ['husband', 'brother', 'friend_m', 'friend_male', 'dad', 'grandson', 'boy', 'male', 'male_general', 'apology_friend_m', 'apology_husband', 'apology_brother', 'neighbor_m', 'family_m', 'anniversary_husband', 'anniversary_brother', 'engagement_brother', 'engagement_friend_m'];
-    const femaleTargets = ['wife', 'sister', 'friend_f', 'friend_female', 'mom', 'granddaughter', 'girl', 'female', 'female_general', 'apology_friend_f', 'apology_wife', 'apology_sister', 'neighbor_f', 'family_f', 'anniversary_wife', 'anniversary_sister', 'engagement_sister', 'engagement_friend_f'];
+
+    // הגדרת מגדריות אוטומטית לפי מילת המפתח
+    const maleTargets = ['husband', 'brother', 'friend_m', 'friend_male', 'dad', 'grandson', 'boy', 'male', 'male_general', 'apology_friend_m', 'apology_husband', 'apology_brother', 'neighbor_m', 'family_m', 'anniversary_husband', 'anniversary_brother', 'engagement_brother', 'engagement_friend_m', 'anniversary_friend_m', 'compliments_husband', 'compliments_friend_m'];
+    const femaleTargets = ['wife', 'sister', 'friend_f', 'friend_female', 'mom', 'granddaughter', 'girl', 'female', 'female_general', 'apology_friend_f', 'apology_wife', 'apology_sister', 'neighbor_f', 'family_f', 'anniversary_wife', 'anniversary_sister', 'engagement_sister', 'engagement_friend_f', 'anniversary_friend_f', 'compliments_wife', 'compliments_friend_f'];
+    
     if (maleTargets.includes(type)) state.recipientGender = 'male';
     if (femaleTargets.includes(type)) state.recipientGender = 'female';
-    if (['anniversary_parents', 'family'].includes(type)) state.recipientGender = 'plural'; 
+    if (['anniversary_parents', 'family', 'compliments_parents'].includes(type)) state.recipientGender = 'plural'; 
 
     let parent = btn.parentElement;
     parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
@@ -1773,6 +1811,13 @@ function generateBlessing() {
     else if (state.category === 'mourning') {
         key = state.subCategory;
     }
+    // טיפול בקטגוריות חדשות
+    else if (state.category === 'hillula') {
+        key = state.subCategory; // המפתח יהיה hillula_rashbi וכו'
+    }
+    else if (state.category === 'compliments') {
+        key = state.subCategory; // המפתח יהיה compliments_wife וכו'
+    }
     else {
         key = state.category;
     }
@@ -1808,8 +1853,8 @@ function generateBlessing() {
     if (Array.isArray(gen)) {
         if (name) {
              let suffix = "היקר/ה";
-             const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife' || state.subCategory === 'apology_wife');
-             const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband' || state.subCategory === 'apology_husband');
+             const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife' || state.subCategory === 'apology_wife' || state.subCategory === 'compliments_wife');
+             const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband' || state.subCategory === 'apology_husband' || state.subCategory === 'compliments_husband');
              const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || state.recipientGender === 'female');
              const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' || state.recipientGender === 'male');
 
@@ -1870,7 +1915,6 @@ function generateBlessing() {
     renderLinesWithEmojis(adjustedParts, emojiSet);
 }
 
-// --- פונקציה מעודכנת עם כפתור עריכה ומחיקה ---
 function renderLinesWithEmojis(linesArray, setKey) {
     const cleanLines = linesArray.filter(l => l && l.trim() !== "");
     let availableEmojis = [...(emojis[setKey] || emojis['general'])];
@@ -1892,7 +1936,6 @@ function renderLinesWithEmojis(linesArray, setKey) {
         const row = document.createElement('div');
         row.className = 'line-item';
         
-        // הוספת עטיפה לכפתורים: עריכה ומחיקה
         row.innerHTML = `
         <div class="line-btns-wrapper">
             <button class="edit-line-btn" onclick="focusLine(this)" title="ערוך טקסט">
@@ -1940,6 +1983,5 @@ function shareApp() {
     window.open(`whatsapp://send?text=${encodeURIComponent(text)}`, '_blank');
 }
 </script>
-
 </body>
 </html>
