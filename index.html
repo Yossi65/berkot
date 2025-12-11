@@ -439,7 +439,8 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
     <div id="complimentsSection" class="dynamic-section">
         <h3><span>מחמאות למי?</span></h3>
         <div class="sub-grid">
-            <button class="sub-btn" onclick="selectSub('compliments_general', this)"><i class="fa-regular fa-star"></i> כללי</button>
+            <button class="sub-btn" onclick="selectSub('compliments_general_m', this)"><i class="fa-solid fa-user"></i> כללי (גבר)</button>
+            <button class="sub-btn" onclick="selectSub('compliments_general_f', this)"><i class="fa-solid fa-person-dress"></i> כללי (אישה)</button>
             <button class="sub-btn" onclick="selectSub('compliments_husband', this)"><i class="fa-solid fa-user-tie"></i> לבעלי</button>
             <button class="sub-btn" onclick="selectSub('compliments_wife', this)"><i class="fa-solid fa-person-dress"></i> לאשתי</button>
             <button class="sub-btn" onclick="selectSub('compliments_parents', this)"><i class="fa-solid fa-user-group"></i> להורים</button>
@@ -643,7 +644,6 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <button class="sub-btn" onclick="selectSub('mourning_year', this)"><i class="fa-solid fa-calendar-days"></i> שנה / אזכרה</button>
         </div>
     </div>
-
     <div id="forgivenessSection" class="dynamic-section">
         <h3><span>ביקוש סליחה מ...</span></h3>
         <div class="sub-grid">
@@ -841,7 +841,7 @@ const localBlessings = {
 const wifeSuffixes = ["המושלמת", "היפה שלי", "אהבת חיי", "מלכתי"];
 const husbandSuffixes = ["המושלם", "הגבר שלי", "אהבת חיי", "מלך העולם"];
 
-// רשימת קבצי JSON (ניתן להוסיף כאן קבצים חדשים עבור הילולות ומחמאות בעתיד)
+// --- רשימת קבצי JSON המעודכנת ---
 const jsonFiles = [
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%91%D7%95%D7%A7%D7%A8%20%D7%A6%D7%94%D7%A8%D7%99%D7%99%D7%9D.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A2%D7%A8%D7%91%20%D7%9C%D7%99%D7%9C%D7%94.json",
@@ -860,7 +860,10 @@ const jsonFiles = [
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A1%D7%9C%D7%99%D7%97%D7%94%20%D7%A4%D7%99%D7%95%D7%A1.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A8%D7%A4%D7%95%D7%90%D7%94%20%D7%9C%D7%91%D7%A2%D7%9C%20%D7%95%D7%9C%D7%90%D7%99%D7%A9%D7%94.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%AA%D7%95%D7%93%D7%94%20%D7%9C%D7%91%D7%A2%D7%9C%D7%99%20%D7%95%D7%9C%D7%90%D7%99%D7%A9%D7%AA%D7%99%20.json",
-    "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%99%D7%95%D7%9D%20%D7%A0%D7%99%D7%A9%D7%95%D7%90%D7%99%D7%9F.json"
+    "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%99%D7%95%D7%9D%20%D7%A0%D7%99%D7%A9%D7%95%D7%90%D7%99%D7%9F.json",
+    // קבצים חדשים:
+    "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%9E%D7%97%D7%9E%D7%90%D7%95%D7%AA%20.json",
+    "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A0%D7%99%D7%97%D7%95%D7%9D%20%D7%90%D7%91%D7%9C%D7%99%D7%9D.json"
 ];
 
 const categoryColors = {
@@ -1152,7 +1155,6 @@ const emojis = {
     anniversary: ["🥂", "💍", "❤️", "🌹", "💏", "💑"],
     mourning: ["🕯️", "🙏", "🖤", "🔯"],
     engagement: ["💍", "🥂", "💖", "✨"],
-    // אימוג'ים חדשים להילולה ולמחמאות
     hillula: ["🕯️", "🔥", "🙏", "✡️", "📜", "🍷", "✨"],
     compliments: ["💎", "👑", "✨", "👏", "💖", "🌺", "⭐"]
 };
@@ -1225,7 +1227,6 @@ function hideEngagementSubMenu() {
     document.getElementById('eventTitle').innerText = "אירוע";
 }
 
-// עדכון פונקציית בחירת קטגוריה כולל מחמאות והילולה
 function selectCategory(cat, btn) {
     state.category = cat;
     document.getElementById('mainGrid').style.display = 'none';
@@ -1298,7 +1299,6 @@ function selectCategory(cat, btn) {
     else if (cat === 'mourning') {
         document.getElementById('mourningSection').style.display = 'block';
     }
-    // קטגוריות חדשות
     else if (cat === 'hillula') {
         document.getElementById('hillulaSection').style.display = 'block';
     }
@@ -1332,7 +1332,6 @@ function selectTimeTarget(target, btn) {
     state.subCategory = target;
     if (target === 'husband') state.recipientGender = 'male';
     if (target === 'wife') state.recipientGender = 'female';
-    // תוספת לילדים
     if (target === 'son') state.recipientGender = 'male';
     if (target === 'daughter') state.recipientGender = 'female';
 
@@ -1525,7 +1524,6 @@ function selectShabbatTime(time) {
 }
 
 function selectSub(type, btn) {
-    // טיפול בחב"ד
     if (type.startsWith('chabad_')) {
         state.chabadDate = type;
         let parent = btn.parentElement;
@@ -1546,8 +1544,8 @@ function selectSub(type, btn) {
     state.subCategory = type;
 
     // הגדרת מגדריות אוטומטית לפי מילת המפתח
-    const maleTargets = ['husband', 'brother', 'friend_m', 'friend_male', 'dad', 'grandson', 'boy', 'male', 'male_general', 'apology_friend_m', 'apology_husband', 'apology_brother', 'neighbor_m', 'family_m', 'anniversary_husband', 'anniversary_brother', 'engagement_brother', 'engagement_friend_m', 'anniversary_friend_m', 'compliments_husband', 'compliments_friend_m'];
-    const femaleTargets = ['wife', 'sister', 'friend_f', 'friend_female', 'mom', 'granddaughter', 'girl', 'female', 'female_general', 'apology_friend_f', 'apology_wife', 'apology_sister', 'neighbor_f', 'family_f', 'anniversary_wife', 'anniversary_sister', 'engagement_sister', 'engagement_friend_f', 'anniversary_friend_f', 'compliments_wife', 'compliments_friend_f'];
+    const maleTargets = ['husband', 'brother', 'friend_m', 'friend_male', 'dad', 'grandson', 'boy', 'male', 'male_general', 'apology_friend_m', 'apology_husband', 'apology_brother', 'neighbor_m', 'family_m', 'anniversary_husband', 'anniversary_brother', 'engagement_brother', 'engagement_friend_m', 'anniversary_friend_m', 'compliments_husband', 'compliments_friend_m', 'compliments_general_m'];
+    const femaleTargets = ['wife', 'sister', 'friend_f', 'friend_female', 'mom', 'granddaughter', 'girl', 'female', 'female_general', 'apology_friend_f', 'apology_wife', 'apology_sister', 'neighbor_f', 'family_f', 'anniversary_wife', 'anniversary_sister', 'engagement_sister', 'engagement_friend_f', 'anniversary_friend_f', 'compliments_wife', 'compliments_friend_f', 'compliments_general_f'];
     
     if (maleTargets.includes(type)) state.recipientGender = 'male';
     if (femaleTargets.includes(type)) state.recipientGender = 'female';
@@ -1829,12 +1827,11 @@ function generateBlessing() {
     else if (state.category === 'mourning') {
         key = state.subCategory;
     }
-    // טיפול בקטגוריות חדשות
     else if (state.category === 'hillula') {
-        key = state.subCategory; // המפתח יהיה hillula_rashbi וכו'
+        key = state.subCategory; 
     }
     else if (state.category === 'compliments') {
-        key = state.subCategory; // המפתח יהיה compliments_wife וכו'
+        key = state.subCategory;
     }
     else {
         key = state.category;
@@ -1871,8 +1868,8 @@ function generateBlessing() {
     if (Array.isArray(gen)) {
         if (name) {
              let suffix = "היקר/ה";
-             const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife' || state.subCategory === 'apology_wife' || state.subCategory === 'compliments_wife');
-             const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband' || state.subCategory === 'apology_husband' || state.subCategory === 'compliments_husband');
+             const isWifeContext = (state.relationKey === 'wife' || state.relationKey === 'partner_female' || state.holidayTarget === 'wife' || state.subCategory === 'wife' || state.subCategory === 'apology_wife' || state.subCategory === 'compliments_wife' || state.subCategory === 'compliments_general_f');
+             const isHusbandContext = (state.relationKey === 'husband' || state.relationKey === 'partner_male' || state.holidayTarget === 'husband' || state.subCategory === 'husband' || state.subCategory === 'apology_husband' || state.subCategory === 'compliments_husband' || state.subCategory === 'compliments_general_m');
              const isGenericFemale = (state.gender === 'woman' || state.gender === 'girl' || state.gender === 'female' || state.recipientGender === 'female');
              const isGenericMale = (state.gender === 'man' || state.gender === 'boy' || state.gender === 'male' || state.recipientGender === 'male');
 
