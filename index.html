@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BL3VYMTPCN"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-BL3VYMTPCN');
 </script>
-
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -18,7 +15,6 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "ujmly1my4o");
 </script>
-<meta charset="UTF-8">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -169,8 +165,6 @@ h1 {
 .category-btn[onclick*="thank_you"] i { background: linear-gradient(to right, #2dd4bf, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="anniversary"] i { background: linear-gradient(to right, #ff758c, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .category-btn[onclick*="mourning"] i { background: linear-gradient(to right, #434343, #000000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-/* כפתור הילולה */
-.category-btn[onclick*="hillula"] i { background: linear-gradient(to right, #d4fc79, #96e6a1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 /* כפתור מחמאות */
 .category-btn[onclick*="compliments"] i { background: linear-gradient(to right, #a18cd1, #fbc2eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
@@ -317,6 +311,99 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .sub-btn[onclick*="'chabad_12_tammuz'"] i { background-image: linear-gradient(to right, #ffecd2, #fcb69f) !important; }
 .sub-btn[onclick*="'chabad_18_elul'"] i { background-image: linear-gradient(to right, #ff8177, #ff867a) !important; }
 
+/* --- עיצוב זמני שבת וכפתור השיתוף החדש --- */
+.shabbat-times-container {
+    margin-top: 15px;
+    background: rgba(255,255,255,0.4);
+    padding: 15px;
+    border-radius: 20px;
+    display: none; /* מוסתר כברירת מחדל */
+    animation: popIn 0.4s ease;
+}
+
+.parasha-header {
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    background: var(--clay-bg);
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-inset);
+}
+
+.times-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.city-card {
+    background: var(--clay-bg);
+    border-radius: 16px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: var(--shadow-dark), var(--shadow-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.city-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    margin-bottom: 2px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.time-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    padding: 0 4px;
+}
+
+.time-row.entry { color: #059669; font-weight: 600; } /* ירוק */
+.time-row.exit { color: #dc2626; font-weight: 600; }  /* אדום */
+
+.loader-dots::after {
+    content: ' .';
+    animation: dots 1s steps(5, end) infinite;
+}
+@keyframes dots {
+    0%, 20% { content: ' .'; }
+    40% { content: ' ..'; }
+    60% { content: ' ...'; }
+    80%, 100% { content: ''; }
+}
+
+/* כפתור שיתוף זמני שבת */
+.share-times-btn {
+    width: 100%;
+    margin-top: 15px;
+    background: #25D366; /* צבע וואטסאפ */
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 15px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+    transition: 0.2s;
+}
+.share-times-btn:active {
+    transform: scale(0.98);
+}
+
 </style>
 </head>
 <body>
@@ -400,9 +487,6 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         </button>
 
         <div class="grid-section-title">מסורת</div>
-        <button class="category-btn" onclick="selectCategory('hillula', this)">
-            <i class="fa-solid fa-fire-flame-curved"></i> הילולה
-        </button>
         <button class="category-btn" onclick="selectCategory('holiday', this)">
             <i class="fa-solid fa-wine-glass"></i> חגים
         </button>
@@ -461,10 +545,26 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         <div id="shabbatTimeSelector">
             <h3><span>זמן</span></h3>
             <div class="sub-grid">
-                <button class="sub-btn" onclick="selectShabbatTime('shabbat')"><i class="fa-solid fa-wine-glass"></i> שבת שלום</button>
-                <button class="sub-btn" onclick="selectShabbatTime('motzash')"><i class="fa-solid fa-fire-flame-curved"></i> מוצאי שבת</button>
+                <button class="sub-btn" onclick="selectShabbatTime('shabbat')">
+                    <i class="fa-solid fa-wine-glass"></i> שבת שלום
+                </button>
+                <button class="sub-btn" onclick="selectShabbatTime('motzash')">
+                    <i class="fa-solid fa-fire-flame-curved"></i> מוצאי שבת
+                </button>
+            </div>
+            
+            <div id="shabbatTimesDisplay" class="shabbat-times-container">
+                <div id="parashaHeader" class="parasha-header">
+                    טוען נתונים<span class="loader-dots"></span>
+                </div>
+                <div class="times-grid" id="timesGrid"></div>
+                
+                <button class="share-times-btn" onclick="shareShabbatTimes()">
+                    <i class="fa-brands fa-whatsapp"></i> שתף זמני שבת
+                </button>
             </div>
         </div>
+
         <div id="shabbatTargetSelector" style="display:none;">
             <h3 id="shabbatTargetTitle"><span>למי הברכה?</span></h3>
             <div class="sub-grid">
@@ -481,23 +581,6 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             </div>
         </div>
     </div>
-
-    <div id="hillulaSection" class="dynamic-section">
-        <h3><span>בחר צדיק</span></h3>
-        <div class="sub-grid">
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_rashbi', this)">רשב"י</button>
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_baba_sali', this)">הבאבא סאלי</button>
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_rachel', this)">רחל אמנו</button>
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_meir', this)">רבי מאיר</button>
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_ari', this)">האר"י הקדוש</button>
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_or_hachaim', this)">אור החיים</button>
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_nachman', this)">רבי נחמן</button>
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_ovadia', this)">הרב עובדיה יוסף</button>
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_abir_yaakov', this)">אביר יעקב</button>
-            <button class="sub-btn text-only-btn" onclick="selectSub('hillula_rambam', this)">הרמב"ם</button>
-        </div>
-    </div>
-
     <div id="holidaySection" class="dynamic-section">
         <div id="holidayNameSelector">
             <h3><span>בחר חג</span></h3>
@@ -861,7 +944,6 @@ const jsonFiles = [
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A8%D7%A4%D7%95%D7%90%D7%94%20%D7%9C%D7%91%D7%A2%D7%9C%20%D7%95%D7%9C%D7%90%D7%99%D7%A9%D7%94.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%AA%D7%95%D7%93%D7%94%20%D7%9C%D7%91%D7%A2%D7%9C%D7%99%20%D7%95%D7%9C%D7%90%D7%99%D7%A9%D7%AA%D7%99%20.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%99%D7%95%D7%9D%20%D7%A0%D7%99%D7%A9%D7%95%D7%90%D7%99%D7%9F.json",
-    // קבצים חדשים:
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%9E%D7%97%D7%9E%D7%90%D7%95%D7%AA%20.json",
     "https://raw.githubusercontent.com/Yossi65/berkot/refs/heads/main/%D7%A0%D7%99%D7%97%D7%95%D7%9D%20%D7%90%D7%91%D7%9C%D7%99%D7%9D.json"
 ];
@@ -878,7 +960,6 @@ const categoryColors = {
     'forgiveness': 'linear-gradient(to right, #a18cd1, #fbc2eb)',
     'anniversary': 'linear-gradient(to right, #ff758c, #ff7eb3)',
     'mourning': 'linear-gradient(to right, #434343, #000000)',
-    'hillula': 'linear-gradient(to right, #d4fc79, #96e6a1)',
     'compliments': 'linear-gradient(to right, #a18cd1, #fbc2eb)',
     'engagement': 'linear-gradient(to right, #E0AA3E, #F9F295)',
     'default': 'linear-gradient(to right, #a1c4fd, #c2e9fb)'
@@ -1155,7 +1236,6 @@ const emojis = {
     anniversary: ["🥂", "💍", "❤️", "🌹", "💏", "💑"],
     mourning: ["🕯️", "🙏", "🖤", "🔯"],
     engagement: ["💍", "🥂", "💖", "✨"],
-    hillula: ["🕯️", "🔥", "🙏", "✡️", "📜", "🍷", "✨"],
     compliments: ["💎", "👑", "✨", "👏", "💖", "🌺", "⭐"]
 };
 
@@ -1255,6 +1335,9 @@ function selectCategory(cat, btn) {
         document.getElementById('shabbatSection').style.display = 'block';
         document.getElementById('shabbatTimeSelector').style.display = 'block';
         document.getElementById('shabbatTargetSelector').style.display = 'none';
+        
+        // --- קריאה לזמני שבת מה-API ---
+        fetchShabbatTimes();
     }
     else if (cat === 'holiday') {
         document.getElementById('holidaySection').style.display = 'block';
@@ -1298,9 +1381,6 @@ function selectCategory(cat, btn) {
     }
     else if (cat === 'mourning') {
         document.getElementById('mourningSection').style.display = 'block';
-    }
-    else if (cat === 'hillula') {
-        document.getElementById('hillulaSection').style.display = 'block';
     }
     else if (cat === 'compliments') {
         document.getElementById('complimentsSection').style.display = 'block';
@@ -1827,9 +1907,6 @@ function generateBlessing() {
     else if (state.category === 'mourning') {
         key = state.subCategory;
     }
-    else if (state.category === 'hillula') {
-        key = state.subCategory; 
-    }
     else if (state.category === 'compliments') {
         key = state.subCategory;
     }
@@ -1996,6 +2073,95 @@ function shareApp() {
     const url = "https://yossi65.github.io/berkot/";
     const text = "היי, גיליתי כלי מדהים שכותב ברכות לכל אירוע בשניות! שווה לנסות (זה בחינם): \n" + url;
     window.open(`whatsapp://send?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+// --- פונקציה לטעינת זמני שבת מה-API של Hebcal ---
+const SHABBAT_CITIES = [
+    { name: "ירושלים", id: "281184" },
+    { name: "תל אביב", id: "293397" },
+    { name: "חיפה", id: "294801" },
+    { name: "באר שבע", id: "295530" }
+];
+
+async function fetchShabbatTimes() {
+    const display = document.getElementById('shabbatTimesDisplay');
+    const header = document.getElementById('parashaHeader');
+    const grid = document.getElementById('timesGrid');
+    
+    display.style.display = 'block';
+    if(grid.children.length > 0) return;
+
+    try {
+        const promises = SHABBAT_CITIES.map(city => 
+            fetch(`https://www.hebcal.com/shabbat?cfg=json&geonameid=${city.id}&M=on`)
+            .then(res => res.json())
+            .then(data => ({ city: city.name, data: data }))
+        );
+
+        const results = await Promise.all(promises);
+
+        const first = results[0].data;
+        const parasha = first.items.find(i => i.category === "parashat");
+        const dateObj = new Date(first.date);
+        const dateStr = dateObj.toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' });
+        
+        // תיקון כפילות "פרשת"
+        let parashaName = parasha ? parasha.hebrew : '';
+        if (parashaName.startsWith("פרשת")) {
+            // אם כתוב כבר "פרשת X", נשתמש בזה כמו שזה
+        } else {
+            // אם כתוב רק "X", נוסיף "פרשת"
+            parashaName = "פרשת " + parashaName;
+        }
+
+        header.innerHTML = `שבת ${parashaName} <span style="font-weight:400; font-size:0.9em">(${dateStr})</span>`;
+
+        grid.innerHTML = '';
+        results.forEach(res => {
+            const candles = res.data.items.find(i => i.category === "candles");
+            const havdalah = res.data.items.find(i => i.category === "havdalah");
+            
+            const entryTime = candles ? candles.title.match(/\d{2}:\d{2}/)[0] : "";
+            const exitTime = havdalah ? havdalah.title.match(/\d{2}:\d{2}/)[0] : "";
+
+            const card = document.createElement('div');
+            card.className = 'city-card';
+            card.innerHTML = `
+                <div class="city-name">${res.city}</div>
+                <div class="time-row entry">
+                    <span>כניסה:</span>
+                    <span class="time-value">${entryTime}</span>
+                </div>
+                <div class="time-row exit">
+                    <span>יציאה:</span>
+                    <span class="time-value">${exitTime}</span>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+    } catch (e) {
+        console.error(e);
+        header.innerText = "לא ניתן לטעון זמנים כרגע";
+    }
+}
+
+// --- פונקציה חדשה לשיתוף זמני שבת בוואטסאפ ---
+function shareShabbatTimes() {
+    const headerText = document.getElementById('parashaHeader').innerText.split('(')[0].trim(); // לוקח רק את "שבת פרשת X"
+    let msg = `*${headerText}*\n\n`;
+    
+    const cards = document.querySelectorAll('.city-card');
+    cards.forEach(card => {
+        const city = card.querySelector('.city-name').innerText;
+        const entry = card.querySelector('.entry .time-value') ? card.querySelector('.entry .time-value').innerText : '';
+        const exit = card.querySelector('.exit .time-value') ? card.querySelector('.exit .time-value').innerText : '';
+        
+        msg += `*${city}*\n*כניסה: ${entry}* *יציאה: ${exit}*\n\n`;
+    });
+    
+    msg += `*שבת שלום*`;
+    window.open(`whatsapp://send?text=${encodeURIComponent(msg)}`, '_blank');
 }
 </script>
 </body>
