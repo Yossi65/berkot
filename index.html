@@ -311,6 +311,9 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
 .sub-btn[onclick*="'chabad_12_tammuz'"] i { background-image: linear-gradient(to right, #ffecd2, #fcb69f) !important; }
 .sub-btn[onclick*="'chabad_18_elul'"] i { background-image: linear-gradient(to right, #ff8177, #ff867a) !important; }
 
+/* זמני שבת */
+.sub-btn[onclick*="'times'"] i { background-image: linear-gradient(to right, #43e97b, #38f9d7) !important; }
+
 /* --- עיצוב זמני שבת וכפתור השיתוף החדש --- */
 .shabbat-times-container {
     margin-top: 15px;
@@ -497,6 +500,49 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
             <i class="fa-solid fa-candle-holder" style="font-family: 'Font Awesome 6 Pro', 'Font Awesome 6 Free';">🕯️</i> ניחום אבלים
         </button>
     </div>
+    <div id="shabbatSection" class="dynamic-section">
+        <div id="shabbatTimeSelector">
+            <h3><span>מה תרצו?</span></h3>
+            <div class="sub-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <button class="sub-btn" onclick="selectShabbatTime('shabbat')">
+                    <i class="fa-solid fa-wine-glass"></i> שבת שלום
+                </button>
+                <button class="sub-btn" onclick="selectShabbatTime('motzash')">
+                    <i class="fa-solid fa-fire-flame-curved"></i> מוצ"ש
+                </button>
+                <button class="sub-btn" onclick="selectShabbatTime('times')">
+                    <i class="fa-regular fa-clock"></i> זמני שבת
+                </button>
+            </div>
+            
+            <div id="shabbatTimesDisplay" class="shabbat-times-container">
+                <div id="parashaHeader" class="parasha-header">
+                    טוען נתונים<span class="loader-dots"></span>
+                </div>
+                <div class="times-grid" id="timesGrid"></div>
+                
+                <button class="share-times-btn" onclick="shareShabbatTimes()">
+                    <i class="fa-brands fa-whatsapp"></i> שתף זמני שבת
+                </button>
+            </div>
+        </div>
+
+        <div id="shabbatTargetSelector" style="display:none;">
+            <h3 id="shabbatTargetTitle"><span>למי הברכה?</span></h3>
+            <div class="sub-grid">
+                <button class="sub-btn" onclick="selectSub('general', this)"><i class="fa-regular fa-star"></i> כללי</button>
+                <button class="sub-btn" onclick="selectSub('family', this)"><i class="fa-solid fa-people-roof"></i> משפחה</button>
+                <button class="sub-btn" onclick="selectSub('wife', this)"><i class="fa-solid fa-person-dress"></i> אשתי</button>
+                <button class="sub-btn" onclick="selectSub('husband', this)"><i class="fa-solid fa-user-tie"></i> בעלי</button>
+                <button class="sub-btn" onclick="selectSub('parents', this)"><i class="fa-solid fa-user-group"></i> הורים</button>
+                <button class="sub-btn" onclick="selectSub('kids', this)"><i class="fa-solid fa-children"></i> ילדים</button>
+                <button class="sub-btn" onclick="selectSub('brother', this)"><i class="fa-solid fa-user"></i> אח</button>
+                <button class="sub-btn" onclick="selectSub('sister', this)"><i class="fa-solid fa-person-dress"></i> אחות</button>
+                <button class="sub-btn" onclick="selectSub('friend_male', this)"><i class="fa-solid fa-user-group"></i> חבר</button>
+                <button class="sub-btn" onclick="selectSub('friend_female', this)"><i class="fa-solid fa-user-group"></i> חברה</button>
+            </div>
+        </div>
+    </div>
 
     <div id="morningEveningSection" class="dynamic-section">
         <div id="timeOfDaySelector">
@@ -541,46 +587,6 @@ input:focus { box-shadow: inset 6px 6px 12px rgba(166, 180, 200, 0.6), inset -6p
         </div>
     </div>
 
-    <div id="shabbatSection" class="dynamic-section">
-        <div id="shabbatTimeSelector">
-            <h3><span>זמן</span></h3>
-            <div class="sub-grid">
-                <button class="sub-btn" onclick="selectShabbatTime('shabbat')">
-                    <i class="fa-solid fa-wine-glass"></i> שבת שלום
-                </button>
-                <button class="sub-btn" onclick="selectShabbatTime('motzash')">
-                    <i class="fa-solid fa-fire-flame-curved"></i> מוצאי שבת
-                </button>
-            </div>
-            
-            <div id="shabbatTimesDisplay" class="shabbat-times-container">
-                <div id="parashaHeader" class="parasha-header">
-                    טוען נתונים<span class="loader-dots"></span>
-                </div>
-                <div class="times-grid" id="timesGrid"></div>
-                
-                <button class="share-times-btn" onclick="shareShabbatTimes()">
-                    <i class="fa-brands fa-whatsapp"></i> שתף זמני שבת
-                </button>
-            </div>
-        </div>
-
-        <div id="shabbatTargetSelector" style="display:none;">
-            <h3 id="shabbatTargetTitle"><span>למי הברכה?</span></h3>
-            <div class="sub-grid">
-                <button class="sub-btn" onclick="selectSub('general', this)"><i class="fa-regular fa-star"></i> כללי</button>
-                <button class="sub-btn" onclick="selectSub('family', this)"><i class="fa-solid fa-people-roof"></i> משפחה</button>
-                <button class="sub-btn" onclick="selectSub('wife', this)"><i class="fa-solid fa-person-dress"></i> אשתי</button>
-                <button class="sub-btn" onclick="selectSub('husband', this)"><i class="fa-solid fa-user-tie"></i> בעלי</button>
-                <button class="sub-btn" onclick="selectSub('parents', this)"><i class="fa-solid fa-user-group"></i> הורים</button>
-                <button class="sub-btn" onclick="selectSub('kids', this)"><i class="fa-solid fa-children"></i> ילדים</button>
-                <button class="sub-btn" onclick="selectSub('brother', this)"><i class="fa-solid fa-user"></i> אח</button>
-                <button class="sub-btn" onclick="selectSub('sister', this)"><i class="fa-solid fa-person-dress"></i> אחות</button>
-                <button class="sub-btn" onclick="selectSub('friend_male', this)"><i class="fa-solid fa-user-group"></i> חבר</button>
-                <button class="sub-btn" onclick="selectSub('friend_female', this)"><i class="fa-solid fa-user-group"></i> חברה</button>
-            </div>
-        </div>
-    </div>
     <div id="holidaySection" class="dynamic-section">
         <div id="holidayNameSelector">
             <h3><span>בחר חג</span></h3>
@@ -952,6 +958,7 @@ const categoryColors = {
     'morning_evening': 'linear-gradient(to right, #ffd2a5, #ff8c42)',
     'daily_strengthen': 'linear-gradient(to right, #84fab0, #8fd3f4)',
     'shabbat': 'linear-gradient(to right, #8e44ad, #c0392b)',
+    'shabbat_times': 'linear-gradient(to right, #43e97b, #38f9d7)', // צבע חדש לזמני שבת
     'love': 'linear-gradient(to right, #ffafbd, #ff4b6b)',
     'recovery': 'linear-gradient(to right, #ffcccb, #dc143c)',
     'thank_you': 'linear-gradient(to right, #2dd4bf, #0ea5e9)',
@@ -1335,9 +1342,6 @@ function selectCategory(cat, btn) {
         document.getElementById('shabbatSection').style.display = 'block';
         document.getElementById('shabbatTimeSelector').style.display = 'block';
         document.getElementById('shabbatTargetSelector').style.display = 'none';
-        
-        // --- קריאה לזמני שבת מה-API ---
-        fetchShabbatTimes();
     }
     else if (cat === 'holiday') {
         document.getElementById('holidaySection').style.display = 'block';
@@ -1589,18 +1593,41 @@ function selectThankYouGender(gender, btn) {
 
 function selectShabbatTime(time) {
     state.shabbatTime = time;
+    
     const btns = document.querySelectorAll('#shabbatTimeSelector .sub-btn');
     btns.forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+    // הוספת active לכפתור שנלחץ (משתמשים ב-event.currentTarget כדי לתפוס את הכפתור עצמו)
+    if(event && event.currentTarget) event.currentTarget.classList.add('active');
 
-    if (time === 'shabbat') {
-        document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #8e44ad, #c0392b)');
+    // ניהול תצוגה
+    if (time === 'times') {
+        // מצב זמני שבת
+        document.getElementById('shabbatTimesDisplay').style.display = 'block';
+        document.getElementById('shabbatTargetSelector').style.display = 'none';
+        document.getElementById('genBtn').style.display = 'none';
+        document.getElementById('inputSection').style.display = 'none';
+        fetchShabbatTimes();
     } else {
-        document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #d35400, #f39c12)');
+        // מצב ברכה (שבת שלום / מוצש)
+        document.getElementById('shabbatTimesDisplay').style.display = 'none';
+        document.getElementById('shabbatTargetSelector').style.display = 'block';
+        
+        // החזרת Input Section אם הוא הוסתר
+        document.getElementById('inputSection').style.display = 'block';
+        
+        if (time === 'shabbat') {
+            document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #8e44ad, #c0392b)');
+        } else {
+            document.documentElement.style.setProperty('--dynamic-icon-gradient', 'linear-gradient(to right, #d35400, #f39c12)');
+        }
+        
+        // הצגת כפתור יצירה רק אם נבחר כבר יעד (אם לא, הוא יופיע אחרי בחירת יעד)
+        if(state.subCategory) {
+             document.getElementById('genBtn').style.display = 'flex';
+        } else {
+             document.getElementById('genBtn').style.display = 'none';
+        }
     }
-
-    document.getElementById('shabbatTargetSelector').style.display = 'block';
-    document.getElementById('genBtn').style.display = 'flex';
 }
 
 function selectSub(type, btn) {
@@ -2088,8 +2115,8 @@ async function fetchShabbatTimes() {
     const header = document.getElementById('parashaHeader');
     const grid = document.getElementById('timesGrid');
     
-    display.style.display = 'block';
-    if(grid.children.length > 0) return;
+    // מחיקת בדיקת display='none' כי עכשיו זה בסקשן נפרד שמוצג ע"י selectCategory
+    if(grid.children.length > 0) return; // מונע טעינה כפולה
 
     try {
         const promises = SHABBAT_CITIES.map(city => 
@@ -2146,9 +2173,9 @@ async function fetchShabbatTimes() {
     }
 }
 
-// --- פונקציה חדשה לשיתוף זמני שבת בוואטסאפ ---
+// --- פונקציה לשיתוף זמני שבת בוואטסאפ ---
 function shareShabbatTimes() {
-    const headerText = document.getElementById('parashaHeader').innerText.split('(')[0].trim(); // לוקח רק את "שבת פרשת X"
+    const headerText = document.getElementById('parashaHeader').innerText.split('(')[0].trim();
     let msg = `*${headerText}*\n\n`;
     
     const cards = document.querySelectorAll('.city-card');
